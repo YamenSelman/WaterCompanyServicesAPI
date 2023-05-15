@@ -97,6 +97,13 @@ namespace WaterCompanyServicesAPI.Controllers
             return _context.Consumers.Any(e => e.Id == id);
         }
 
+        [Route("/consumer/getbyuser/{id}")]
+        public async Task<ActionResult<Consumer>> Login(int id)
+        {
+            Consumer consumer = await _context.Consumers.Include(c=>c.User).Where(c => c.User.Id == id).FirstOrDefaultAsync();
+            return consumer;
+        }
+
 
     }
 }

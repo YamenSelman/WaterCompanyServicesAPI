@@ -38,6 +38,19 @@ namespace WaterCompanyServicesAPI.Controllers
             return Subscription;
         }
 
+        [Route("/subscription/getbybarcode/{barcode}")]
+        public async Task<ActionResult<Subscription>> GetSubscriptionByBarCode(string barcode)
+        {
+            var Subscription = await _context.Subscriptions.Where(s => s.ConsumerBarCode.Equals(barcode)).FirstOrDefaultAsync();
+
+            if (Subscription == null)
+            {
+                return NotFound();
+            }
+
+            return Subscription;
+        }
+
         [HttpPut("{id}")]
         public async Task<IActionResult> PutSubscription(int id, [FromBody] Subscription Subscription)
         {

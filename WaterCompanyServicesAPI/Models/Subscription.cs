@@ -25,9 +25,9 @@ namespace WaterCompanyServicesAPI
         public string SubscriptionStatus { get; set; }
 
         [AllowNull]
-        public Consumer Consumer { get; set; }
+        public Consumer? Consumer { get; set; }
 
         [AllowNull]
-        public virtual ICollection<Request> Requests { get; set;}
+        public virtual ICollection<Request>? Requests { get; set;}
     }
 }

@@ -16,9 +16,9 @@ namespace WaterCompanyServicesAPI
         public DateTime RequestDate { get; set; }
 
         [AllowNull]
-        public Consumer Consumer { get; set; }
+        public Consumer? Consumer { get; set; }
         [AllowNull]
-        public Subscription Subscription { get; set; }
+        public Subscription? Subscription { get; set; }
 
         [Required]
         [Display(Name = "Request Status")]

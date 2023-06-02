@@ -97,6 +97,7 @@ namespace WaterCompanyServicesAPI.Controllers
         {
             return _context.Users.Any(e => e.Id == id);
         }
+
         [Route("/user/exists/{userName}")]
         public bool UserExists(string userName)
         {
@@ -109,7 +110,7 @@ namespace WaterCompanyServicesAPI.Controllers
         }
 
         [Route("/user/login")]
-
+        [HttpPost]
         public async Task<ActionResult<User>> Login([FromBody] User user)
         {
             List<User> users = await _context.Users.Where(u => u.UserName == user.UserName && u.Password == user.Password).ToListAsync();

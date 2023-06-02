@@ -102,8 +102,8 @@ namespace WaterCompanyServicesAPI.Controllers
         {
             Consumer consumer = await _context.Consumers.Include(c=>c.User).Where(c => c.User.Id == id).FirstOrDefaultAsync();
             return consumer;
-        }
-
+        }        
+        
 
     }
 }

@@ -13,7 +13,7 @@ namespace WaterCompanyServicesAPI.Models
         public string DocumentType { get; set; }
 
         [Required]
-        public string DocumentPath { get; set; }
+        public byte[] DocumentPath { get; set; }
 
         public Request Request { get; set; }
     }

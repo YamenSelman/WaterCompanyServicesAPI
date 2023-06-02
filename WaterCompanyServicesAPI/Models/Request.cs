@@ -9,7 +9,7 @@ namespace WaterCompanyServicesAPI
     {
         [Key]
         public int Id { get; set; }
-        public RequestType RequestType { get; set; }
+        public string RequestType { get; set; }
 
         [Required]
         [Display(Name = "Request Date")]

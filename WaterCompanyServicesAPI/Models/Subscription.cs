@@ -24,6 +24,10 @@ namespace WaterCompanyServicesAPI
         [Display(Name = "Subscription status")]
         public string SubscriptionStatus { get; set; }
 
+        [Required]
+        [MaxLength(25), Display(Name = "Subscription Address")]
+        public string SubscriptionAddress { get; set; }
+
         [AllowNull]
         public Consumer? Consumer { get; set; }
 

@@ -24,12 +24,10 @@ namespace WaterCompanyServicesAPI
         public DbSet<Consumer> Consumers { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Employee> Employees { get; set; }
-        public DbSet<FlowStep> FlowSteps { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<Request> Requests { get; set; }
         public DbSet<RequestDocument> RequestDocuments { get; set; }       
         public DbSet<RequestsLog> RequestsLog { get; set; }
-        public DbSet<RequestType> RequestTypes { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<User> Users { get; set; }
         

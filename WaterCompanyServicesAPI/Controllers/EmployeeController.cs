@@ -99,6 +99,13 @@ namespace WaterCompanyServicesAPI.Controllers
             return _context.Employees.Any(e => e.Id == id);
         }
 
+        [Route("/employee/getbyuser/{id}")]
+        public async Task<ActionResult<Employee>> Login(int id)
+        {
+            Employee employee = await _context.Employees.Include(c => c.User).Include(c=>c.Department).Where(c => c.User.Id == id).FirstOrDefaultAsync();
+            return employee;
+        }
+
 
     }
 }

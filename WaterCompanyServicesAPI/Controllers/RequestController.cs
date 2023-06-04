@@ -13,7 +13,7 @@ namespace WaterCompanyServicesAPI.Controllers
         {
             return View();
         }
-        public RequestController(ILogger<RequestController> logger,WaterCompanyDBContext _context)
+        public RequestController(ILogger<RequestController> logger, WaterCompanyDBContext _context)
         {
             this._logger = logger;
             this._context = _context;
@@ -70,8 +70,18 @@ namespace WaterCompanyServicesAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Request>> PostRequest([FromBody] Request Request)
         {
-            _context.Requests.Add(Request);
-            await _context.SaveChangesAsync();
+            try
+            {
+                Request.Consumer = _context.Consumers.Find(Request.Consumer.Id);
+                Request.Subscription = _context.Subscriptions.Find(Request.Subscription.Id);
+                Request.CurrentDepartment = _context.Departments.Find(Request.CurrentDepartment.Id);
+                _context.Requests.Add(Request);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
             return CreatedAtAction("GetRequest", new { id = Request.Id }, Request);
         }
@@ -99,7 +109,7 @@ namespace WaterCompanyServicesAPI.Controllers
 
         [Route("/request/attach/{cid}/{sid}")]
         [HttpGet]
-        public async Task<ActionResult<Boolean>> RequestAttach(int cid,int sid)
+        public async Task<ActionResult<Boolean>> RequestAttach(int cid, int sid)
         {
             try
             {
@@ -119,7 +129,7 @@ namespace WaterCompanyServicesAPI.Controllers
                     {
                         Request req = new Request();
                         req.Subscription = subscription;
-                        req.Consumer =consumer;
+                        req.Consumer = consumer;
                         req.RequestDate = DateTime.Now;
                         req.RequestType = "attach";
                         req.RequestStatus = "submitted";
@@ -129,11 +139,19 @@ namespace WaterCompanyServicesAPI.Controllers
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine("yms: " + ex.Message);
                 return false;
             }
+        }
+
+        [Route("/request/getpending/{did}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Request>>> GetRequests(int did)
+        {
+            List<string> status = new List<string>{"completed","rejected"};
+            return await _context.Requests.Include(r=>r.Consumer).Include(r=>r.Subscription).Include(r=>r.CurrentDepartment).Where(r => r.CurrentDepartment != null && r.CurrentDepartment.Id == did && ! status.Contains(r.RequestStatus)).ToListAsync();
         }
 
 

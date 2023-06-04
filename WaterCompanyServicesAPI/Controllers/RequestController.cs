@@ -97,6 +97,45 @@ namespace WaterCompanyServicesAPI.Controllers
             return _context.Requests.Any(e => e.Id == id);
         }
 
+        [Route("/request/attach/{cid}/{sid}")]
+        [HttpGet]
+        public async Task<ActionResult<Boolean>> RequestAttach(int cid,int sid)
+        {
+            try
+            {
+                var consumer = _context.Consumers.Find(cid);
+                if (consumer == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    var subscription = _context.Subscriptions.Find(sid);
+                    if (subscription == null)
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        Request req = new Request();
+                        req.Subscription = subscription;
+                        req.Consumer =consumer;
+                        req.RequestDate = DateTime.Now;
+                        req.RequestType = "attach";
+                        req.RequestStatus = "submitted";
+                        _context.Requests.Add(req);
+                        await _context.SaveChangesAsync();
+                        return true;
+                    }
+                }
+            }
+            catch(Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine("yms: " + ex.Message);
+                return false;
+            }
+        }
+
 
     }
 }

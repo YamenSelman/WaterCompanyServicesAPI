@@ -23,7 +23,7 @@ namespace WaterCompanyServicesAPI
         [Required]
         [Display(Name = "Request Status")]
         public string RequestStatus { get; set; }
-        public Employee Employee { get; set; }
+        public Department? CurrentDepartment { get; set; }
 
         public virtual ICollection<RequestDocument> Documents { get; set; }
 

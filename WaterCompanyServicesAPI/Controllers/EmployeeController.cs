@@ -28,7 +28,7 @@ namespace WaterCompanyServicesAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Employee>> GetEmployee(int id)
         {
-            var Employee = await _context.Employees.FindAsync(id);
+            var Employee = await _context.Employees.Include(e=>e.Department).Include(e=>e.User).Where(e=>e.Id==id).FirstOrDefaultAsync();
 
             if (Employee == null)
             {
@@ -70,6 +70,8 @@ namespace WaterCompanyServicesAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Employee>> PostEmployee([FromBody] Employee Employee)
         {
+            var dep = _context.Departments.Find(Employee.Department.Id);
+            Employee.Department = dep;
             _context.Employees.Add(Employee);
             await _context.SaveChangesAsync();
 

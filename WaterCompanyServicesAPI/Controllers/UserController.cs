@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Net;
 
 namespace WaterCompanyServicesAPI.Controllers
 {
@@ -122,8 +123,7 @@ namespace WaterCompanyServicesAPI.Controllers
                     return usr;
                 }
             }
-
-            return NotFound();
+            return NotFound("user not found");
         }
 
     }

@@ -28,7 +28,7 @@ namespace WaterCompanyServicesAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Request>> GetRequest(int id)
         {
-            var Request = await _context.Requests.FindAsync(id);
+            var Request = await _context.Requests.Include(r => r.Consumer).Include(r => r.Subscription).Include(r => r.CurrentDepartment).Where(r=>r.Id == id).FirstOrDefaultAsync();
 
             if (Request == null)
             {
@@ -151,7 +151,7 @@ namespace WaterCompanyServicesAPI.Controllers
         public async Task<ActionResult<IEnumerable<Request>>> GetRequests(int did)
         {
             List<string> status = new List<string>{"completed","rejected"};
-            return await _context.Requests.Include(r=>r.Consumer).Include(r=>r.Subscription).Include(r=>r.CurrentDepartment).Where(r => r.CurrentDepartment != null && r.CurrentDepartment.Id == did && ! status.Contains(r.RequestStatus)).ToListAsync();
+            return await _context.Requests.Where(r => r.CurrentDepartment != null && r.CurrentDepartment.Id == did && ! status.Contains(r.RequestStatus)).ToListAsync();
         }
 
 

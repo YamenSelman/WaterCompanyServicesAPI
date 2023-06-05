@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using WaterCompanyServicesAPI.Models;
 
 namespace WaterCompanyServicesAPI.Controllers
 {
@@ -152,8 +153,54 @@ namespace WaterCompanyServicesAPI.Controllers
         {
             List<string> status = new List<string>{"completed","rejected"};
             return await _context.Requests.Where(r => r.CurrentDepartment != null && r.CurrentDepartment.Id == did && ! status.Contains(r.RequestStatus)).ToListAsync();
+        }        
+        
+        [Route("/request/accept/{rid}/{eid}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> AcceptRequest(int rid,int eid)
+        {
+            Request? req = _context.Requests.Include(r=>r.Consumer).Include(r=>r.Subscription).Where(r => r.Id == rid).FirstOrDefault();
+            Employee? emp = _context.Employees.Include(e => e.Department).Where(e => e.Id == eid).FirstOrDefault();
+            if(req !=null && emp != null)
+            {
+                switch (req.RequestType)
+                {
+                    case "attach":
+                        using (var transaction = _context.Database.BeginTransaction())
+                        {
+                            try
+                            {
+                                req.RequestStatus = "completed";
+                                req.CurrentDepartment = null;
+                                req.Subscription.Consumer = req.Consumer;
+                                _context.SaveChanges();
+
+                                RequestsLog log = new RequestsLog();
+                                log.DateTime = DateTime.Now;
+                                log.Department = emp.Department;
+                                log.Employee = emp;
+                                log.Decision = true;
+                                log.Request = req;
+                                log.Notes = string.Empty;
+                                _context.RequestsLog.Add(log);
+                                _context.SaveChanges();
+
+                                transaction.Commit();
+                                return true;
+                            }
+                            catch (Exception ex)
+                            {
+                                System.Diagnostics.Debug.WriteLine(ex.Message);
+                                transaction.Rollback();
+                                return false;
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return true;
         }
-
-
     }
 }

@@ -25,7 +25,7 @@ namespace WaterCompanyServicesAPI.Controllers
             return await _context.Requests.ToListAsync();
         }
         [Route("getRequestsByBarcode/{barcode}")]
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<Request>>> getRequestsByBarcode(string barcode)
         {
             return await _context.Requests.Where(r => r.Subscription.ConsumerBarCode.Equals(barcode)).ToListAsync();

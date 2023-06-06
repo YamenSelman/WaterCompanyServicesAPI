@@ -9,7 +9,6 @@ namespace WaterCompanyServicesAPI.Controllers
     {
         private readonly ILogger<RequestController> _logger;
         private readonly WaterCompanyDBContext _context;
-
         public IActionResult Index()
         {
             return View();
@@ -25,11 +24,17 @@ namespace WaterCompanyServicesAPI.Controllers
         {
             return await _context.Requests.ToListAsync();
         }
+        [Route("getRequestsByBarcode/{barcode}")]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<Request>>> getRequestsByBarcode(string barcode)
+        {
+            return await _context.Requests.Where(r => r.Subscription.ConsumerBarCode.Equals(barcode)).ToListAsync();
+        }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Request>> GetRequest(int id)
         {
-            var Request = await _context.Requests.Include(r => r.Consumer).Include(r => r.Subscription).Include(r => r.CurrentDepartment).Where(r=>r.Id == id).FirstOrDefaultAsync();
+            var Request = await _context.Requests.Include(r => r.Consumer).Include(r => r.Subscription).Include(r => r.CurrentDepartment).Where(r => r.Id == id).FirstOrDefaultAsync();
 
             if (Request == null)
             {
@@ -151,56 +156,104 @@ namespace WaterCompanyServicesAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Request>>> GetRequests(int did)
         {
-            List<string> status = new List<string>{"completed","rejected"};
-            return await _context.Requests.Where(r => r.CurrentDepartment != null && r.CurrentDepartment.Id == did && ! status.Contains(r.RequestStatus)).ToListAsync();
-        }        
-        
-        [Route("/request/accept/{rid}/{eid}")]
+            List<string> status = new List<string> { "completed", "rejected" };
+            return await _context.Requests.Where(r => r.CurrentDepartment != null && r.CurrentDepartment.Id == did && !status.Contains(r.RequestStatus)).ToListAsync();
+        }
+
+        [Route("/request/accept/{rid}/{eid}/{notes}")]
         [HttpGet]
-        public async Task<ActionResult<bool>> AcceptRequest(int rid,int eid)
+        public async Task<ActionResult<bool>> AcceptRequest(int rid, int eid, string notes = "")
         {
-            Request? req = _context.Requests.Include(r=>r.Consumer).Include(r=>r.Subscription).Where(r => r.Id == rid).FirstOrDefault();
-            Employee? emp = _context.Employees.Include(e => e.Department).Where(e => e.Id == eid).FirstOrDefault();
-            if(req !=null && emp != null)
+            Request? req = await _context.Requests.Include(r => r.Consumer).Include(r => r.Subscription).Where(r => r.Id == rid).FirstOrDefaultAsync();
+            Employee? emp = await _context.Employees.Include(e => e.Department).Where(e => e.Id == eid).FirstOrDefaultAsync();
+            if (req != null && emp != null)
             {
-                switch (req.RequestType)
+                if (req.CurrentDepartment == emp.Department)
                 {
-                    case "attach":
-                        using (var transaction = _context.Database.BeginTransaction())
-                        {
-                            try
+                    switch (req.RequestType)
+                    {
+                        case "attach":
+                            using (var transaction = _context.Database.BeginTransaction())
                             {
-                                req.RequestStatus = "completed";
-                                req.CurrentDepartment = null;
-                                req.Subscription.Consumer = req.Consumer;
-                                _context.SaveChanges();
+                                try
+                                {
+                                    req.RequestStatus = "completed";
+                                    req.CurrentDepartment = null;
+                                    req.Subscription.Consumer = req.Consumer;
+                                    _context.SaveChanges();
 
-                                RequestsLog log = new RequestsLog();
-                                log.DateTime = DateTime.Now;
-                                log.Department = emp.Department;
-                                log.Employee = emp;
-                                log.Decision = true;
-                                log.Request = req;
-                                log.Notes = string.Empty;
-                                _context.RequestsLog.Add(log);
-                                _context.SaveChanges();
+                                    RequestsLog log = new RequestsLog();
+                                    log.DateTime = DateTime.Now;
+                                    log.Department = emp.Department;
+                                    log.Employee = emp;
+                                    log.Decision = true;
+                                    log.Request = req;
+                                    log.Notes = notes;
+                                    _context.RequestsLog.Add(log);
+                                    _context.SaveChanges();
 
-                                transaction.Commit();
-                                return true;
+                                    transaction.Commit();
+                                    return true;
+                                }
+                                catch (Exception ex)
+                                {
+                                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                                    transaction.Rollback();
+                                    return false;
+                                }
                             }
-                            catch (Exception ex)
-                            {
-                                System.Diagnostics.Debug.WriteLine(ex.Message);
-                                transaction.Rollback();
-                                return false;
-                            }
-                        }
-                        break;
-                    default:
-                        break;
+                    }
                 }
             }
-            return true;
+            return false;
+        }
+
+        [Route("/request/reject/{rid}/{eid}/{notes}")]
+        [HttpGet]
+        public async Task<ActionResult<bool>> RejectRequest(int rid, int eid, string notes = "")
+        {
+            Request? req = await _context.Requests.Include(r => r.Consumer).Include(r => r.Subscription).Where(r => r.Id == rid).FirstOrDefaultAsync();
+            Employee? emp = await _context.Employees.Include(e => e.Department).Where(e => e.Id == eid).FirstOrDefaultAsync();
+            if (req != null && emp != null)
+            {
+                if (req.CurrentDepartment == emp.Department)
+                {
+                    switch (req.RequestType)
+                    {
+                        case "attach":
+                            using (var transaction = _context.Database.BeginTransaction())
+                            {
+                                try
+                                {
+                                    req.RequestStatus = "rejected";
+                                    req.CurrentDepartment = null;
+                                    _context.SaveChanges();
+
+                                    RequestsLog log = new RequestsLog();
+                                    log.DateTime = DateTime.Now;
+                                    log.Department = emp.Department;
+                                    log.Employee = emp;
+                                    log.Decision = false;
+                                    log.Request = req;
+                                    log.Notes = notes;
+                                    _context.RequestsLog.Add(log);
+                                    _context.SaveChanges();
+
+                                    transaction.Commit();
+                                    return true;
+                                }
+                                catch (Exception ex)
+                                {
+                                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                                    transaction.Rollback();
+                                    return false;
+                                }
+                            }
+                    }
+                }
+
+            }
+            return false;
         }
     }
 }

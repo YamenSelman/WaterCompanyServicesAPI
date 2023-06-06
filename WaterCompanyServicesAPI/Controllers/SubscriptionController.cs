@@ -25,23 +25,17 @@ namespace WaterCompanyServicesAPI.Controllers
             return await _context.Subscriptions.ToListAsync();
         }
 
+        [Route("getConsumerSubscriptions/{cid}")]
         [HttpGet("{id}")]
-        public async Task<ActionResult<Subscription>> GetSubscription(int id)
+        public async Task<ActionResult<IEnumerable<Subscription>>> getConsumerSubscriptions(int cid)
         {
-            var Subscription = await _context.Subscriptions.FindAsync(id);
-
-            if (Subscription == null)
-            {
-                return NotFound();
-            }
-
-            return Subscription;
+            return await _context.Subscriptions.Where(s => s.Consumer.Id == cid).ToListAsync();
         }
 
         [Route("getWithConsumer/{id}")]
         public async Task<ActionResult<Subscription>> GetSubscriptionWithConsumer(int id)
         {
-            var Subscription = await _context.Subscriptions.Include(s=>s.Consumer).Where(s=>s.Id.Equals(id)).FirstOrDefaultAsync();
+            var Subscription = await _context.Subscriptions.Include(s=>s.Consumer).Where(s=>s.Id==id).FirstOrDefaultAsync();
 
             if (Subscription == null)
             {

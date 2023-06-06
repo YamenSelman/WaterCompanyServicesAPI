@@ -26,7 +26,7 @@ namespace WaterCompanyServicesAPI.Controllers
         }
 
         [Route("getConsumerSubscriptions/{cid}")]
-        [HttpGet("{id}")]
+        [HttpGet]
         public async Task<ActionResult<IEnumerable<Subscription>>> getConsumerSubscriptions(int cid)
         {
             return await _context.Subscriptions.Where(s => s.Consumer.Id == cid).ToListAsync();

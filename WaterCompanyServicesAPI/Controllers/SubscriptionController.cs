@@ -44,6 +44,19 @@ namespace WaterCompanyServicesAPI.Controllers
             }
 
             return Subscription;
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Subscription>> GetSubscription(int id)
+        {
+            var Subscription = await _context.Subscriptions.FindAsync(id);
+
+            if (Subscription == null)
+            {
+                return NotFound();
+            }
+
+            return Subscription;
         }        
         
         [Route("getUnAttached")]

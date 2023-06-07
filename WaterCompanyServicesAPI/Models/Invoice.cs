@@ -10,7 +10,6 @@ namespace WaterCompanyServicesAPI
 
         [Required]
         [Display(Name ="Invoice Year")]
-        [Range(2000,2050)]
         public int InvoiceYear { get; set; }
 
         [Required]
@@ -23,7 +22,7 @@ namespace WaterCompanyServicesAPI
 
         [Required]
         [Display(Name = "Invoice Status")]
-        public int InvoiceStatus { get; set; }
+        public bool InvoiceStatus { get; set; }
 
         public Subscription Subscription { get; set; }
     }

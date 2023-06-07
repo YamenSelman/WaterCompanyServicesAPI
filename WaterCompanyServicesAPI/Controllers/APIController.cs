@@ -28,6 +28,7 @@ namespace WaterCompanyServicesAPI.Controllers
         [HttpGet]
         public bool Seed(int c)
         {
+            _context.Database.EnsureCreated();
             if (_context.Departments.Count() <= 0)
             {
                 using(var transaction = _context.Database.BeginTransaction())
@@ -35,7 +36,7 @@ namespace WaterCompanyServicesAPI.Controllers
                     try
                     {
                         int barcode = 1;
-                        string[] deps = new string[] { "ConsumerDP", "GeneralManager", "MaintainanceDP", "FinanceDP", "DocumnerControllerDP" };
+                        string[] deps = new string[] { "DocumentControllerDep", "ConsumersDep", "GeneralManager", "SubCentersDep", "RepairingDep" };
                         string[] mname = new string[] { "Mohammad", "Ahmad", "Basel", "Ali", "Omar", "Samer", "Ibrahem", "Abdalla", "Somar", "Badr" };
                         string[] fname = new string[] { "Samira", "Ola", "Nisreen", "Salwa", "Rima", "Sawsan", "Hala", "Hadeel", "Nagham", "Mona" };
                         string[] sname = new string[] { "Mohammad", "Ahmad", "Ali", "Omar", "Samer", "Ibrahem", "Abdalla", "Somar", "Badr", "Mahmoud" };
@@ -81,7 +82,7 @@ namespace WaterCompanyServicesAPI.Controllers
                             }
                             consumer.ConsumerAge = rnd.Next(18, 60);
                             User user = new User();
-                            user.UserName = $"{firstname}_{i+1}";
+                            user.UserName = $"{firstname.ToLower()}{i+1}";
                             user.Password = firstname.ToLower();
                             user.UserType = "consumer";
                             user.AccountActive = true;
@@ -132,17 +133,67 @@ namespace WaterCompanyServicesAPI.Controllers
 
                         _context.SaveChanges();
 
+                        List<KeyValuePair<int, int>> cyc = new List<KeyValuePair<int, int>>();
+                        cyc.Add(new KeyValuePair<int, int>(2022, 1));
+                        cyc.Add(new KeyValuePair<int, int>(2022, 2));
+                        cyc.Add(new KeyValuePair<int, int>(2022, 3));
+                        cyc.Add(new KeyValuePair<int, int>(2022, 4));
+                        cyc.Add(new KeyValuePair<int, int>(2022, 5));
+                        cyc.Add(new KeyValuePair<int, int>(2022, 6));
+                        cyc.Add(new KeyValuePair<int, int>(2023, 1));
+                        cyc.Add(new KeyValuePair<int, int>(2024, 2));
+
                         foreach (var cons in consumers)
                         {
+                            bool paid;
+                            bool goodperson = rnd.Next(100) < 25;
+
                             foreach (var sub in cons.Subscriptions)
                             {
-                                Bill bill = new Bill();
-                                bill.Number = "01";
-                                bill.Year = "2022";
-                                bill.Amount = 1500;
-                                bill.Status = true;
-                                bill.Subscription = sub;
-                                _context.Bills.Add(bill);
+                                paid = true;
+                                foreach (var cy in cyc)
+                                {
+                                    Invoice invoice = new Invoice();
+                                    invoice.InvoiceCycle = cy.Value;
+                                    invoice.InvoiceYear = cy.Key;
+                                    if(sub.SubscriptionUsingType.Equals("residential"))
+                                    {
+                                        invoice.InvoiceValue = rnd.Next(500,2000);
+                                    }
+                                    else
+                                    {
+                                        invoice.InvoiceValue = rnd.Next(5000, 50000);
+                                    }
+                                    invoice.InvoiceStatus = goodperson ||  paid;
+                                    invoice.Subscription = sub;
+                                    _context.Invoices.Add(invoice);
+                                    if (cy.Value == rnd.Next(7) && paid)
+                                    {
+                                        paid = false;
+                                    }
+                                }
+                            }
+                        }
+
+                        var subscriptions = _context.Subscriptions.Where(s => s.Consumer == null).ToList();
+                        foreach (var sub in subscriptions)
+                        {
+                            foreach (var cy in cyc)
+                            {
+                                Invoice invoice = new Invoice();
+                                invoice.InvoiceCycle = cy.Value;
+                                invoice.InvoiceYear = cy.Key;
+                                if (sub.SubscriptionUsingType.Equals("residential"))
+                                {
+                                    invoice.InvoiceValue = rnd.Next(500, 2000);
+                                }
+                                else
+                                {
+                                    invoice.InvoiceValue = rnd.Next(5000, 50000);
+                                }
+                                invoice.InvoiceStatus = false;
+                                invoice.Subscription = sub;
+                                _context.Invoices.Add(invoice);
                             }
                         }
 

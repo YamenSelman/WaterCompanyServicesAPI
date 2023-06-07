@@ -23,5 +23,10 @@ namespace WaterCompanyServicesAPI
         [DefaultValue(true)]
         public bool AccountActive { get; set; }
 
+        public override string ToString()
+        {
+            return $"User: {this.Id}- {this.UserName} - {this.Password} - {this.UserType} - {this.AccountActive}";
+        }
+
     }
 }

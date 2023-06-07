@@ -33,5 +33,10 @@ namespace WaterCompanyServicesAPI
 
         [AllowNull]
         public virtual ICollection<Request>? Requests { get; set;}
+
+        public override string ToString()
+        {
+            return $"Subscripion: {this.Id} - {this.ConsumerBarCode} - {this.ConsumerSubscriptionNo} - {this.SubscriptionAddress} - {this.SubscriptionUsingType} - {this.SubscriptionStatus}";
+        }
     }
 }

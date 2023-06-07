@@ -30,6 +30,7 @@ namespace WaterCompanyServicesAPI
         public DbSet<RequestsLog> RequestsLog { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<Bill> Bills { get; set; }
         
 
     }

@@ -89,6 +89,32 @@ namespace WaterCompanyServicesAPI.Controllers
             return NoContent();
         }
 
+        [Route("getByBarcode/{barcode}")]
+        public async Task<ActionResult<IEnumerable<Invoice>>> GetByBarcode( string barcode)
+        {
+            var invoices = await _context.Invoices.Where(i => i.Subscription.ConsumerBarCode.Equals(barcode)).ToListAsync();
+
+            if (invoices == null)
+            {
+                return new List<Invoice>();
+            }
+
+            return invoices;
+        }
+
+        [Route("getUnpaidByBarcode/{barcode}")]
+        public async Task<ActionResult<IEnumerable<Invoice>>> GetUnpaidByBarcode(string barcode)
+        {
+            var invoices = await _context.Invoices.Where(i => i.Subscription.ConsumerBarCode.Equals(barcode) && i.InvoiceStatus == false).ToListAsync();
+
+            if (invoices == null)
+            {
+                return new List<Invoice>();
+            }
+
+            return invoices;
+        }
+
         private bool InvoiceExists(int id)
         {
             return _context.Invoices.Any(e => e.Id == id);

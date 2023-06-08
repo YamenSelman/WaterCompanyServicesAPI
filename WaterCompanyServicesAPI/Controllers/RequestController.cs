@@ -202,6 +202,42 @@ namespace WaterCompanyServicesAPI.Controllers
                                     return false;
                                 }
                             }
+                        case "clearance":
+                            using (var transaction = _context.Database.BeginTransaction())
+                            {
+                                try
+                                {
+                                    if(emp.Department.Id == 2)
+                                    {
+                                        req.CurrentDepartment = _context.Departments.Where(d => d.Id == 3).FirstOrDefault();
+                                    }
+                                    else
+                                    {
+                                        req.CurrentDepartment = null;
+                                        req.RequestStatus = "completed";
+                                    }
+                                    _context.SaveChanges();
+
+                                    RequestsLog log = new RequestsLog();
+                                    log.DateTime = DateTime.Now;
+                                    log.Department = emp.Department;
+                                    log.Employee = emp;
+                                    log.Decision = true;
+                                    log.Request = req;
+                                    log.Notes = notes;
+                                    _context.RequestsLog.Add(log);
+                                    _context.SaveChanges();
+
+                                    transaction.Commit();
+                                    return true;
+                                }
+                                catch (Exception ex)
+                                {
+                                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                                    transaction.Rollback();
+                                    return false;
+                                }
+                            }
                     }
                 }
             }
@@ -218,37 +254,33 @@ namespace WaterCompanyServicesAPI.Controllers
             {
                 if (req.CurrentDepartment == emp.Department)
                 {
-                    switch (req.RequestType)
+                    using (var transaction = _context.Database.BeginTransaction())
                     {
-                        case "attach":
-                            using (var transaction = _context.Database.BeginTransaction())
-                            {
-                                try
-                                {
-                                    req.RequestStatus = "rejected";
-                                    req.CurrentDepartment = null;
-                                    _context.SaveChanges();
+                        try
+                        {
+                            req.RequestStatus = "rejected";
+                            req.CurrentDepartment = null;
+                            _context.SaveChanges();
 
-                                    RequestsLog log = new RequestsLog();
-                                    log.DateTime = DateTime.Now;
-                                    log.Department = emp.Department;
-                                    log.Employee = emp;
-                                    log.Decision = false;
-                                    log.Request = req;
-                                    log.Notes = notes;
-                                    _context.RequestsLog.Add(log);
-                                    _context.SaveChanges();
+                            RequestsLog log = new RequestsLog();
+                            log.DateTime = DateTime.Now;
+                            log.Department = emp.Department;
+                            log.Employee = emp;
+                            log.Decision = false;
+                            log.Request = req;
+                            log.Notes = notes;
+                            _context.RequestsLog.Add(log);
+                            _context.SaveChanges();
 
-                                    transaction.Commit();
-                                    return true;
-                                }
-                                catch (Exception ex)
-                                {
-                                    System.Diagnostics.Debug.WriteLine(ex.Message);
-                                    transaction.Rollback();
-                                    return false;
-                                }
-                            }
+                            transaction.Commit();
+                            return true;
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Diagnostics.Debug.WriteLine(ex.Message);
+                            transaction.Rollback();
+                            return false;
+                        }
                     }
                 }
 

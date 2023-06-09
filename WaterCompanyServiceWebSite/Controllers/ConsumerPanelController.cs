@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ModelLibrary;
+using WaterCompanyServiceWebSite.Models;
 
 namespace WaterCompanyServiceWebSite.Controllers
 {
@@ -129,59 +130,69 @@ namespace WaterCompanyServiceWebSite.Controllers
 
         }
 
-        public IActionResult NewSubscriptionRequest()
+        public IActionResult NewSubscription()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult SubmitNewSubscriptionRequest(int sid)
+        public IActionResult SubmitNewSubscriptionRequest(ViewRequestObj obj,IFormFile file)
         {
-            var sub = DataAccess.GetSubscription(sid);
-            if (sub != null)
+            if (file.Length > 0)
             {
-                try
+                using (var ms = new MemoryStream())
                 {
-                    var unpaidInvoices = DataAccess.GetUnpaidInvoices(sub.ConsumerBarCode).Sum(i => i.InvoiceValue);
-                    if (unpaidInvoices <= 0)
-                    {
-                        Request req = new Request();
-                        req.RequestType = "clearance";
-                        req.CurrentDepartment = DataAccess.GetDepartments().Where(d => d.Id == 2).FirstOrDefault();
-                        req.RequestDate = DateTime.Now;
-                        req.Consumer = DataAccess.GetCurrentConsumer();
-                        req.Subscription = sub;
-                        req.RequestStatus = "onprogress";
-                        req = DataAccess.AddRequest(req);
-                        if (req != null)
-                        {
-                            ViewBag.Message = "Request added successfully";
-                        }
-                        else
-                        {
-                            ViewBag.Message = "Error submiting the request";
-                        }
-
-                    }
-                    else
-                    {
-                        ViewBag.Message = $"The subscription have unpaid invoices .. Total unpaid amount = {unpaidInvoices}";
-                        var subs = DataAccess.GetConsumerSubscription();
-                        return View("ClearanceRequest", subs);
-                    }
+                    file.CopyTo(ms);
+                    var fileBytes = ms.ToArray();
+                    string s = Convert.ToBase64String(fileBytes);
+                    //obj.Request.Details.Document = fileBytes;
+                    obj.pic = string.Format("data:image/jpg;base64, {0}", s);
                 }
-                catch (Exception e)
-                {
-                    ViewBag.Message = $"Error: {e.Message}";
-                }
-                return View("index");
             }
-            else
-            {
-                var subs = DataAccess.GetConsumerSubscription();
-                return View("ClearanceRequest", subs);
-            }
+            //if (sub != null)
+            //{
+            //    try
+            //    {
+            //        var unpaidInvoices = DataAccess.GetUnpaidInvoices(sub.ConsumerBarCode).Sum(i => i.InvoiceValue);
+            //        if (unpaidInvoices <= 0)
+            //        {
+            //            Request req = new Request();
+            //            req.RequestType = "clearance";
+            //            req.CurrentDepartment = DataAccess.GetDepartments().Where(d => d.Id == 2).FirstOrDefault();
+            //            req.RequestDate = DateTime.Now;
+            //            req.Consumer = DataAccess.GetCurrentConsumer();
+            //            req.Subscription = sub;
+            //            req.RequestStatus = "onprogress";
+            //            req = DataAccess.AddRequest(req);
+            //            if (req != null)
+            //            {
+            //                ViewBag.Message = "Request added successfully";
+            //            }
+            //            else
+            //            {
+            //                ViewBag.Message = "Error submiting the request";
+            //            }
 
+            //        }
+            //        else
+            //        {
+            //            ViewBag.Message = $"The subscription have unpaid invoices .. Total unpaid amount = {unpaidInvoices}";
+            //            var subs = DataAccess.GetConsumerSubscription();
+            //            return View("ClearanceRequest", subs);
+            //        }
+            //    }
+            //    catch (Exception e)
+            //    {
+            //        ViewBag.Message = $"Error: {e.Message}";
+            //    }
+            //    return View("index");
+            //}
+            //else
+            //{
+            //    var subs = DataAccess.GetConsumerSubscription();
+            //    return View("ClearanceRequest", subs);
+            //}
+            return View("NewSubscription",obj);
         }
     }
 }

@@ -160,13 +160,13 @@ namespace WaterCompanyServicesAPI.Controllers
             return await _context.Requests.Where(r => r.CurrentDepartment != null && r.CurrentDepartment.Id == did && !status.Contains(r.RequestStatus)).ToListAsync();
         }
 
-        [Route("/request/accept/{rid}/{eid}/{notes}")]
+        [Route("/request/accept/{rid}/{eid}/{notes?}")]
         [HttpGet]
         public async Task<ActionResult<bool>> AcceptRequest(int rid, int eid, string notes = "")
         {
             Request? req = await _context.Requests.Include(r => r.Consumer).Include(r => r.Subscription).Where(r => r.Id == rid).FirstOrDefaultAsync();
             Employee? emp = await _context.Employees.Include(e => e.Department).Where(e => e.Id == eid).FirstOrDefaultAsync();
-            if (req != null && emp != null)
+            if (req != null && emp != null && !req.RequestStatus.Equals("completed") && !req.RequestStatus.Equals("rejected"))
             {
                 if (req.CurrentDepartment == emp.Department)
                 {
@@ -244,7 +244,7 @@ namespace WaterCompanyServicesAPI.Controllers
             return false;
         }
 
-        [Route("/request/reject/{rid}/{eid}/{notes}")]
+        [Route("/request/reject/{rid}/{eid}/{notes?}")]
         [HttpGet]
         public async Task<ActionResult<bool>> RejectRequest(int rid, int eid, string notes = "")
         {

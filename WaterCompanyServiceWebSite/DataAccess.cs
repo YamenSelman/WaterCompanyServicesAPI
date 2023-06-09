@@ -11,8 +11,8 @@ namespace WaterCompanyServiceWebSite
 {
     public static class DataAccess
     {
-        //private static string BaseURL = "http://WCSAPI23.somee.com/";
-        private static string BaseURL = "https://localhost:7186/";
+        private static string BaseURL = "http://WCSAPI23.somee.com/";
+        //private static string BaseURL = "https://localhost:7186/";
         public static User CurrentUser = null;
 
         public static void log(string msg)

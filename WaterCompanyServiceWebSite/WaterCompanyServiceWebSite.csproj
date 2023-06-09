@@ -12,9 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="WaterCompanyModelLibrary">
-      <HintPath>..\WaterCompanyModelLibrary\bin\Debug\net6.0\WaterCompanyModelLibrary.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\WaterCompanyModelLibrary\WaterCompanyModelLibrary.csproj" />
   </ItemGroup>
 
 </Project>

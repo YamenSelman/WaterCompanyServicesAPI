@@ -23,7 +23,8 @@ namespace ModelLibrary
         public string RequestStatus { get; set; }
         public Department? CurrentDepartment { get; set; }
 
-        public virtual ICollection<RequestDetails> Details { get; set; }
+        public RequestDetails? Details { get; set; }
+        public RequestResult? Result { get; set; }
 
     }
 }

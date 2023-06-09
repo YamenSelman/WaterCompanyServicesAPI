@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WaterCompanyServicesAPI.Models;
+using ModelLibrary;
 
 namespace WaterCompanyServicesAPI.Controllers
 {
@@ -189,7 +189,7 @@ namespace WaterCompanyServicesAPI.Controllers
                                     log.Decision = true;
                                     log.Request = req;
                                     log.Notes = notes;
-                                    _context.RequestsLog.Add(log);
+                                    _context.RequestsLogs.Add(log);
                                     _context.SaveChanges();
 
                                     transaction.Commit();
@@ -225,7 +225,7 @@ namespace WaterCompanyServicesAPI.Controllers
                                     log.Decision = true;
                                     log.Request = req;
                                     log.Notes = notes;
-                                    _context.RequestsLog.Add(log);
+                                    _context.RequestsLogs.Add(log);
                                     _context.SaveChanges();
 
                                     transaction.Commit();
@@ -269,7 +269,7 @@ namespace WaterCompanyServicesAPI.Controllers
                             log.Decision = false;
                             log.Request = req;
                             log.Notes = notes;
-                            _context.RequestsLog.Add(log);
+                            _context.RequestsLogs.Add(log);
                             _context.SaveChanges();
 
                             transaction.Commit();

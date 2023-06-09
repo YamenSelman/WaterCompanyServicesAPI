@@ -1,8 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics.CodeAnalysis;
 
-namespace WaterCompanyModelLibrary
+namespace ModelLibrary
 {
     public class Invoice
     {
@@ -11,7 +10,6 @@ namespace WaterCompanyModelLibrary
 
         [Required]
         [Display(Name ="Invoice Year")]
-        [Range(2000,2050)]
         public int InvoiceYear { get; set; }
 
         [Required]
@@ -24,8 +22,8 @@ namespace WaterCompanyModelLibrary
 
         [Required]
         [Display(Name = "Invoice Status")]
-        public int InvoiceStatus { get; set; }
-        
+        public bool InvoiceStatus { get; set; }
+
         public Subscription Subscription { get; set; }
     }
 }

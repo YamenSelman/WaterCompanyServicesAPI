@@ -1,0 +1,46 @@
+﻿@model ModelLibrary.Consumer
+
+@{
+    ViewData["Title"] = "View";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>View</h1>
+
+<h4>Consumer</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="View">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Id" class="control-label"></label>
+                <input asp-for="Id" class="form-control" />
+                <span asp-validation-for="Id" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConsumerName" class="control-label"></label>
+                <input asp-for="ConsumerName" class="form-control" />
+                <span asp-validation-for="ConsumerName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConsumerPhone" class="control-label"></label>
+                <input asp-for="ConsumerPhone" class="form-control" />
+                <span asp-validation-for="ConsumerPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConsumerAddress" class="control-label"></label>
+                <input asp-for="ConsumerAddress" class="form-control" />
+                <span asp-validation-for="ConsumerAddress" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

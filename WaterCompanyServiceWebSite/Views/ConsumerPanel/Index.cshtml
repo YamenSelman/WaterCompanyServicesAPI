@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Consumer Panel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container py-2 h-100 m-auto">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="card bg-dark text-white" style="border-radius: 1rem;">
+            <div class="card-body p-5 text-center">
+                <h1 class="text-start">Consumer Panel</h1>
+                <div class="row">
+                    <div class="mb-3">
+                        <span class="text-danger fw-bold fs-4">@ViewBag.Message</span>
+                    </div>
+                    <div class="col-6">
+                    </div>
+                    <div class="col-6">
+                        <div class="row p-1">
+                            @Html.ActionLink("Add subscription","addsubscription","ConsumerPanel",null, new { @class = "btn btn-lg btn-outline-light" })
+                        </div>
+                        <div class="row p-1">
+                            @Html.ActionLink("Request Clearance","ClearanceRequest","ConsumerPanel",null, new { @class = "btn btn-lg btn-outline-light" })
+                        </div>
+                        <div class="row p-1">
+                            <a href="#" class="btn btn-lg btn-outline-light">Service 3</a>
+                        </div>
+                        <div class="row p-1">
+                            <a href="#" class="btn btn-lg btn-outline-light">Service 4</a>
+                        </div>
+                        <div class="row p-1">
+                            <a href="#" class="btn btn-lg btn-outline-light">Service 5</a>
+                        </div>
+                        <div class="row p-1">
+                            <a href="#" class="btn btn-lg btn-outline-light">Service 6</a>
+                        </div>
+                        <div class="row p-1">
+                            <a href="#" class="btn btn-lg btn-outline-light">Service 7</a>
+                        </div>
+                        <div class="row p-1">
+                            @Html.ActionLink("Logout","logout","ConsumerPanel",null, new { @class = "btn btn-lg btn-outline-light" })
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

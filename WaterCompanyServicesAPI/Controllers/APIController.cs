@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WaterCompanyServicesAPI.Models;
+using ModelLibrary;
 
 namespace WaterCompanyServicesAPI.Controllers
 {

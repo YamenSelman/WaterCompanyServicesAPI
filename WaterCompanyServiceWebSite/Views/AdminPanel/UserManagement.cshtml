@@ -1,0 +1,78 @@
+﻿@model IEnumerable<ModelLibrary.User>
+
+@{
+    ViewData["Title"] = "UserManagement";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row bg-dark bg-opacity-10 rounded-5 p-3 m-auto">
+    <div class="col-10 text-center">
+        <h1>UserManagement</h1>
+    </div>
+    <div class="col-1 text-center">
+            <a asp-action="AddEmployee">
+                <i class="bi bi-person-fill-add fs-1"></i>
+            </a>
+    </div>
+    <div class="col-1 text-center">
+            <a asp-action="Index">
+                <i class="bi bi-gear-fill fs-1"></i>
+            </a>
+    </div>
+</div>
+
+<p>
+
+</p>
+<table class="table table-hover table-dark">
+    <thead>
+        <tr class="fs-4">
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.UserName)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.UserType)
+            </th>
+            <th class="text-center">
+                @Html.DisplayNameFor(model => model.AccountActive)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="fs-4">
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.UserType)
+                </td>
+                <td class="text-center">
+                    @if (item.AccountActive)
+                    {
+                        <i class="bi bi-person-check fs-2 text-success"></i>
+                    }
+                    else
+                    {
+                        <i class="bi bi-person-fill-x fs-2 text-danger"></i>
+                    }
+                </td>
+                <td class="text-center">
+                    @if (!item.UserName.Equals("admin"))
+                    {
+                        @Html.ActionLink(" ", "EditUser", new { id=item.Id },new {@class="bi bi-toggles fs-3"})
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

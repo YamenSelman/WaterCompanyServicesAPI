@@ -1,0 +1,75 @@
+﻿@model ModelLibrary.Consumer
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="gradient-custom">
+    <div class="container py-2 h-100">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="">
+                <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                    <div class="card-body p-5 text-center">
+                        <form method="post" action="Register">
+                            <div class="row  m-auto w-75">
+                                <h2 class="fw-bold mb-2 text-uppercase">Register</h2>
+                                <p class="text-white-50 mb-5">Please enter your details</p>
+                                <div class="col-6">
+                                    <h4 class="fw-bold mb-2 text-uppercase">Personal Details</h4>
+
+                                    <div class="form-outline form-white mb-4">
+                                        <label asp-for="ConsumerName" class="control-label"></label>
+                                        <input asp-for="ConsumerName" class="form-control" />
+                                        <span asp-validation-for="ConsumerName" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-outline form-white mb-4">
+                                        <label asp-for="ConsumerAddress" class="control-label"></label>
+                                        <input asp-for="ConsumerAddress" class="form-control" />
+                                        <span asp-validation-for="ConsumerAddress" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-outline form-white mb-4">
+                                        <label asp-for="ConsumerPhone" class="control-label"></label>
+                                        <input asp-for="ConsumerPhone" class="form-control" />
+                                        <span asp-validation-for="ConsumerPhone" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <h4 class="fw-bold mb-2 text-uppercase">Account Details</h4>
+
+                                    <div class="form-outline form-white mb-4">
+                                        <label asp-for="User.UserName" class="control-label"></label>
+                                        <input asp-for="User.UserName" class="form-control" />
+                                        <span asp-validation-for="User.UserName" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="form-outline form-white mb-4">
+                                        <label asp-for="User.Password" class="control-label"></label>
+                                        <input type="password" asp-for="User.Password" class="form-control" />
+                                        <span asp-validation-for="User.Password" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-outline form-white mb-4">
+                                        <label class="control-label">Confirm Password</label>
+                                        <input type="password" name="passwordConfirm" class="form-control" />
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <span class="text-danger fw-bold fs-4">@ViewBag.Message</span>
+                                </div>
+
+                                <div class="btn-group-lg">
+                                    <button class="btn btn-outline-light btn-lg px-2 w-25" type="submit">Register</button>
+                                    <a href="index" class="btn btn-outline-danger btn-lg px-2 w-25">Cancel</a>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

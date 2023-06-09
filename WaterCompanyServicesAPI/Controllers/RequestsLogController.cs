@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WaterCompanyServicesAPI.Models;
+using ModelLibrary;
 
 namespace WaterCompanyServicesAPI.Controllers
 {
@@ -23,13 +23,13 @@ namespace WaterCompanyServicesAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RequestsLog>>> GetRequests()
         {
-            return await _context.RequestsLog.ToListAsync();
+            return await _context.RequestsLogs.ToListAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<RequestsLog>> GetRequest(int id)
         {
-            var Request = await _context.RequestsLog.FindAsync(id);
+            var Request = await _context.RequestsLogs.FindAsync(id);
 
             if (Request == null)
             {
@@ -71,7 +71,7 @@ namespace WaterCompanyServicesAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<RequestsLog>> PostRequest([FromBody] RequestsLog RequestsLog)
         {
-            _context.RequestsLog.Add(RequestsLog);
+            _context.RequestsLogs.Add(RequestsLog);
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetRequest", new { id = RequestsLog.Id }, RequestsLog);
@@ -81,13 +81,13 @@ namespace WaterCompanyServicesAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRequest(int id)
         {
-            var RequestsLog = await _context.RequestsLog.FindAsync(id);
+            var RequestsLog = await _context.RequestsLogs.FindAsync(id);
             if (RequestsLog == null)
             {
                 return NotFound();
             }
 
-            _context.RequestsLog.Remove(RequestsLog);
+            _context.RequestsLogs.Remove(RequestsLog);
             await _context.SaveChangesAsync();
 
             return NoContent();
@@ -95,7 +95,7 @@ namespace WaterCompanyServicesAPI.Controllers
 
         private bool RequestExists(int id)
         {
-            return _context.RequestsLog.Any(e => e.Id == id);
+            return _context.RequestsLogs.Any(e => e.Id == id);
         }
 
 

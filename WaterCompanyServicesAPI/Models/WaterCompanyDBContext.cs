@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using WaterCompanyServicesAPI.Models;
+using ModelLibrary;
 
 namespace WaterCompanyServicesAPI
 {
@@ -26,8 +26,8 @@ namespace WaterCompanyServicesAPI
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<Request> Requests { get; set; }
-        public DbSet<RequestDocument> RequestDocuments { get; set; }       
-        public DbSet<RequestsLog> RequestsLog { get; set; }
+        public DbSet<RequestDetails> RequestsDetails { get; set; }       
+        public DbSet<RequestsLog> RequestsLogs { get; set; }
         public DbSet<Subscription> Subscriptions { get; set; }
         public DbSet<User> Users { get; set; }       
 

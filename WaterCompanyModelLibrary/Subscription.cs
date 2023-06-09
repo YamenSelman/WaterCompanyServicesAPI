@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
-namespace WaterCompanyModelLibrary
+namespace ModelLibrary
 {
     public class Subscription
     {
@@ -30,10 +24,19 @@ namespace WaterCompanyModelLibrary
         [Display(Name = "Subscription status")]
         public string SubscriptionStatus { get; set; }
 
-        [AllowNull]
-        public Consumer Consumer { get; set; }
+        [Required]
+        [MaxLength(25), Display(Name = "Subscription Address")]
+        public string SubscriptionAddress { get; set; }
 
         [AllowNull]
-        public ICollection<Request> Requests { get; set;}
+        public Consumer? Consumer { get; set; }
+
+        [AllowNull]
+        public virtual ICollection<Request>? Requests { get; set;}
+
+        public override string ToString()
+        {
+            return $"Subscripion: {this.Id} - {this.ConsumerBarCode} - {this.ConsumerSubscriptionNo} - {this.SubscriptionAddress} - {this.SubscriptionUsingType} - {this.SubscriptionStatus}";
+        }
     }
 }

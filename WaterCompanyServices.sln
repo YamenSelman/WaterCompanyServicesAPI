@@ -4,6 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.3.32811.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaterCompanyServicesAPI", "WaterCompanyServicesAPI\WaterCompanyServicesAPI.csproj", "{31A86FE4-3E92-428B-80AD-1D9E1BB636C1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2D443B7D-03D4-4FFB-BDDA-86CA4AC3FEEB} = {2D443B7D-03D4-4FFB-BDDA-86CA4AC3FEEB}
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaterCompanyModelLibrary", "WaterCompanyModelLibrary\WaterCompanyModelLibrary.csproj", "{2D443B7D-03D4-4FFB-BDDA-86CA4AC3FEEB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WaterCompanyServiceWebSite", "WaterCompanyServiceWebSite\WaterCompanyServiceWebSite.csproj", "{95AB6A84-7320-4377-A982-A01D23B58644}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +22,14 @@ Global
 		{31A86FE4-3E92-428B-80AD-1D9E1BB636C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{31A86FE4-3E92-428B-80AD-1D9E1BB636C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{31A86FE4-3E92-428B-80AD-1D9E1BB636C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D443B7D-03D4-4FFB-BDDA-86CA4AC3FEEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D443B7D-03D4-4FFB-BDDA-86CA4AC3FEEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D443B7D-03D4-4FFB-BDDA-86CA4AC3FEEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D443B7D-03D4-4FFB-BDDA-86CA4AC3FEEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{95AB6A84-7320-4377-A982-A01D23B58644}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95AB6A84-7320-4377-A982-A01D23B58644}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95AB6A84-7320-4377-A982-A01D23B58644}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95AB6A84-7320-4377-A982-A01D23B58644}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace WaterCompanyModelLibrary
+namespace ModelLibrary
 {
     public class User
     {
@@ -27,6 +22,11 @@ namespace WaterCompanyModelLibrary
 
         [DefaultValue(true)]
         public bool AccountActive { get; set; }
+
+        public override string ToString()
+        {
+            return $"User: {this.Id}- {this.UserName} - {this.Password} - {this.UserType} - {this.AccountActive}";
+        }
 
     }
 }

@@ -16,6 +16,8 @@ namespace WaterCompanyServicesAPI
             sb.Append($"Dear {cons.ConsumerName}:");
             sb.Append(Environment.NewLine);
             sb.Append("New subscription added to your subscriptions successfully");
+            sb.Append(Environment.NewLine);            
+            sb.Append("New subscription added to your subscriptions successfully");
             sb.Append(Environment.NewLine);
             sb.Append($"New Subscription Barcode: {sub.ConsumerBarCode}");
             sb.Append(Environment.NewLine);

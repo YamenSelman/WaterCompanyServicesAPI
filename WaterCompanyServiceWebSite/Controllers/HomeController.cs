@@ -37,12 +37,12 @@ namespace WaterCompanyServiceWebSite.Controllers
             User loginUser = DataAccess.Login(user);
             if (loginUser == null)
             {
-                ViewBag.Message = "Username or password incorrect";
+                ViewData["message"] = "Username or password incorrect";
                 return View();
             }
             else if (!loginUser.AccountActive)
             {
-                ViewBag.Message = "This account is not active";
+                ViewData["message"] = "This account is not active";
                 return View();
             }
             else
@@ -91,12 +91,12 @@ namespace WaterCompanyServiceWebSite.Controllers
             {
                 if(DataAccess.UserNameExists(consumer.User.UserName))
                 {
-                    ViewBag.Message = "User name already exists";
+                    ViewData["message"] = "User name already exists";
                     return View(consumer);
                 }
                 else if (consumer.User.Password != passwordConfirm)
                 {
-                    ViewBag.Message = "Password does not match";
+                    ViewData["message"] = "Password does not match";
                     return View(consumer);
                 }
                 else

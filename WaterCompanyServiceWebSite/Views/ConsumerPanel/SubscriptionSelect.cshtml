@@ -45,7 +45,15 @@
                                         @Html.DisplayFor(modelItem => item.SubscriptionUsingType)
                                     </td>
                                     <td class="text-center">
-                                        @Html.ActionLink(" ", "SubmitClearanceRequest", new { sid=item.Id },new {@class="bi bi-hand-index text-success fs-3"})
+                                        @switch (ViewData["requestType"])
+                                        {
+                                            case "clearance":
+                                                @Html.ActionLink("", "SubmitClearanceRequest", new { sid=item.Id },new {@class="bi bi-hand-index text-success fs-3"})
+                                                break;
+                                            case "repair":
+                                                @Html.ActionLink("", "SubmitRepairRequest", new { sid=item.Id },new {@class="bi bi-hand-index text-success fs-3"})
+                                                break;
+                                        }
                                     </td>
                                 </tr>
                             }
@@ -53,7 +61,7 @@
                     </table>
                     @Html.ActionLink("Cancel", "Index", new { },new {@class="btn btn-lg btn-outline-danger m-3 w-25"})
                     <div class="mb-3">
-                        <span class="text-danger fw-bold fs-4">@ViewBag.Message</span>
+                        <span class="text-danger fw-bold fs-4">@ViewData["message"]</span>
                     </div>
                 </div>
             </div>

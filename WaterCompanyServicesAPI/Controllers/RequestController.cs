@@ -34,7 +34,7 @@ namespace WaterCompanyServicesAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Request>> GetRequest(int id)
         {
-            var Request = await _context.Requests.Include(r => r.Consumer).Include(r => r.Subscription).Include(r => r.CurrentDepartment).Include(r=>r.Details).Where(r => r.Id == id).FirstOrDefaultAsync();
+            var Request = await _context.Requests.Include(r => r.Consumer).Include(r => r.Subscription).Include(r => r.CurrentDepartment).Include(r=>r.Details).Include(r=>r.Result).Where(r => r.Id == id).FirstOrDefaultAsync();
 
             if (Request == null)
             {

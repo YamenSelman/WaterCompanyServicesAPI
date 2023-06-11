@@ -65,28 +65,28 @@ namespace WaterCompanyServiceWebSite.Controllers
                 {
                     if (DataAccess.AcceptRequest(obj.Request.Id, obj.Log.Notes))
                     {
-                        ViewData["msg"] = "Request Processed Success";
+                        ViewData["message"] = "Request Processed Success";
                     }
                     else
                     {
-                        ViewData["msg"] = "Failed To Process Request";
+                        ViewData["message"] = "Failed To Process Request";
                     }
                 }
                 else
                 {
                     if(DataAccess.RejectRequest(obj.Request.Id,obj.Log.Notes))
                     {
-                        ViewData["msg"] = "Request Processed Success";
+                        ViewData["message"] = "Request Processed Success";
                     }
                     else
                     {
-                        ViewData["msg"] = "Failed To Process Request";
+                        ViewData["message"] = "Failed To Process Request";
                     }
                 }
             }
             else
             {
-                ViewData["msg"] = "Request Not Found";
+                ViewData["message"] = "Request Not Found";
             }
             return RedirectToAction("index");
         }

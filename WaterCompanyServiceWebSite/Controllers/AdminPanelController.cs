@@ -42,7 +42,7 @@ namespace WaterCompanyServiceWebSite.Controllers
         {
             if (DataAccess.UserNameExists(employee.User.UserName))
             {
-                ViewBag.Message = "User Name Exists, please use another User Name";
+                ViewData["message"] = "User Name Exists, please use another User Name";
                 var deps = DataAccess.GetDepartments();
                 ViewBag.data = deps;
                 return View(employee);

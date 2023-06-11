@@ -25,12 +25,13 @@ namespace ModelLibrary
         public string ConsumerGender { get; set; }
 
         [Required]
-        [ Display(Name = "Consumer Age")]
+        [Display(Name = "Consumer Age")]
+        [Range(18,100)]
         public int ConsumerAge { get; set; }
 
         public User User { get; set; }
-        public virtual ICollection<Subscription> Subscriptions { get; set; }
-        public virtual ICollection<Request> Requests { get; set; }
+        public virtual ICollection<Subscription>? Subscriptions { get; set; }
+        public virtual ICollection<Request>? Requests { get; set; }
 
         public override string ToString()
         {

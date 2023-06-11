@@ -147,5 +147,36 @@ namespace WaterCompanyServicesAPI.Controllers
         }
 
 
+        [HttpGet]
+        [Route("/subscription/getNextNumber")]
+        public async Task<string> GetNextSubscriptionNo()
+        {
+            List<string> subscriptionNos = await _context.Subscriptions.Select(s => s.ConsumerSubscriptionNo).ToListAsync();
+            if(subscriptionNos != null && subscriptionNos.Count > 0)
+            {
+                int max = Int32.Parse(subscriptionNos.Max());
+                return (max + 1).ToString("D6");
+            }
+            else
+            {
+                return "000001";
+            }
+        }        
+        [HttpGet]
+        [Route("/subscription/getNextBarcode")]
+        public async Task<string> GetNextBarcode()
+        {
+            List<string> barcodes = await _context.Subscriptions.Select(s => s.ConsumerBarCode).ToListAsync();
+            if(barcodes != null && barcodes.Count > 0)
+            {
+                int max = Int32.Parse(barcodes.Max());
+                return (max + 1).ToString("D6");
+            }
+            else
+            {
+                return "000001";
+            }
+        }
+
     }
 }

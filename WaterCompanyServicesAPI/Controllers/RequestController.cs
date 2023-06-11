@@ -34,7 +34,7 @@ namespace WaterCompanyServicesAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Request>> GetRequest(int id)
         {
-            var Request = await _context.Requests.Include(r => r.Consumer).Include(r => r.Subscription).Include(r => r.CurrentDepartment).Where(r => r.Id == id).FirstOrDefaultAsync();
+            var Request = await _context.Requests.Include(r => r.Consumer).Include(r => r.Subscription).Include(r => r.CurrentDepartment).Include(r=>r.Details).Where(r => r.Id == id).FirstOrDefaultAsync();
 
             if (Request == null)
             {
@@ -78,8 +78,14 @@ namespace WaterCompanyServicesAPI.Controllers
         {
             try
             {
-                Request.Consumer = _context.Consumers.Find(Request.Consumer.Id);
-                Request.Subscription = _context.Subscriptions.Find(Request.Subscription.Id);
+                if(Request.Consumer != null)
+                {
+                    Request.Consumer = _context.Consumers.Find(Request.Consumer.Id);
+                }
+                if (Request.Subscription != null) 
+                {
+                    Request.Subscription = _context.Subscriptions.Find(Request.Subscription.Id);
+                }
                 Request.CurrentDepartment = _context.Departments.Find(Request.CurrentDepartment.Id);
                 _context.Requests.Add(Request);
                 await _context.SaveChangesAsync();
@@ -164,7 +170,7 @@ namespace WaterCompanyServicesAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<bool>> AcceptRequest(int rid, int eid, string notes = "")
         {
-            Request? req = await _context.Requests.Include(r => r.Consumer).Include(r => r.Subscription).Where(r => r.Id == rid).FirstOrDefaultAsync();
+            Request? req = await _context.Requests.Include(r => r.Consumer).Include(r => r.Subscription).Include(r=>r.Details).Include(r=>r.CurrentDepartment).Where(r => r.Id == rid).FirstOrDefaultAsync();
             Employee? emp = await _context.Employees.Include(e => e.Department).Where(e => e.Id == eid).FirstOrDefaultAsync();
             if (req != null && emp != null && !req.RequestStatus.Equals("completed") && !req.RequestStatus.Equals("rejected"))
             {
@@ -238,11 +244,66 @@ namespace WaterCompanyServicesAPI.Controllers
                                     return false;
                                 }
                             }
+                        case "new":
+                            using (var transaction = _context.Database.BeginTransaction())
+                            {
+                                try
+                                {
+                                    if (emp.Department.Id == 1)
+                                    {
+                                        req.CurrentDepartment = _context.Departments.Where(d => d.Id == 2).FirstOrDefault();
+                                    }
+                                    else if(emp.Department.Id == 2)
+                                    {
+                                        req.CurrentDepartment = _context.Departments.Where(d => d.Id == 3).FirstOrDefault();
+                                    }
+                                    else
+                                    {
+                                        Subscription sub = new Subscription();
+                                        sub.SubscriptionStatus = "active";
+                                        sub.ConsumerSubscriptionNo = await GetNextSubscriptionNo();
+                                        sub.ConsumerBarCode = await GetNextBarcode();
+                                        sub.SubscriptionAddress = req.Details.NewSubAddress;
+                                        sub.SubscriptionUsingType = req.Details.NewSubType;
+                                        sub.Consumer = req.Consumer;
+
+                                        _context.Subscriptions.Add(sub);
+
+                                        req.Result = new RequestResult();
+                                        req.Result.Document = Helper.GenerateNewSubscriptionDocument(sub, req.Consumer);
+
+                                        req.CurrentDepartment = null;
+                                        req.RequestStatus = "completed";
+                                    }
+                                    _context.SaveChanges();
+
+                                    RequestsLog log = new RequestsLog();
+                                    log.DateTime = DateTime.Now;
+                                    log.Department = emp.Department;
+                                    log.Employee = emp;
+                                    log.Decision = true;
+                                    log.Request = req;
+                                    log.Notes = notes;
+                                    _context.RequestsLogs.Add(log);
+                                    _context.SaveChanges();
+
+                                    transaction.Commit();
+                                    return true;
+                                }
+                                catch (Exception ex)
+                                {
+                                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                                    transaction.Rollback();
+                                    return false;
+                                }
+                            }
                     }
                 }
             }
             return false;
         }
+
+        
 
         [Route("/request/reject/{rid}/{eid}/{notes?}")]
         [HttpGet]
@@ -286,6 +347,34 @@ namespace WaterCompanyServicesAPI.Controllers
 
             }
             return false;
+        }
+
+        public async Task<string> GetNextSubscriptionNo()
+        {
+            List<string> subscriptionNos = await _context.Subscriptions.Select(s => s.ConsumerSubscriptionNo).ToListAsync();
+            if (subscriptionNos != null && subscriptionNos.Count > 0)
+            {
+                int max = Int32.Parse(subscriptionNos.Max());
+                return (max + 1).ToString("D6");
+            }
+            else
+            {
+                return "000001";
+            }
+        }
+
+        public async Task<string> GetNextBarcode()
+        {
+            List<string> barcodes = await _context.Subscriptions.Select(s => s.ConsumerBarCode).ToListAsync();
+            if (barcodes != null && barcodes.Count > 0)
+            {
+                int max = Int32.Parse(barcodes.Max());
+                return (max + 1).ToString("D6");
+            }
+            else
+            {
+                return "000001";
+            }
         }
     }
 }

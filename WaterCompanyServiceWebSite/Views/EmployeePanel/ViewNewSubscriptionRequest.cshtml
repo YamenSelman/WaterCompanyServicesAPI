@@ -1,0 +1,149 @@
+﻿@model ViewRequestObj
+
+@{
+    ViewData["Title"] = "Request Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+    .zoomin img {
+        width: 50%;
+        -webkit-transition: all 1s ease;
+        -moz-transition: all 1s ease;
+        -ms-transition: all 1s ease;
+        transition: all 1s ease;
+        cursor: zoom-in;
+    }
+
+        .zoomin img:hover {
+            width: 100%;
+        }
+</style>
+
+<div class="container py-2 h-100 m-auto">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="card bg-dark text-white" style="border-radius: 1rem;">
+            <form method="post" asp-action="ProcessRequest">
+                <div class="card-body p-5 text-center">
+                    <h1 class="text-start">Request Details</h1>
+                    <div class="row">
+                        <div class="row text-center bg-light bg-opacity-10 rounded-3 m-auto p-3">
+                            <div>
+                                <h3 class="bg-white bg-opacity-25 rounded-3 p-2">Request</h3>
+                            </div>
+                            <div class="text-start row fs-3">
+                                <div class="col-6">
+                                    @Html.LabelFor(modelItem => Model.Request.Id)
+                                </div>
+                                <div class="col-6">
+                                    @Html.EditorFor(modelItem => Model.Request.Id,  new { htmlAttributes = new { @class = "form-control text-center", @readonly = "readonly" } })
+                                </div>
+                            </div>
+                            <div class="text-start row fs-3">
+                                <div class="col-6">
+                                    @Html.LabelFor(modelItem => Model.Request.RequestDate)
+                                </div>
+                                <div class="col-6">
+                                    @Html.EditorFor(modelItem => Model.Request.RequestDate,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                                </div>
+                            </div>
+                            <div class="text-start row fs-3">
+                                <div class="col-6">
+                                    @Html.LabelFor(modelItem => Model.Request.RequestType)
+                                </div>
+                                <div class="col-6">
+                                    @Html.EditorFor(modelItem => Model.Request.RequestType,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-center bg-light bg-opacity-10 rounded-3 m-auto p-3">
+                            <div>
+                                <h3 class="bg-white bg-opacity-25 rounded-3 p-2">Consumer</h3>
+                            </div>
+                            <div class="text-start row fs-3">
+                                <div class="col-6">
+                                    @Html.LabelFor(modelItem => Model.Request.Consumer.ConsumerName)
+                                </div>
+                                <div class="col-6">
+                                    @Html.EditorFor(modelItem => Model.Request.Consumer.ConsumerName,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                                </div>
+                            </div>
+                            <div class="text-start row fs-3">
+                                <div class="col-6">
+                                    @Html.LabelFor(modelItem => Model.Request.Consumer.ConsumerAddress)
+                                </div>
+                                <div class="col-6">
+                                    @Html.EditorFor(modelItem => Model.Request.Consumer.ConsumerAddress,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                                </div>
+                            </div>
+                            <div class="text-start row fs-3">
+                                <div class="col-6">
+                                    @Html.LabelFor(modelItem => Model.Request.Consumer.ConsumerPhone)
+                                </div>
+                                <div class="col-6">
+                                    @Html.EditorFor(modelItem => Model.Request.Consumer.ConsumerPhone,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row text-center bg-light bg-opacity-10 rounded-3 m-auto p-3">
+                            <div>
+                                <h3 class="bg-white bg-opacity-25 rounded-3 p-2">Subscription</h3>
+                            </div>
+                            <div class="text-start row fs-3">
+                                <div class="col-6">
+                                    @Html.LabelFor(modelItem => Model.Request.Subscription.SubscriptionAddress)
+                                </div>
+                                <div class="col-6">
+                                    @Html.EditorFor(modelItem => Model.Request.Details.NewSubAddress,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                                </div>
+                            </div>
+                            <div class="text-start row fs-3">
+                                <div class="col-6">
+                                    @Html.LabelFor(modelItem => Model.Request.Subscription.SubscriptionUsingType)
+                                </div>
+                                <div class="col-6">
+                                    @Html.EditorFor(modelItem => Model.Request.Details.NewSubType,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                                </div>
+                            </div>
+                            <div class="text-start row fs-3">
+                                <div>
+                                    <h3 class="bg-white bg-opacity-25 rounded-3 m-2 p-2 text-center">Document</h3>
+                                </div>
+                                <div class="w-100 zoomin text-center">
+                                    <img src="data:image;base64,@System.Convert.ToBase64String(Model.Request.Details.Document)" class="m-auto" />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row text-center bg-light bg-opacity-10 rounded-3 m-auto p-3">
+                            <div>
+                                <h3 class="bg-white bg-opacity-25 rounded-3 p-2">Action</h3>
+                            </div>
+                            <div class="text-start row fs-3">
+                                <div class="col-6">
+                                    @Html.LabelFor(modelItem => Model.Log.Notes)
+                                </div>
+                                <div class="col-6 fs-5">
+                                    @Html.TextAreaFor(modelItem => Model.Log.Notes,   new { @class = "form-control fs-5 w-100", rows = "3" } )
+                                </div>
+                            </div>
+                            <div class="text-start row fs-3">
+                                <div class="col-6">
+                                    @Html.LabelFor(modelItem => Model.Log.Decision)
+                                </div>
+                                <div class="col-6">
+                                    @Html.DropDownListFor(modelItem => Model.Log.Decision, new List<SelectListItem>{new SelectListItem{ Value = "true",Text="Accept"},new SelectListItem{Value = "false",Text="Reject"}},new { @class = "form-control text-center mt-2"})
+                                </div>
+                            </div>
+                            <div class="text-start row fs-3 mt-3">
+                                @Html.ActionLink("Cancel", "Index",new {}, new { @class="btn btn-lg btn-outline-danger w-25 m-auto"})
+
+                                <input type="submit" class="btn btn-lg btn-outline-success w-25 m-auto" value="Process">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

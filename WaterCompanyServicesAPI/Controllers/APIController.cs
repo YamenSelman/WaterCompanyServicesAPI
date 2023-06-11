@@ -102,7 +102,7 @@ namespace WaterCompanyServicesAPI.Controllers
                                 barcode++;
                                 do
                                 {
-                                    sub.ConsumerSubscriptionNo = rnd.Next(1, 999999).ToString("D6");
+                                    sub.ConsumerSubscriptionNo = rnd.Next(1, 777777).ToString("D6");
                                 }
                                 while (subnos.Contains(sub.ConsumerSubscriptionNo));
                                 subnos.Add(sub.ConsumerSubscriptionNo);

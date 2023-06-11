@@ -3,6 +3,8 @@ using Newtonsoft.Json;
 using System.Diagnostics;
 using ModelLibrary;
 using WaterCompanyServiceWebSite.Models;
+using System.Buffers.Text;
+using System.Reflection;
 
 namespace WaterCompanyServiceWebSite.Controllers
 {
@@ -71,7 +73,11 @@ namespace WaterCompanyServiceWebSite.Controllers
             {
                 return RedirectUser(DataAccess.CurrentUser);
             }
-            return View();
+            Consumer consumer = new Consumer();
+            consumer.Subscriptions = new List<Subscription>(); ;
+            consumer.User = new User();
+            consumer.User.UserType = "consumer";
+            return View(consumer);
         }
 
         [HttpPost]

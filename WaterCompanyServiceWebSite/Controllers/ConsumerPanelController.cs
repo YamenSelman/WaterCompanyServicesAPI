@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using ModelLibrary;
 using WaterCompanyServiceWebSite.Models;
 
@@ -135,64 +137,58 @@ namespace WaterCompanyServiceWebSite.Controllers
             return View();
         }
 
-        [HttpPost]
-        public IActionResult SubmitNewSubscriptionRequest(ViewRequestObj obj,IFormFile file)
-        {
-            if (file.Length > 0)
-            {
-                using (var ms = new MemoryStream())
-                {
-                    file.CopyTo(ms);
-                    var fileBytes = ms.ToArray();
-                    string s = Convert.ToBase64String(fileBytes);
-                    //obj.Request.Details.Document = fileBytes;
-                    obj.pic = string.Format("data:image/jpg;base64, {0}", s);
-                }
-            }
-            //if (sub != null)
-            //{
-            //    try
-            //    {
-            //        var unpaidInvoices = DataAccess.GetUnpaidInvoices(sub.ConsumerBarCode).Sum(i => i.InvoiceValue);
-            //        if (unpaidInvoices <= 0)
-            //        {
-            //            Request req = new Request();
-            //            req.RequestType = "clearance";
-            //            req.CurrentDepartment = DataAccess.GetDepartments().Where(d => d.Id == 2).FirstOrDefault();
-            //            req.RequestDate = DateTime.Now;
-            //            req.Consumer = DataAccess.GetCurrentConsumer();
-            //            req.Subscription = sub;
-            //            req.RequestStatus = "onprogress";
-            //            req = DataAccess.AddRequest(req);
-            //            if (req != null)
-            //            {
-            //                ViewBag.Message = "Request added successfully";
-            //            }
-            //            else
-            //            {
-            //                ViewBag.Message = "Error submiting the request";
-            //            }
 
-            //        }
-            //        else
-            //        {
-            //            ViewBag.Message = $"The subscription have unpaid invoices .. Total unpaid amount = {unpaidInvoices}";
-            //            var subs = DataAccess.GetConsumerSubscription();
-            //            return View("ClearanceRequest", subs);
-            //        }
-            //    }
-            //    catch (Exception e)
-            //    {
-            //        ViewBag.Message = $"Error: {e.Message}";
-            //    }
-            //    return View("index");
-            //}
-            //else
-            //{
-            //    var subs = DataAccess.GetConsumerSubscription();
-            //    return View("ClearanceRequest", subs);
-            //}
-            return View("NewSubscription",obj);
+        [HttpPost]
+        public IActionResult SubmitNewSubscriptionRequest(NewSubscriptionVM obj)
+        {
+            byte[] DocumentBA = null;
+            if (ModelState.IsValid)
+            {
+                if (obj.Document.Length > 0)
+                {
+                    using (var stream = new MemoryStream())
+                    {
+                        obj.Document.CopyTo(stream);
+                        DocumentBA = stream.ToArray();
+
+                        try
+                        {
+                            Request req = new Request();
+                            req.RequestType = "new";
+                            req.CurrentDepartment = DataAccess.GetDepartments().Where(d => d.Id == 1).FirstOrDefault();
+                            req.RequestDate = DateTime.Now;
+                            req.Consumer = DataAccess.GetCurrentConsumer();
+                            req.RequestStatus = "onprogress";
+                            req.Details = new RequestDetails();
+                            req.Details.NewSubAddress = obj.Address;
+                            req.Details.NewSubType = obj.UsingType;
+                            req.Details.Document = DocumentBA;
+                            req = DataAccess.AddRequest(req);
+                            if (req != null)
+                            {
+                                ViewData["msg"] = "Request added successfully";
+                            }
+                            else
+                            {
+                                ViewData["msg"] = "Error submiting the request";
+                            }
+                            return View("Index");
+                        }
+                        catch (Exception e)
+                        {
+                            ViewData["msg"] = $"Error: {e.Message}";
+                            return View("NewSubscription", obj);
+                        }
+                    }
+                }
+                ViewData["msg"] = "Document not valid";
+                return View("NewSubscription", obj);
+            }
+            else
+            {
+                ViewData["msg"] = "Request form not valid";
+                return View("NewSubscription", obj);
+            }
         }
     }
 }

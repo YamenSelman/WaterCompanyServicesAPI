@@ -1,4 +1,4 @@
-﻿@model ViewRequestObj
+﻿@model NewSubscriptionVM
 @{
     ViewData["Title"] = "NewSubscription";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -11,47 +11,51 @@
                 <div class="card-body p-5 text-center">
                     <form asp-action="SubmitNewSubscriptionRequest" enctype="multipart/form-data">
                         <h3 class="bg-white bg-opacity-25 rounded-3 p-3">New Subscription Request</h3>
+                        @if (ViewData["error"] != null)
+                        {
+                            <h2 class="bg-white bg-opacity-10 rounded-3 p-3 text-danger">@ViewData["error"]</h2>
+                        }
 
                         <div class="row text-center bg-light bg-opacity-10 rounded-3 m-auto p-3">
 
                             <div class="text-start row fs-3">
                                 <div class="col-6">
-                                    @Html.LabelFor(modelItem => Model.Request.Subscription.SubscriptionAddress)
+                                    Address
                                 </div>
                                 <div class="col-6">
-                                    @Html.EditorFor(modelItem => Model.Request.Subscription.SubscriptionAddress,  new { htmlAttributes = new { @class = "form-control text-center",@required="required" } })
+                                    @Html.EditorFor(m => m.Address,  new { htmlAttributes = new { @class = "form-control text-center", @Required ="required"} })
+                                </div>
+                                <div class="fs-4 text-danger bg-white bg-opacity-10 rounded-3 m-2"
+                                     @Html.ValidationMessageFor(m => m.Address)
                                 </div>
                             </div>
                             <div class="text-start row fs-3">
                                 <div class="col-6">
-                                    @Html.LabelFor(modelItem => Model.Request.Subscription.SubscriptionUsingType)
+                                    Using Type
                                 </div>
                                 <div class="col-6">
-                                    @Html.DropDownListFor(modelItem => Model.Request.Subscription.SubscriptionUsingType, new List<SelectListItem>{new SelectListItem{ Value = "residential",Text="Residential"},new SelectListItem{Value = "commercial",Text="Commercial"},new SelectListItem{Value = "industrial",Text="Industrial"}},new { @class = "form-control text-center mt-2"})
+                                    @Html.DropDownListFor(m => m.UsingType, new List<SelectListItem>{new SelectListItem{ Value = "residential",Text="Residential"},new SelectListItem{Value = "commercial",Text="Commercial"},new SelectListItem{Value = "industrial",Text="Industrial"}},new { @class = "form-control text-center mt-2"})
+                                </div>
+                                <div class="fs-4 text-danger bg-white bg-opacity-10 rounded-3 m-2"
+                                     @Html.ValidationMessageFor(m => m.UsingType)
                                 </div>
                             </div>
                             <div class="text-start row fs-3">
                                 <div class="col-6">
-                                    @Html.LabelFor(modelItem => Model.Request.Details.Document)
+                                    Owning Certificate
                                 </div>
                                 <div class="col-6">
-                                    <input type="file" name="file" class="form-control" />
+                                    <input type="file" asp-for="@Model.Document" accept=".jpg,.jpeg" class="form-control my-2"/>
                                 </div>
-                            </div>
-                            <div class="row">
-                                @if (Model != null && Model.pic != null)
-                                {
-                                    <img id="UserImage" src="@Model.pic" alt="your image" />
-                                }
+                                <div class="fs-4 text-danger bg-white bg-opacity-10 rounded-3 m-2"
+                                     @Html.ValidationMessageFor(m => m.Document)
+                                </div>
                             </div>
                         </div>
 
                         <input type="submit" class="btn btn-lg btn-outline-success w-25 m-auto" value="Submit Request">
 
                         @Html.ActionLink("Cancel", "Index", new { },new {@class="btn btn-lg btn-outline-danger m-3 w-25"})
-                        <div class="mb-3">
-                            <span class="text-danger fw-bold fs-4">@ViewBag.Message</span>
-                        </div>
                     </form>
                 </div>
             </div>

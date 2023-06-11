@@ -1,5 +1,6 @@
 ﻿using ModelLibrary;
 using System.Drawing;
+using System.IO;
 
 namespace WaterCompanyServiceWebSite.Models
 {
@@ -7,6 +8,6 @@ namespace WaterCompanyServiceWebSite.Models
     {
         public Request Request { get; set; }
         public RequestsLog Log { get; set; }
-        public string pic { get; set; }
+        public IFormFile UploadedFile { get; set; }
     }
 }

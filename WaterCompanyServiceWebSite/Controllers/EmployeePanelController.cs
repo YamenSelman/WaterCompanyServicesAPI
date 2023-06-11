@@ -37,6 +37,8 @@ namespace WaterCompanyServiceWebSite.Controllers
                             ViewData["unpaid"] = "No Invoices";
                         }
                         return View("ViewClearanceRequest", obj);
+                    case "new":
+                        return View("ViewNewSubscriptionRequest", obj);
                     default:
                         return RedirectToAction("Index");
                 }

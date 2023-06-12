@@ -20,16 +20,16 @@ namespace WaterCompanyServiceWebSite.Controllers
 
             if (obj.Request != null)
             {
-                switch(obj.Request.RequestType)
+                switch (obj.Request.RequestType)
                 {
                     case "attach":
-                        return View("ViewAttachRequest",obj);
+                        return View("ViewAttachRequest", obj);
                     case "clearance":
                         var invoices = DataAccess.GetInvoices(obj.Request.Subscription.ConsumerBarCode);
-                        if(invoices != null)
+                        if (invoices != null)
                         {
-                            ViewData["total"] = invoices.Sum(i=>i.InvoiceValue);
-                            ViewData["unpaid"] = invoices.Where(i=>i.InvoiceStatus == false).Sum(i=>i.InvoiceValue);
+                            ViewData["total"] = invoices.Sum(i => i.InvoiceValue);
+                            ViewData["unpaid"] = invoices.Where(i => i.InvoiceStatus == false).Sum(i => i.InvoiceValue);
                         }
                         else
                         {
@@ -39,6 +39,9 @@ namespace WaterCompanyServiceWebSite.Controllers
                         return View("ViewClearanceRequest", obj);
                     case "new":
                         return View("ViewNewSubscriptionRequest", obj);
+                    case "repair":
+                        ViewData["repairemp"] = DataAccess.GetCurrentEmployee().Department.Id == 5;
+                        return View("ViewRepairRequest", obj);
                     default:
                         return RedirectToAction("Index");
                 }
@@ -46,7 +49,7 @@ namespace WaterCompanyServiceWebSite.Controllers
             else
             {
                 List<Request> pendingRequests = DataAccess.GetPendingRequests();
-                return View("Index",pendingRequests);
+                return View("Index", pendingRequests);
             }
         }
 
@@ -59,9 +62,9 @@ namespace WaterCompanyServiceWebSite.Controllers
         [HttpPost]
         public IActionResult ProcessRequest(ViewRequestObj obj)
         {
-            if(obj.Request != null)
+            if (obj.Request != null)
             {
-                if(obj.Log.Decision)
+                if (obj.Log.Decision)
                 {
                     if (DataAccess.AcceptRequest(obj.Request.Id, obj.Log.Notes))
                     {
@@ -74,7 +77,7 @@ namespace WaterCompanyServiceWebSite.Controllers
                 }
                 else
                 {
-                    if(DataAccess.RejectRequest(obj.Request.Id,obj.Log.Notes))
+                    if (DataAccess.RejectRequest(obj.Request.Id, obj.Log.Notes))
                     {
                         ViewData["message"] = "Request Processed Success";
                     }

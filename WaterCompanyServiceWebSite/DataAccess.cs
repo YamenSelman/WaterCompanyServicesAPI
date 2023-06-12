@@ -11,10 +11,11 @@ namespace WaterCompanyServiceWebSite
 {
     public static class DataAccess
     {
-        private static string BaseURL = "http://WCSAPI23.somee.com/";
-        //private static string BaseURL = "https://localhost:7186/";
+        
+        private static string live = "http://WCSAPI23.somee.com/";
+        private static string Blocal = "https://localhost:7186/";
         public static User CurrentUser = null;
-
+        private static string BaseURL = live;
         public static void log(string msg)
         {
             System.Diagnostics.Debug.WriteLine(msg);
@@ -604,6 +605,28 @@ namespace WaterCompanyServiceWebSite
                 System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
             }
             return result;
+        }
+
+        public static List<RequestResult> GetRequestsResults()
+        {
+            List<RequestResult> result = new List<RequestResult>();
+            using (var httpClient = new HttpClient())
+            {
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri($"{BaseURL}requestresult"),
+                };
+
+                using (var response = httpClient.SendAsync(request))
+                {
+                    if (response.Result.IsSuccessStatusCode)
+                    {
+                        result = response.Result.Content.ReadFromJsonAsync<List<RequestResult>>().Result;
+                    }
+                }
+                return result;
+            }
         }
     }
 }

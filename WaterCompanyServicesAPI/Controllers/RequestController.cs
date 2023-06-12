@@ -297,6 +297,49 @@ namespace WaterCompanyServicesAPI.Controllers
                                     return false;
                                 }
                             }
+                        case "repair":
+                            using (var transaction = _context.Database.BeginTransaction())
+                            {
+                                try
+                                {
+                                    if (emp.Department.Id == 2)
+                                    {
+                                        req.CurrentDepartment = _context.Departments.Where(d => d.Id == 3).FirstOrDefault();
+                                    }
+                                    else if (emp.Department.Id == 3)
+                                    {
+                                        req.CurrentDepartment = _context.Departments.Where(d => d.Id == 5).FirstOrDefault();
+                                    }
+                                    else
+                                    {
+                                        req.Result = new RequestResult();
+                                        req.Result.Document = Helper.GenerateRepairResult(notes, req.Consumer);
+
+                                        req.CurrentDepartment = null;
+                                        req.RequestStatus = "completed";
+                                    }
+                                    _context.SaveChanges();
+
+                                    RequestsLog log = new RequestsLog();
+                                    log.DateTime = DateTime.Now;
+                                    log.Department = emp.Department;
+                                    log.Employee = emp;
+                                    log.Decision = true;
+                                    log.Request = req;
+                                    log.Notes = notes;
+                                    _context.RequestsLogs.Add(log);
+                                    _context.SaveChanges();
+
+                                    transaction.Commit();
+                                    return true;
+                                }
+                                catch (Exception ex)
+                                {
+                                    System.Diagnostics.Debug.WriteLine(ex.Message);
+                                    transaction.Rollback();
+                                    return false;
+                                }
+                            }
                     }
                 }
             }

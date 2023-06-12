@@ -1,0 +1,102 @@
+﻿@model InvoicesVM
+@{
+    ViewData["Title"] = "Subscription Invoices";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container py-2 h-100 m-auto">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="card bg-dark text-white" style="border-radius: 1rem;">
+            <div class="card-body p-5 text-center">
+                <h1 class="text-start">Subscription Invoices</h1>
+                <div class="row">
+                    <div class="row text-center bg-light bg-opacity-10 rounded-3 m-auto p-3">
+                        <div>
+                            <h3 class="bg-white bg-opacity-25 rounded-3 p-2">Subscription</h3>
+                        </div>
+                        <div class="text-start row fs-3">
+                            <div class="col-6">
+                                @Html.LabelFor(modelItem => Model.Subscription.ConsumerBarCode)
+                            </div>
+                            <div class="col-6">
+                                @Html.EditorFor(modelItem => Model.Subscription.ConsumerBarCode,  new { htmlAttributes = new { @class = "form-control text-center", @readonly = "readonly" } })
+                            </div>
+                        </div>
+                        <div class="text-start row fs-3">
+                            <div class="col-6">
+                                @Html.LabelFor(modelItem => Model.Subscription.ConsumerSubscriptionNo)
+                            </div>
+                            <div class="col-6">
+                                @Html.EditorFor(modelItem => Model.Subscription.ConsumerSubscriptionNo,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                            </div>
+                        </div>
+                        <div class="text-start row fs-3">
+                            <div class="col-6">
+                                @Html.LabelFor(modelItem => Model.Subscription.SubscriptionUsingType)
+                            </div>
+                            <div class="col-6">
+                                @Html.EditorFor(modelItem => Model.Subscription.SubscriptionUsingType,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row text-center bg-light bg-opacity-10 rounded-3 m-auto p-3">
+                        <div>
+                            <h3 class="bg-white bg-opacity-25 rounded-3 p-2">Invoices</h3>
+                        </div>
+                        <table class="table table-hover table-dark">
+                            <thead>
+                                <tr class="fs-4">
+                                    <th class="text-center">
+                                        Invoice Year
+                                    </th>   
+                                    <th class="text-center">
+                                        Invoice Cycle
+                                    </th>
+                                    <th class="text-center">
+                                        Invoice Value
+                                    </th>
+                                    <th class="text-center">
+                                        Invoice Status
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.Invoices)
+                                {
+                                    <tr class="fs-4">
+                                        <td class="text-center">
+                                            @Html.DisplayFor(modelItem => item.InvoiceYear)
+                                        </td>    
+                                        <td class="text-center">
+                                            @Html.DisplayFor(modelItem => item.InvoiceCycle)
+                                        </td>
+                                        <td class="text-center">
+                                            @Html.DisplayFor(modelItem => item.InvoiceValue)
+                                        </td>
+                                        <td class="text-center">
+                                            @if (item.InvoiceStatus)
+                                            {
+                                                <i class="bi bi-check-square text-success"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="bi bi-x-square text-danger"></i>
+                                            }
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="row text-center bg-light bg-opacity-10 rounded-3 m-auto p-3">                     
+                        <div class="text-start row fs-3 mt-3">
+                            @Html.ActionLink("Back", "InvoiceRequest",new {}, new { @class="btn btn-lg btn-outline-info w-25 m-auto"})
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -252,5 +252,20 @@ namespace WaterCompanyServiceWebSite.Controllers
 
         }
 
+        public IActionResult InvoiceRequest()
+        {
+            var subs = DataAccess.GetConsumerSubscription();
+            ViewData["requestType"] = "invoice";
+            return View("SubscriptionSelect", subs);
+        }        
+        
+        public IActionResult ViewSubscriptionInvoices(int sid)
+        {
+            InvoicesVM model = new InvoicesVM();
+            model.Subscription = DataAccess.GetSubscription(sid);
+            model.Invoices = DataAccess.GetInvoices(model.Subscription.ConsumerBarCode);
+            return View(model);
+        }
+
     }
 }

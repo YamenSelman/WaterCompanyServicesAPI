@@ -53,6 +53,9 @@
                                             case "repair":
                                                 @Html.ActionLink("", "SubmitRepairRequest", new { sid=item.Id },new {@class="bi bi-hand-index text-success fs-3"})
                                                 break;
+                                            case "invoice":
+                                                @Html.ActionLink("", "ViewSubscriptionInvoices", new { sid=item.Id },new {@class="bi bi-hand-index text-success fs-3"})
+                                                break;
                                         }
                                     </td>
                                 </tr>

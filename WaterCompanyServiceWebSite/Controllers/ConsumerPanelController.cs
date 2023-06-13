@@ -35,7 +35,6 @@ namespace WaterCompanyServiceWebSite.Controllers
             else if (sub.Consumer != null)
             {
                 ViewData["message"] = "This subscription is attached to another consumer";
-                return View(null);
             }
             return View(sub);
         }
@@ -83,6 +82,7 @@ namespace WaterCompanyServiceWebSite.Controllers
             ViewData["requestType"] = "clearance";
             return View("SubscriptionSelect", subs);
         }
+
 
         public IActionResult SubmitClearanceRequest(int sid)
         {
@@ -257,8 +257,8 @@ namespace WaterCompanyServiceWebSite.Controllers
             var subs = DataAccess.GetConsumerSubscription();
             ViewData["requestType"] = "invoice";
             return View("SubscriptionSelect", subs);
-        }        
-        
+        }
+
         public IActionResult ViewSubscriptionInvoices(int sid)
         {
             InvoicesVM model = new InvoicesVM();
@@ -267,5 +267,30 @@ namespace WaterCompanyServiceWebSite.Controllers
             return View(model);
         }
 
+        public IActionResult TransferOwnership()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult TransferOwnership(TransferRequestVM vm)
+        {
+            Subscription sub = DataAccess.GetSubscriptionByBarcode(vm.Subscription.ConsumerBarCode);
+            if (sub == null)
+            {
+                ViewData["message"] = "No subscription with this barcode";
+                vm = null;
+            }
+            else
+            {
+                vm.Subscription = sub;
+                if(vm.Subscription.Consumer == null)
+                {
+                    ViewData["message"] = "This subscription is not attached .. add attach request";
+                    return View(vm);
+                }
+            }
+            return View(vm);
+        }
     }
 }

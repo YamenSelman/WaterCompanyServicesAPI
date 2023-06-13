@@ -1,0 +1,109 @@
+﻿@model TransferRequestVM
+@{
+    ViewData["Title"] = "Transfer Ownership";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<section class="gradient-custom">
+    <div class="container py-2 h-100">
+        <div class="row d-flex justify-content-center align-items-center">
+            <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                <div class="card-body p-5 text-center">
+                    <form method="post" action="TransferOwnership">
+                        <div class="mb-md-4 mt-md-4 pb-3 text-center">
+
+                            <h2 class="fw-bold mb-2 text-uppercase">Transfer Ownership</h2>
+                            <p class="text-white-50 mb-5">Please enter subscription barcode</p>
+
+                            <div class="form-outline  m-auto mb-4 w-50">
+                                <label class="control-label">Subscription Barcode</label>
+                                <input asp-for="@Model.Subscription.ConsumerBarCode" class="form-control text-center" />
+                                <span asp-validation-for="@Model.Subscription.ConsumerBarCode" class="text-danger"></span>
+                            </div>
+
+
+
+                            <div class="btn-group-lg">
+                                <button class="btn btn-outline-light btn-lg w-25" type="submit">Search</button>
+                                @Html.ActionLink("Back to Panel","index","ConsumerPanel",null, new { @class = "btn btn-outline-light btn-lg w-25" })
+
+                            </div>
+
+                            <div class="mb-3">
+                                <span class="text-danger fw-bold fs-4">@ViewData["message"]</span>
+                            </div>
+
+                            <div id="details" hidden="@(Model == null)">
+                                <div class="row text-center bg-light bg-opacity-10 rounded-3 m-auto p-3">
+                                    <div>
+                                        <h3 class="bg-white bg-opacity-25 rounded-3 p-2">Subscription</h3>
+                                    </div>
+                                    <div class="text-start row fs-3">
+                                        <div class="col-6">
+                                            @Html.LabelFor(modelItem => modelItem.Subscription.ConsumerBarCode)
+                                        </div>
+                                        <div class="col-6">
+                                            @Html.EditorFor(modelItem => modelItem.Subscription.ConsumerBarCode,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                                        </div>
+                                    </div>
+                                    <div class="text-start row fs-3">
+                                        <div class="col-6">
+                                            @Html.LabelFor(modelItem => Model.Subscription.ConsumerSubscriptionNo)
+                                        </div>
+                                        <div class="col-6">
+                                            @Html.EditorFor(modelItem => Model.Subscription.ConsumerSubscriptionNo,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                                        </div>
+                                    </div>
+                                    <div class="text-start row fs-3">
+                                        <div class="col-6">
+                                            @Html.LabelFor(modelItem => modelItem.Subscription.SubscriptionAddress)
+                                        </div>
+                                        <div class="col-6">
+                                            @Html.EditorFor(modelItem => modelItem.Subscription.SubscriptionAddress,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row text-center bg-light bg-opacity-10 rounded-3 m-auto p-3">
+                                    <div>
+                                        <h3 class="bg-white bg-opacity-25 rounded-3 p-2">Consumer</h3>
+                                    </div>
+                                    <div class="text-start row fs-3">
+                                        <div class="col-6">
+                                            @Html.LabelFor(modelItem => modelItem.Subscription.Consumer.ConsumerName)
+                                        </div>
+                                        <div class="col-6">
+                                            @Html.EditorFor(modelItem => modelItem.Subscription.Consumer.ConsumerName,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                                        </div>
+                                    </div>
+                                    <div class="text-start row fs-3">
+                                        <div class="col-6">
+                                            @Html.LabelFor(modelItem => modelItem.Subscription.Consumer.ConsumerAddress)
+                                        </div>
+                                        <div class="col-6">
+                                            @Html.EditorFor(modelItem => modelItem.Subscription.Consumer.ConsumerAddress,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                                        </div>
+                                    </div>
+                                    <div class="text-start row fs-3">
+                                        <div class="col-6">
+                                            @Html.LabelFor(modelItem => modelItem.Subscription.Consumer.ConsumerPhone)
+                                        </div>
+                                        <div class="col-6">
+                                            @Html.EditorFor(modelItem => modelItem.Subscription.Consumer.ConsumerPhone,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                
+
+                                <div class="btn-group-lg">
+                                    @Html.ActionLink("Submit Request","SubmitTransferRequest","ConsumerPanel",Model, new { @class = "btn btn-outline-light btn-lg w-25" })
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

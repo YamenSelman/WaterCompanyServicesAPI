@@ -14,7 +14,7 @@ namespace WaterCompanyServiceWebSite.Controllers
 
         public IActionResult ViewRequest(int id)
         {
-            ViewRequestObj obj = new ViewRequestObj();
+            RequestProcessVM obj = new RequestProcessVM();
             obj.Request = DataAccess.GetRequest(id);
             obj.Log = new RequestsLog();
 
@@ -60,7 +60,7 @@ namespace WaterCompanyServiceWebSite.Controllers
         }
 
         [HttpPost]
-        public IActionResult ProcessRequest(ViewRequestObj obj)
+        public IActionResult ProcessRequest(RequestProcessVM obj)
         {
             if (obj.Request != null)
             {

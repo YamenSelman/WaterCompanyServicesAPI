@@ -106,7 +106,7 @@ namespace WaterCompanyServicesAPI.Controllers
         
         [HttpPost]
         [Route("/request/postSbyte")]
-        public async Task<ActionResult<Request>> PostRequestSbyte([FromBody] SbyteDocument content)
+        public async Task<ActionResult<int>> PostRequestSbyte([FromBody] SbyteDocument content)
         {
             try
             {
@@ -128,7 +128,7 @@ namespace WaterCompanyServicesAPI.Controllers
                 return BadRequest(ex.Message);
             }
 
-            return CreatedAtAction("GetRequest", new { id = content.request.Id }, Request);
+            return   content.request.Id;
         }
         
         [HttpPost]
@@ -313,6 +313,10 @@ namespace WaterCompanyServicesAPI.Controllers
                                         req.CurrentDepartment = _context.Departments.Where(d => d.Id == 2).FirstOrDefault();
                                     }
                                     else if(emp.Department.Id == 2)
+                                    {
+                                        req.CurrentDepartment = _context.Departments.Where(d => d.Id == 4).FirstOrDefault();
+                                    }                
+                                    else if(emp.Department.Id == 4)
                                     {
                                         req.CurrentDepartment = _context.Departments.Where(d => d.Id == 3).FirstOrDefault();
                                     }

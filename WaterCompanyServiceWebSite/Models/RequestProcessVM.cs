@@ -4,7 +4,7 @@ using System.IO;
 
 namespace WaterCompanyServiceWebSite.Models
 {
-    public class ViewRequestObj
+    public class RequestProcessVM
     {
         public Request Request { get; set; }
         public RequestsLog Log { get; set; }

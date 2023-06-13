@@ -19,6 +19,7 @@ namespace WaterCompanyServiceWebSite.Controllers
 
         public IActionResult Index()
         {
+            //ViewData["image"] = $"data:image; base64,{System.Convert.ToBase64String(DataAccess.GetRequest(1).Details.Document)}";
             return View();
         }
 

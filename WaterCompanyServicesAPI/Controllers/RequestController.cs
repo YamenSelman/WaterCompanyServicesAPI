@@ -97,6 +97,32 @@ namespace WaterCompanyServicesAPI.Controllers
 
             return CreatedAtAction("GetRequest", new { id = Request.Id }, Request);
         }
+        
+        [HttpPost]
+        [Route("/request/postnew")]
+        public async Task<ActionResult<string>> newPostRequest([FromBody] Request Request)
+        {
+            try
+            {
+                if(Request.Consumer != null)
+                {
+                    Request.Consumer = _context.Consumers.Find(Request.Consumer.Id);
+                }
+                if (Request.Subscription != null) 
+                {
+                    Request.Subscription = _context.Subscriptions.Find(Request.Subscription.Id);
+                }
+                Request.CurrentDepartment = _context.Departments.Find(Request.CurrentDepartment.Id);
+                _context.Requests.Add(Request);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return ex.Message;
+            }
+
+            return "success";
+        }
 
 
         [HttpDelete("{id}")]

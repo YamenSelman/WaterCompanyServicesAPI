@@ -4,6 +4,12 @@ using ModelLibrary;
 
 namespace WaterCompanyServicesAPI.Controllers
 {
+    public class SbyteDocument
+    {
+        public Request request { get; set; }
+        public sbyte[] document { get; set; }
+    }
+
     [Route("Request")]
     public class RequestController : Controller
     {
@@ -96,6 +102,33 @@ namespace WaterCompanyServicesAPI.Controllers
             }
 
             return CreatedAtAction("GetRequest", new { id = Request.Id }, Request);
+        }        
+        
+        [HttpPost]
+        [Route("/request/postSbyte")]
+        public async Task<ActionResult<Request>> PostRequestSbyte([FromBody] SbyteDocument content)
+        {
+            try
+            {
+                content.request.Details.Document = Array.ConvertAll(content.document, (a) => (byte)a);
+                if (content.request.Consumer != null)
+                {
+                    content.request.Consumer = _context.Consumers.Find(content.request.Consumer.Id);
+                }
+                if (content.request.Subscription != null) 
+                {
+                    content.request.Subscription = _context.Subscriptions.Find(content.request.Subscription.Id);
+                }
+                content.request.CurrentDepartment = _context.Departments.Find(content.request.CurrentDepartment.Id);
+                _context.Requests.Add(content.request);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return CreatedAtAction("GetRequest", new { id = content.request.Id }, Request);
         }
         
         [HttpPost]

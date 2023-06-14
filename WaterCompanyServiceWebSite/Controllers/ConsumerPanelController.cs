@@ -36,6 +36,10 @@ namespace WaterCompanyServiceWebSite.Controllers
             {
                 ViewData["message"] = "This subscription is attached to another consumer";
             }
+            else
+            {
+                ViewData["message"] = null;
+            }
             return View(sub);
         }
 
@@ -287,7 +291,6 @@ namespace WaterCompanyServiceWebSite.Controllers
                 if(vm.Subscription.Consumer == null)
                 {
                     ViewData["message"] = "This subscription is not attached .. add attach request";
-                    return View(vm);
                 }
             }
             return View(vm);

@@ -25,8 +25,8 @@
 
 
                             <div class="btn-group-lg">
-                                <button class="btn btn-outline-light btn-lg w-25" type="submit">Search</button>
-                                @Html.ActionLink("Back to Panel","index","ConsumerPanel",null, new { @class = "btn btn-outline-light btn-lg w-25" })
+                                @Html.ActionLink("Cancel","index","ConsumerPanel",null, new { @class = "btn btn-outline-danger btn-lg w-25" })
+                                <button class="btn btn-outline-success btn-lg w-25" type="submit">Search</button>
                             </div>
 
                             <div class="mb-3">
@@ -72,8 +72,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="btn-group-lg">
-                                        @Html.ActionLink("Submit Request","SubmitAttachRequest","ConsumerPanel",Model, new { @class = "btn btn-outline-light btn-lg w-25" })
+                                    <div class="btn-group-lg mt-2">
+                                        @Html.ActionLink("Cancel","index","ConsumerPanel",null, new { @class = "btn btn-outline-danger btn-lg w-25 m-1" })
+                                        @Html.ActionLink("Submit Request","SubmitAttachRequest","ConsumerPanel",Model, new { @class = "btn btn-outline-success btn-lg w-25 m-1" })
                                     </div>
                                 </div>
                             }

@@ -20,6 +20,11 @@ namespace WaterCompanyServiceWebSite.Controllers
 
             if (obj.Request != null)
             {
+                if(obj.Request.RequestType != "new")
+                {
+                    obj.Request.Subscription = DataAccess.GetSubscriptionByBarcode(obj.Request.Subscription.ConsumerBarCode);
+                }
+
                 switch (obj.Request.RequestType)
                 {
                     case "attach":
@@ -42,6 +47,8 @@ namespace WaterCompanyServiceWebSite.Controllers
                     case "repair":
                         ViewData["repairemp"] = DataAccess.GetCurrentEmployee().Department.Id == 5;
                         return View("ViewRepairRequest", obj);
+                    case "transfer":
+                        return View("ViewTransferRequest", obj);
                     default:
                         return RedirectToAction("Index");
                 }
@@ -62,36 +69,35 @@ namespace WaterCompanyServiceWebSite.Controllers
         [HttpPost]
         public IActionResult ProcessRequest(RequestProcessVM obj)
         {
+            string msg = "";
+            bool result;
             if (obj.Request != null)
             {
                 if (obj.Log.Decision)
                 {
-                    if (DataAccess.AcceptRequest(obj.Request.Id, obj.Log.Notes))
-                    {
-                        ViewData["message"] = "Request Processed Success";
-                    }
-                    else
-                    {
-                        ViewData["message"] = "Failed To Process Request";
-                    }
+                    result = DataAccess.AcceptRequest(obj.Request.Id, obj.Log.Notes);
+
                 }
                 else
                 {
-                    if (DataAccess.RejectRequest(obj.Request.Id, obj.Log.Notes))
-                    {
-                        ViewData["message"] = "Request Processed Success";
-                    }
-                    else
-                    {
-                        ViewData["message"] = "Failed To Process Request";
-                    }
+                    result = DataAccess.RejectRequest(obj.Request.Id, obj.Log.Notes);
+                }
+                if (result)
+                {
+                    msg = "Request Processed Success";
+                }
+                else
+                {
+                    msg = "Failed To Process Request";
                 }
             }
             else
             {
-                ViewData["message"] = "Request Not Found";
+                msg = "Request Not Found";
             }
-            return RedirectToAction("index");
+            ViewData["message"] = msg;
+            List<Request> pendingRequests = DataAccess.GetPendingRequests();
+            return View("index",pendingRequests);
         }
     }
 }

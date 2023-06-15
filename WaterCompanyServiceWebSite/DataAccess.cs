@@ -13,7 +13,7 @@ namespace WaterCompanyServiceWebSite
     {
         
         private static string live = "http://WCSAPI23.somee.com/";
-        private static string Blocal = "https://localhost:7186/";
+        private static string local = "https://localhost:7186/";
         public static User CurrentUser = null;
         private static string BaseURL = live;
         public static void log(string msg)

@@ -26,7 +26,7 @@ namespace WaterCompanyServiceWebSite.Controllers
         {
             if(DataAccess.CurrentUser != null)
             {
-                return RedirectUser(DataAccess.CurrentUser);
+                return RedirectUser();
             }
             return View();
         }
@@ -48,13 +48,19 @@ namespace WaterCompanyServiceWebSite.Controllers
             else
             {
                 DataAccess.CurrentUser = loginUser;
-                return RedirectUser(loginUser);
+                return RedirectUser();
             }
         }
 
-        private IActionResult RedirectUser(User user)
+        public IActionResult Logout()
         {
-            switch (user.UserType)
+            DataAccess.CurrentUser = null;
+            return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult RedirectUser()
+        {
+            switch (DataAccess.CurrentUser.UserType)
             {
                 case "admin":
                     return RedirectToAction("Index", "AdminPanel");
@@ -71,7 +77,7 @@ namespace WaterCompanyServiceWebSite.Controllers
         {
             if (DataAccess.CurrentUser != null)
             {
-                return RedirectUser(DataAccess.CurrentUser);
+                return RedirectUser();
             }
             Consumer consumer = new Consumer();
             consumer.Subscriptions = new List<Subscription>(); ;

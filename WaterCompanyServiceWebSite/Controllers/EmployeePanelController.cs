@@ -76,7 +76,6 @@ namespace WaterCompanyServiceWebSite.Controllers
                 if (obj.Log.Decision)
                 {
                     result = DataAccess.AcceptRequest(obj.Request.Id, obj.Log.Notes);
-
                 }
                 else
                 {

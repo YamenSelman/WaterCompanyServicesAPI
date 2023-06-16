@@ -5,92 +5,88 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container py-2 h-100 m-auto">
-    <div class="row d-flex justify-content-center align-items-center">
-        <div class="card bg-dark text-white" style="border-radius: 1rem;">
-            <div class="card-body p-5 text-center">
-                <h1 class="text-start">Employee Panel</h1>
-                <div class="row">
-                    <div class="mb-3">
-                        <span class="text-danger fw-bold fs-4">@ViewData["message"]</span>
+<div class="card bg-primary bg-opacity-25 text-white container py-2 m-auto" style="border-radius: 1rem;">
+    <div class="card-body p-5 text-center">
+        <h1 class="text-start">Employee Panel</h1>
+        <div class="row">
+            <div class="mb-3">
+                <span class="text-danger fw-bold fs-4">@ViewData["message"]</span>
+            </div>
+            <div class="col-8">
+                <div class="row text-center bg-light bg-opacity-10 rounded-3 m-auto p-3">
+                    <div class="">
+                        <h3>Pending Requests</h3>
                     </div>
-                    <div class="col-8">
-                        <div class="row text-center bg-light bg-opacity-10 rounded-3 m-auto p-3">
-                            <div class="">
-                                <h3>Pending Requests</h3>
-                            </div>
-                            <table class="table table-hover table-dark">
-                                <thead>
-                                    <tr class="fs-5">
-                                        <th class="text-center">
-                                            @Html.DisplayNameFor(model => model.Id)
-                                        </th>
-                                        <th class="text-center">
-                                            @Html.DisplayNameFor(model => model.RequestDate)
-                                        </th>
-                                        <th class="text-center">
-                                            @Html.DisplayNameFor(model => model.RequestType)
-                                        </th>
-                                        <th class="text-center">
-                                            @Html.DisplayNameFor(model => model.RequestStatus)
-                                        </th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach (var item in Model)
-                                    {
-                                        <tr class="fs-5">
-                                            <td class="text-center">
-                                                @Html.DisplayFor(modelItem => item.Id)
-                                            </td>
-                                            <td class="text-center">
-                                                @Html.DisplayFor(modelItem => item.RequestDate)
-                                            </td>
-                                            <td class="text-center">
-                                                @Html.DisplayFor(modelItem => item.RequestType)
-                                            </td>
-                                            <td class="text-center">
-                                                @Html.DisplayFor(modelItem => item.RequestStatus)
-                                            </td>
-                                            <td>
-                                                @Html.ActionLink(" ", "ViewRequest", new { id=item.Id },new {@class="bi bi-pen fs-3"})
-                                            </td>
-                                        </tr>
-                                    }
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="col-4">
-                        <div class="row p-1">
-                            @*@Html.ActionLink("Add subscription","addsubscription","ConsumerPanel",null, new { @class = "btn btn-lg btn-outline-light" })*@
-                        </div>
-                        <div class="row p-1">
-                            <a href="#" class="btn btn-lg btn-outline-light">Service 2</a>
-                        </div>
-                        <div class="row p-1">
-                            <a href="#" class="btn btn-lg btn-outline-light">Service 3</a>
-                        </div>
-                        <div class="row p-1">
-                            <a href="#" class="btn btn-lg btn-outline-light">Service 4</a>
-                        </div>
-                        <div class="row p-1">
-                            <a href="#" class="btn btn-lg btn-outline-light">Service 5</a>
-                        </div>
-                        <div class="row p-1">
-                            <a href="#" class="btn btn-lg btn-outline-light">Service 6</a>
-                        </div>
-                        <div class="row p-1">
-                            <a href="#" class="btn btn-lg btn-outline-light">Service 7</a>
-                        </div>
-                        <div class="row p-1">
-                            @Html.ActionLink("Logout","logout","EmployeePanel",null, new { @class = "btn btn-lg btn-outline-light" })
-                        </div>
-                    </div>
+                    <table class="table table-hover table-dark">
+                        <thead>
+                            <tr class="fs-5">
+                                <th class="text-center">
+                                    @Html.DisplayNameFor(model => model.Id)
+                                </th>
+                                <th class="text-center">
+                                    @Html.DisplayNameFor(model => model.RequestDate)
+                                </th>
+                                <th class="text-center">
+                                    @Html.DisplayNameFor(model => model.RequestType)
+                                </th>
+                                <th class="text-center">
+                                    @Html.DisplayNameFor(model => model.RequestStatus)
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr class="fs-5">
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.Id)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.RequestDate)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.RequestType)
+                                    </td>
+                                    <td class="text-center">
+                                        @Html.DisplayFor(modelItem => item.RequestStatus)
+                                    </td>
+                                    <td>
+                                        @Html.ActionLink(" ", "ViewRequest", new { id=item.Id },new {@class="bi bi-pen fs-3"})
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
                 </div>
-
+            </div>
+            <div class="col-4">
+                <div class="row p-1">
+                    @*@Html.ActionLink("Add subscription","addsubscription","ConsumerPanel",null, new { @class = "btn btn-lg btn-outline-light" })*@
+                </div>
+                <div class="row p-1">
+                    <a href="#" class="btn btn-lg btn-outline-light">Service 2</a>
+                </div>
+                <div class="row p-1">
+                    <a href="#" class="btn btn-lg btn-outline-light">Service 3</a>
+                </div>
+                <div class="row p-1">
+                    <a href="#" class="btn btn-lg btn-outline-light">Service 4</a>
+                </div>
+                <div class="row p-1">
+                    <a href="#" class="btn btn-lg btn-outline-light">Service 5</a>
+                </div>
+                <div class="row p-1">
+                    <a href="#" class="btn btn-lg btn-outline-light">Service 6</a>
+                </div>
+                <div class="row p-1">
+                    <a href="#" class="btn btn-lg btn-outline-light">Service 7</a>
+                </div>
+                <div class="row p-1">
+                    @Html.ActionLink("Logout","logout","EmployeePanel",null, new { @class = "btn btn-lg btn-outline-light" })
+                </div>
             </div>
         </div>
+
     </div>
 </div>

@@ -5,88 +5,96 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<style type="text/css">
+    .reqRow {
+        -webkit-transition: all 1s ease;
+        -moz-transition: all 1s ease;
+        -ms-transition: all 1s ease;
+        transition: all 1s ease;
+        cursor: pointer;
+    }
+
+        .reqRow:hover {
+            transform: scale(1.2);
+            background-color: darkblue;
+            color: white;
+        }
+</style>
+
 <div class="card bg-primary bg-opacity-25 text-white container py-2 m-auto" style="border-radius: 1rem;">
-    <div class="card-body p-5 text-center">
-        <h1 class="text-start">Employee Panel</h1>
-        <div class="row">
+    <div class="card-body text-center">
+        <div class="px-3">
+            <h2 class="bg-primary bg-opacity-50 rounded-3 p-3">Employee Panel</h2>
+        </div>
+
+        @if (ViewData["message"] != null)
+        {
             <div class="mb-3">
                 <span class="text-danger fw-bold fs-4">@ViewData["message"]</span>
             </div>
-            <div class="col-8">
-                <div class="row text-center bg-light bg-opacity-10 rounded-3 m-auto p-3">
-                    <div class="">
-                        <h3>Pending Requests</h3>
-                    </div>
-                    <table class="table table-hover table-dark">
-                        <thead>
-                            <tr class="fs-5">
-                                <th class="text-center">
-                                    @Html.DisplayNameFor(model => model.Id)
-                                </th>
-                                <th class="text-center">
-                                    @Html.DisplayNameFor(model => model.RequestDate)
-                                </th>
-                                <th class="text-center">
-                                    @Html.DisplayNameFor(model => model.RequestType)
-                                </th>
-                                <th class="text-center">
-                                    @Html.DisplayNameFor(model => model.RequestStatus)
-                                </th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr class="fs-5">
-                                    <td class="text-center">
-                                        @Html.DisplayFor(modelItem => item.Id)
-                                    </td>
-                                    <td class="text-center">
-                                        @Html.DisplayFor(modelItem => item.RequestDate)
-                                    </td>
-                                    <td class="text-center">
-                                        @Html.DisplayFor(modelItem => item.RequestType)
-                                    </td>
-                                    <td class="text-center">
-                                        @Html.DisplayFor(modelItem => item.RequestStatus)
-                                    </td>
-                                    <td>
-                                        @Html.ActionLink(" ", "ViewRequest", new { id=item.Id },new {@class="bi bi-pen fs-3"})
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="col-4">
-                <div class="row p-1">
-                    @*@Html.ActionLink("Add subscription","addsubscription","ConsumerPanel",null, new { @class = "btn btn-lg btn-outline-light" })*@
-                </div>
-                <div class="row p-1">
-                    <a href="#" class="btn btn-lg btn-outline-light">Service 2</a>
-                </div>
-                <div class="row p-1">
-                    <a href="#" class="btn btn-lg btn-outline-light">Service 3</a>
-                </div>
-                <div class="row p-1">
-                    <a href="#" class="btn btn-lg btn-outline-light">Service 4</a>
-                </div>
-                <div class="row p-1">
-                    <a href="#" class="btn btn-lg btn-outline-light">Service 5</a>
-                </div>
-                <div class="row p-1">
-                    <a href="#" class="btn btn-lg btn-outline-light">Service 6</a>
-                </div>
-                <div class="row p-1">
-                    <a href="#" class="btn btn-lg btn-outline-light">Service 7</a>
-                </div>
-                <div class="row p-1">
-                    @Html.ActionLink("Logout","logout","EmployeePanel",null, new { @class = "btn btn-lg btn-outline-light" })
-                </div>
-            </div>
+        }
+
+        <div class="px-3">
+            <h3 class="bg-light text-primary bg-opacity-50 rounded-3 p-3">Pending Requests</h3>
         </div>
 
+        @foreach (ModelLibrary.Request req in Model)
+        {
+
+            <a href=" @Url.Action("ViewRequest", "employeepanel", new {id = req.Id })" class="text-decoration-none">
+                <div class="btn btn-lg btn-outline-dark shadow-lg w-75 m-auto my-2 p-2 reqRow">
+                    <span class="float-start bg-light bg-opacity-75 text-dark shadow fs-6 rounded-pill p-1">@req.Id.ToString("D2")</span>
+
+                    @switch (req.RequestType)
+                    {
+                        case "new":
+                            <span class="float-start ms-2 bg-light bg-opacity-75 text-dark shadow fs-6 rounded-pill p-1">
+                                <i class="bi bi-speedometer2"></i>
+                            </span>
+                            break;
+                        case "transfer":
+                            <span class="float-start ms-2 bg-light bg-opacity-75 text-dark shadow fs-6 rounded-pill p-1">
+                                <i class="bi bi-arrow-left-right"></i>
+                            </span>
+                            break;
+                        case "clearance":
+                            <span class="float-start ms-2 bg-light bg-opacity-75 text-dark shadow fs-6 rounded-pill p-1">
+                                <i class="bi bi-bookmark-check"></i>
+                            </span>
+                            break;
+                        case "attach":
+                            <span class="float-start ms-2 bg-light bg-opacity-75 text-dark shadow fs-6 rounded-pill p-1">
+                                <i class="bi bi-clipboard-plus"></i>
+                            </span>
+                            break;
+                        case "repair":
+                            <span class="float-start ms-2 bg-light bg-opacity-75 text-dark shadow fs-6 rounded-pill p-1">
+                                <i class="bi bi-tools"></i>
+                            </span>
+                            break;
+                    }
+
+                    @if (req.Consumer != null)
+                    {
+                        <span class="float-start ms-5 bg-dark bg-opacity-50 text-light fs-5 rounded p-1">Consumer</span>
+                        <span class="float-start ms-1 p-1">@req.Consumer.ConsumerName</span>
+                    }
+
+                    <span class="float-end bg-dark bg-opacity-50 text-light fs-6 rounded p-1">
+                        @req.RequestDate.ToString("dd/MM/yyyy")
+                    </span>
+
+                    @if (req.Subscription != null)
+                    {
+                        <span class="float-end me-5 p-1">@req.Subscription.ConsumerBarCode</span>
+                        <span class="float-end me-1 bg-dark bg-opacity-50 text-light fs-5 rounded p-1">Barcode</span>
+                    }
+
+
+
+
+                </div>
+            </a>
+        }
     </div>
 </div>

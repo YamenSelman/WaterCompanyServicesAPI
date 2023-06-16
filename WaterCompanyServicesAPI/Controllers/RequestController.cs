@@ -8,6 +8,14 @@ namespace WaterCompanyServicesAPI.Controllers
     {
         public Request request { get; set; }
         public sbyte[] document { get; set; }
+    }    
+    
+    public class RequestVM
+    {
+        public Request request { get; set; }
+        public DateTime? FinishDate { get; set; }
+        public Department? RejectedBy { get; set; }
+        public string? RejectNotes { get; set; }
     }
 
     [Route("Request")]
@@ -130,34 +138,7 @@ namespace WaterCompanyServicesAPI.Controllers
 
             return   content.request.Id;
         }
-        
-        [HttpPost]
-        [Route("/request/postnew")]
-        public async Task<ActionResult<string>> newPostRequest([FromBody] Request Request)
-        {
-            try
-            {
-                if(Request.Consumer != null)
-                {
-                    Request.Consumer = _context.Consumers.Find(Request.Consumer.Id);
-                }
-                if (Request.Subscription != null) 
-                {
-                    Request.Subscription = _context.Subscriptions.Find(Request.Subscription.Id);
-                }
-                Request.CurrentDepartment = _context.Departments.Find(Request.CurrentDepartment.Id);
-                _context.Requests.Add(Request);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
-
-            return "success";
-        }
-
-
+       
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteRequest(int id)
         {
@@ -222,7 +203,32 @@ namespace WaterCompanyServicesAPI.Controllers
         public async Task<ActionResult<IEnumerable<Request>>> GetRequests(int did)
         {
             List<string> status = new List<string> { "completed", "rejected" };
-            return await _context.Requests.Where(r => r.CurrentDepartment != null && r.CurrentDepartment.Id == did && !status.Contains(r.RequestStatus)).ToListAsync();
+            return await _context.Requests.Include(r=>r.Consumer).Include(r=>r.Subscription).Where(r => r.CurrentDepartment != null && r.CurrentDepartment.Id == did && !status.Contains(r.RequestStatus)).ToListAsync();
+        }
+        
+        [Route("/request/getByConsumer/{cid}")]
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<RequestVM>>> GetByConsumer(int cid)
+        {
+            List<RequestVM> result = new List<RequestVM>();
+            var requests = await _context.Requests.Include(r=>r.Subscription).Where(r=>r.Consumer.Id == cid).ToListAsync();
+            foreach(var item in requests)
+            {
+                RequestVM r = new RequestVM();
+                r.request = item;
+                if(item.RequestStatus.ToLower() != "onprogress")
+                {
+                    var log = await _context.RequestsLogs.Include(l=>l.Department).Where(l => l.Request.Id == item.Id).OrderBy(r=>r.Id).LastAsync();
+                    r.FinishDate = log.DateTime;
+                    if(item.RequestStatus.ToLower().Equals("rejected"))
+                    {
+                        r.RejectedBy = log.Department;
+                        r.RejectNotes = log.Notes;
+                    }
+                }
+                result.Add(r);
+            }
+            return result;
         }
 
         [Route("/request/accept/{rid}/{eid}/{notes?}")]

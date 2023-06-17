@@ -5,26 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<style type="text/css">
-    .reqRow {
-        -webkit-transition: all 1s ease;
-        -moz-transition: all 1s ease;
-        -ms-transition: all 1s ease;
-        transition: all 1s ease;
-        cursor: pointer;
-    }
-
-        .reqRow:hover {
-            transform: scale(1.2);
-            background-color: darkblue;
-            color: white;
-        }
-</style>
-
-<div class="card bg-primary bg-opacity-25 text-white container py-2 m-auto" style="border-radius: 1rem;">
+<div class="card text-white container py-2 m-auto mainCard">
     <div class="card-body text-center">
-        <div class="px-3">
-            <h2 class="bg-primary bg-opacity-50 rounded-3 p-3">Employee Panel</h2>
+        <div class="bg-white bg-opacity-50 rounded-pill p-1 fs-2">
+            <h2 class="fw-bold text-dark">Employee Panel</h2>
         </div>
 
         @if (ViewData["message"] != null)
@@ -34,14 +18,14 @@
             </div>
         }
 
-        <div class="px-3">
-            <h3 class="bg-light text-primary bg-opacity-50 rounded-3 p-3">Pending Requests</h3>
-        </div>
+        <h5 class="w-75 m-auto bg-dark bg-opacity-10 border border-dark rounded shadow py-3 px-1 text-white text-opacity-75 my-3">
+           Pending Requests
+        </h5>
 
         @foreach (ModelLibrary.Request req in Model)
         {
 
-            <a href=" @Url.Action("ViewRequest", "employeepanel", new {id = req.Id })" class="text-decoration-none">
+            <a href=" @Url.Action("ViewRequest", "employeepanel", new {id = req.Id })" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="@req.RequestType request">
                 <div class="btn btn-lg btn-outline-dark shadow-lg w-75 m-auto my-2 p-2 reqRow">
                     <span class="float-start bg-light bg-opacity-75 text-dark shadow fs-6 rounded-pill p-1">@req.Id.ToString("D2")</span>
 

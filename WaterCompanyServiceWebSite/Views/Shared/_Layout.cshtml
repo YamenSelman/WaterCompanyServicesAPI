@@ -28,7 +28,7 @@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-dark bg-opacity-25  border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand text-black box-shadow fw-bold" style="height:50px;" asp-area="" asp-controller="Home" asp-action="Index">
-                    <img src="~/img/wcs.png" class="mh-100 icn"/>
+                    <img src="~/img/wcs.png" class="mh-100 icn border rounded"/>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -49,7 +49,8 @@
                         else
                         {
                             <li class="nav-item ms-auto">
-                                <a class="btn btn-outline-success mx-2 fw-bold" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
+                                <a class="btn btn-outline-success fw-bold" asp-area="" asp-controller="Home" asp-action="Login">Login</a>
+                                <a class="btn btn-outline-light mx-1 fw-bold" asp-area="" asp-controller="Home" asp-action="Register">Register</a>
                             </li>
                         }
 

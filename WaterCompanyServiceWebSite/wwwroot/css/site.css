@@ -48,3 +48,8 @@ body {
     .zoomin img:hover {
         width: 100%;
     }
+
+.pre-scrollable {
+    max-height: 50vh;
+    overflow-y: scroll;
+}

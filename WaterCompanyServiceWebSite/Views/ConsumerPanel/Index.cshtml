@@ -3,46 +3,54 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="container py-2 h-100 m-auto">
-    <div class="row d-flex justify-content-center align-items-center">
-        <div class="card bg-dark text-white" style="border-radius: 1rem;">
-            <div class="card-body p-5 text-center">
-                <h1 class="text-start">Consumer Panel</h1>
-                <div class="row">
-                    <div class="mb-3">
-                        <span class="text-danger fw-bold fs-4">@ViewData["message"]</span>
-                    </div>
-                    <div class="col-6">
-                    </div>
-                    <div class="col-6">
-                        <div class="row p-1">
-                            @Html.ActionLink("Add subscription","addsubscription","ConsumerPanel",null, new { @class = "btn btn-lg btn-outline-light" })
-                        </div>
-                        <div class="row p-1">
-                            @Html.ActionLink("Request Clearance","ClearanceRequest","ConsumerPanel",null, new { @class = "btn btn-lg btn-outline-light" })
-                        </div>
-                        <div class="row p-1">
-                            @Html.ActionLink("Request New Subscription","NewSubscription","ConsumerPanel",null, new { @class = "btn btn-lg btn-outline-light" })
-                        </div>
-                        <div class="row p-1">
-                            @Html.ActionLink("Request Meter Repair","RequistMeterRepair","ConsumerPanel",null, new { @class = "btn btn-lg btn-outline-light" })
-                        </div>
-                        <div class="row p-1">
-                            @Html.ActionLink("Show Invoices","InvoiceRequest","ConsumerPanel",null, new { @class = "btn btn-lg btn-outline-light" })
-                        </div>
-                        <div class="row p-1">
-                            @Html.ActionLink("Transfer Subscription Ownership","TransferOwnership","ConsumerPanel",null, new { @class = "btn btn-lg btn-outline-light" })
-                        </div>
-                        <div class="row p-1">
-                            <a href="#" class="btn btn-lg btn-outline-light">Service 7</a>
-                        </div>
-                        <div class="row p-1">
-                            @Html.ActionLink("Logout","logout","ConsumerPanel",null, new { @class = "btn btn-lg btn-outline-light" })
-                        </div>
-                    </div>
-                </div>
 
+<div class="card container py-1 m-auto mainCard">
+    <div class="card-body text-center">
+        <div class="bg-white bg-opacity-50 rounded-pill p-1 fs-2">
+            <span class="fw-bold text-dark w-50 m-auto fs-3">Consumer Panel</span>
+            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Change Password">
+                @Html.ActionLink(" ", "ChangePassword",null,null,new {@class="me-4 icoRow text-dark fw-bold float-end bi bi-person-lock"})
+            </span>
+        </div>
+
+        @if (ViewData["message"] != null)
+        {
+            <div class="mb-3">
+                <span class="text-danger fw-bold fs-4">@ViewData["message"]</span>
             </div>
+        }
+
+        <div class="container px-5 py-2">
+            <a href="@Url.Action("addsubscription")" class="btn btn-lg mx-4 btn-outline-light reqRow border-2 border-dark shadow-lg">
+                <div><img src="~/img/AttachRequest.png" class="mw-75 w-75 m-auto" /></div>
+                <div class="pt-1 text-center m-auto fw-bold text-uppercase text-dark">Attach</div>
+            </a>
+
+            <a href="@Url.Action("ClearanceRequest")" class="btn btn-lg mx-4 btn-outline-light reqRow border-2 border-dark shadow-lg">
+                <div><img src="~/img/ClearanceRequest.png" class="mw-75 w-75 m-auto" /></div>
+                <div class="pt-1 text-center m-auto fw-bold text-uppercase text-dark">Clearance</div>
+            </a>
+
+            <a href="@Url.Action("NewSubscription")" class="btn btn-lg mx-4 btn-outline-light reqRow border-2 border-dark shadow-lg">
+                <div><img src="~/img/NewSubscription.png" class="mw-75 w-75 m-auto" /></div>
+                <div class="pt-1 text-center m-auto fw-bold text-uppercase text-dark">New</div>
+            </a>            
+            <div class="py-1"></div>
+            <a href="@Url.Action("TransferOwnership")" class="btn btn-lg mx-4 btn-outline-light reqRow border-2 border-dark shadow-lg">
+                <div><img src="~/img/TransferRequest.png" class="mw-75 w-75 m-auto" /></div>
+                <div class="pt-1 text-center m-auto fw-bold text-uppercase text-dark">Transfer</div>
+            </a>
+
+            <a href="@Url.Action("RequistMeterRepair")" class="btn btn-lg mx-4 btn-outline-light reqRow border-2 border-dark shadow-lg">
+                <div><img src="~/img/RepairRequest.png" class="mw-75 w-75 m-auto" /></div>
+                <div class="pt-1 text-center m-auto fw-bold text-uppercase text-dark">Repair</div>
+            </a>
+
+            <a href="@Url.Action("InvoiceRequest")" class="btn btn-lg mx-4 btn-outline-light reqRow border-2 border-dark shadow-lg">
+                <div><img src="~/img/Invoices.png" class="mw-75 w-75 m-auto" /></div>
+                <div class="pt-1 text-center m-auto fw-bold text-uppercase text-dark">Invoices</div>
+            </a>
         </div>
     </div>
 </div>
+

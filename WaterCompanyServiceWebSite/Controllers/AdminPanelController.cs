@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using ModelLibrary;
+using WaterCompanyServiceWebSite.Models;
 
 namespace WaterCompanyServiceWebSite.Controllers
 {
@@ -10,15 +11,43 @@ namespace WaterCompanyServiceWebSite.Controllers
             return View();
         }
 
-        public IActionResult Logout()
+        public IActionResult ChangePassword()
         {
-            DataAccess.CurrentUser = null;
-            return RedirectToAction("Index","Home");
+            return View();
         }
 
+
+        [HttpPost]
+        public IActionResult ChangePassword(ChangePasswordVM vm)
+        {
+            if (vm.NewPassword == null || vm.OldPassword == null || vm.ConfirmPassword == null)
+            {
+                ViewData["message"] = "Please insert all the fields";
+                return View();
+            }
+            if (vm.OldPassword != DataAccess.CurrentUser.Password)
+            {
+                ViewData["message"] = "Old password is incorrect";
+                return View();
+            }
+            if (vm.NewPassword != vm.ConfirmPassword)
+            {
+                ViewData["message"] = "New password mismatch";
+                return View();
+            }
+            DataAccess.CurrentUser.Password = vm.NewPassword;
+            DataAccess.UpdateUser(DataAccess.CurrentUser);
+            ViewData["message"] = "Password changed successfully";
+            return View("Index");
+        }
         public IActionResult UserManagement()
         {
-            var data = DataAccess.GetUsers();
+            var data = DataAccess.GetUsers().Where(d=>d.UserType.ToLower().Equals("consumer")).ToList();
+            return View(data);
+        }     
+        public IActionResult EmployeeManagement()
+        {
+            var data = DataAccess.GetUsers().Where(d=>d.UserType.ToLower().Equals("employee")).ToList();
             return View(data);
         }
 
@@ -28,6 +57,21 @@ namespace WaterCompanyServiceWebSite.Controllers
             user.AccountActive = !user.AccountActive;
             DataAccess.UpdateUser(user);
             return RedirectToAction("UserManagement", "AdminPanel");
+        }       
+        public IActionResult EditEmployee(int id)
+        {
+            User user = DataAccess.GetUser(id);
+            user.AccountActive = !user.AccountActive;
+            DataAccess.UpdateUser(user);
+            return RedirectToAction("EmployeeManagement", "AdminPanel");
+        }        
+        
+        public IActionResult ResetPassword(int id)
+        {
+            User user = DataAccess.GetUser(id);
+            user.Password = "0000";
+            DataAccess.UpdateUser(user);
+            return RedirectToAction("EmployeeManagement", "AdminPanel");
         }
 
         public IActionResult AddEmployee()

@@ -9,7 +9,12 @@
 <div class="card container py-2 m-auto mainCard">
     <div class="card-body text-center">
         <div class="bg-white bg-opacity-50 rounded-pill p-1 fs-2">
-            <h2 class="fw-bold text-dark">Users Management</h2>
+            <span class="fw-bold text-dark w-50 m-auto fs-3">
+                Employees Management
+                </span>
+            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Add Employee">
+                @Html.ActionLink(" ", "AddEmployee",null,null,new {@class="me-4 icoRow text-dark fw-bold float-end bi bi-person-add"})
+            </span>
         </div>
         @if (ViewData["message"] != null)
         {
@@ -18,9 +23,10 @@
             </div>
         }
 
-        <h5 class="w-75 m-auto bg-dark bg-opacity-10 border border-dark rounded shadow py-3 px-1 text-white text-opacity-75 my-3">
-            System Users
-        </h5>
+        <h3 class="w-75 m-auto bg-dark bg-opacity-10 border border-dark rounded shadow py-3 px-1 text-white text-opacity-75 my-3">
+            System Employees
+        </h3>
+
 
         <div class="pre-scrollable">
             @foreach (ModelLibrary.User user in Model)
@@ -31,15 +37,19 @@
 
                     <span class="float-start ms-5 fw-bold text-light fs-3 m-auto rounded p-1">@user.UserName</span>
 
-                    <span class="float-end icoRow p-1">
+                    <span class="float-end icoRow p-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Change State">
 
                         @if (!user.UserName.Equals("admin"))
                         {
-                            @Html.ActionLink(" ", "EditUser", new { id=user.Id },new {@class="bi bi-toggles bg-light bg-opacity-75 text-dark fw-bold shadow fs-3 rounded-pill p-1"})
+                            @Html.ActionLink(" ", "EditEmployee", new { id=user.Id },new {@class="bi bi-toggles bg-light bg-opacity-75 text-dark fw-bold shadow fs-3 rounded-pill p-1"})
                         }
                     </span>
 
-                    <span class="float-end me-5 p-1">
+                    <span class="float-end icoRow p-1"  data-bs-toggle="tooltip"  data-bs-placement="top"  title="Reset Password">
+                        @Html.ActionLink(" ", "ResetPassword", new { id=user.Id },new {@class="bi bi-bootstrap-reboot bg-light bg-opacity-75 text-dark fw-bold shadow fs-3 rounded-pill p-1"})
+                    </span>
+
+                    <span class="float-end me-5 p-1" >
 
                         @if (user.AccountActive)
                         {

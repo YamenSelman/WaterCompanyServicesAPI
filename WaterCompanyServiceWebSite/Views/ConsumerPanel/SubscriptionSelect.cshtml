@@ -4,70 +4,42 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<section class="gradient-custom">
-    <div class="container py-2 h-100">
-        <div class="row d-flex justify-content-center align-items-center">
-            <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                <div class="card-body p-5 text-center">
-                    <h3 class="bg-white bg-opacity-25 rounded-3 p-3">Please Choose the Subscription</h3>
-                    <table class="table table-hover table-dark">
-                        <thead>
-                            <tr class="fs-4">
-                                <th class="text-center">
-                                    @Html.DisplayNameFor(model => model.Id)
-                                </th>
-                                <th class="text-center">
-                                    @Html.DisplayNameFor(model => model.ConsumerBarCode)
-                                </th>
-                                <th class="text-center">
-                                    @Html.DisplayNameFor(model => model.ConsumerSubscriptionNo)
-                                </th>
-                                <th class="text-center">
-                                    @Html.DisplayNameFor(model => model.SubscriptionUsingType)
-                                </th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr class="fs-4">
-                                    <td class="text-center">
-                                        @Html.DisplayFor(modelItem => item.Id)
-                                    </td>
-                                    <td class="text-center">
-                                        @Html.DisplayFor(modelItem => item.ConsumerBarCode)
-                                    </td>
-                                    <td class="text-center">
-                                        @Html.DisplayFor(modelItem => item.ConsumerSubscriptionNo)
-                                    </td>
-                                    <td class="text-center">
-                                        @Html.DisplayFor(modelItem => item.SubscriptionUsingType)
-                                    </td>
-                                    <td class="text-center">
-                                        @switch (ViewData["requestType"])
-                                        {
-                                            case "clearance":
-                                                @Html.ActionLink("", "SubmitClearanceRequest", new { sid=item.Id },new {@class="bi bi-hand-index text-success fs-3"})
-                                                break;
-                                            case "repair":
-                                                @Html.ActionLink("", "SubmitRepairRequest", new { sid=item.Id },new {@class="bi bi-hand-index text-success fs-3"})
-                                                break;
-                                            case "invoice":
-                                                @Html.ActionLink("", "ViewSubscriptionInvoices", new { sid=item.Id },new {@class="bi bi-hand-index text-success fs-3"})
-                                                break;
-                                        }
-                                    </td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                    @Html.ActionLink("Cancel", "Index", new { },new {@class="btn btn-lg btn-outline-danger m-3 w-25"})
-                    <div class="mb-3">
-                        <span class="text-danger fw-bold fs-4">@ViewData["message"]</span>
-                    </div>
-                </div>
-            </div>
+<div class="card container py-2 m-auto mainCard">
+    <div class="card-body text-center">
+        <div class="bg-white bg-opacity-50 rounded-pill p-1 fs-2 mb-2">
+            <h2 class="fw-bold text-dark">Please Choose the Subscription</h2>
         </div>
+
+        @if (ViewData["message"] != null)
+        {
+            <div class="mb-3">
+                <span class="text-danger fw-bold fs-4">@ViewData["message"]</span>
+            </div>
+        }
+
+        <div class="pre-scrollable">
+            @foreach (ModelLibrary.Subscription sub in Model)
+            {                
+                <div class="btn btn-lg btn-outline-dark shadow-lg w-75 m-auto my-2 p-2 reqRow">
+                    <span class="float-start bg-light bg-opacity-75 text-dark shadow fs-5 rounded-pill p-2 m-auto">@sub.Id.ToString("D3")</span>
+                    <span class="float-start ms-5 fw-bold text-light fs-4 m-auto rounded p-1">@sub.ConsumerBarCode</span>
+                    <span class="float-start ms-5 fw-bold text-light fs-4 m-auto rounded p-1">@sub.ConsumerSubscriptionNo</span>
+                    <span class="float-start ms-5 fw-bold text-light fs-5 m-auto rounded p-1">@sub.SubscriptionUsingType</span>
+                    @switch (ViewData["requestType"])
+                    {
+                        case "clearance":
+                            @Html.ActionLink("", "SubmitClearanceRequest", new { sid = sub.Id }, new { @class = "float-end bi bi-hand-index text-dark icoRow fs-3" })
+                            break;
+                        case "repair":
+                            @Html.ActionLink("", "SubmitRepairRequest", new { sid=sub.Id },new {@class="float-end bi bi-hand-index text-dark icoRow fs-3"})
+                            break;
+                        case "invoice":
+                            @Html.ActionLink("", "ViewSubscriptionInvoices", new { sid=sub.Id },new {@class="float-end bi bi-hand-index text-dark icoRow fs-3"})
+                            break;
+                    }
+                </div>
+            }
+        </div>
+        @Html.ActionLink("Cancel", "Index", new { },new {@class="btn btn-lg btn-outline-danger fw-bold m-3 w-25"})
     </div>
-</section>
+</div>

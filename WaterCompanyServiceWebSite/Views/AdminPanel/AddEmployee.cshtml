@@ -4,70 +4,98 @@
     ViewData["Title"] = "AddEmployee";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<div class="card container py-2 m-auto mainCard">
+    <div class="card-body text-center">
+        <div class="bg-white bg-opacity-50 rounded-pill p-1 fs-2">
+            <h2 class="fw-bold text-dark">Add Employee</h2>
+        </div>
+        @if (ViewData["message"] != null)
+        {
+            <div class="mb-3">
+                <span class="text-danger fw-bold fs-4">@ViewData["message"]</span>
+            </div>
+        }
 
-<div class="row text-center bg-dark bg-opacity-10 mb-2 rounded-3 p-3 m-auto">
-    <h1>Add Employee</h1>
-</div>
-
-<section class="gradient-custom">
-    <div class="container py-2 h-100">
-        <div class="row d-flex justify-content-center align-items-center">
-            <div class="">
-                <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                    <form asp-action="AddEmployee">
-                        <div class="card-body p-5 text-center">
-                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label asp-for="EmployeeName" class="control-label"></label>
-                                        <input asp-for="EmployeeName" class="text-center form-control" />
-                                        <span asp-validation-for="EmployeeName" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="EmployeePhone" class="control-label"></label>
-                                        <input asp-for="EmployeePhone" class="text-center form-control" />
-                                        <span asp-validation-for="EmployeePhone" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="EmployeeAddress" class="control-label"></label>
-                                        <input asp-for="EmployeeAddress" class="text-center form-control" />
-                                        <span asp-validation-for="EmployeeAddress" class="text-danger"></span>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="form-group">
-                                        <label asp-for="User.UserName" class="control-label"></label>
-                                        <input asp-for="User.UserName" class="text-center form-control" />
-                                        <span asp-validation-for="User.UserName" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="User.Password" class="control-label"></label>
-                                        <input asp-for="User.Password" type="password" class="text-center form-control" />
-                                        <span asp-validation-for="User.Password" class="text-danger"></span>
-                                    </div>
-                                    <div class="form-group">
-                                        <label asp-for="Department.DepartmentName" class="control-label"></label>
-                                        @Html.DropDownListFor(m=>m.Department.Id,new SelectList(ViewData["departments"] as List<ModelLibrary.Department>,"Id","DepartmentName"), new {@class="form-control text-center"})
-                                        <span asp-validation-for="Department.Id" class="text-danger"></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="mb-3">
-                                <span class="text-danger fw-bold fs-4">@ViewData["message"]</span>
-                            </div>
-
-                            <div class="form-group mt-3">
-                                <input type="submit" value="Create" class="btn btn-lg btn-outline-primary w-25" />
-                                <a asp-action="UserManagement" class="btn btn-lg btn-outline-danger w-25">Cancel</a>
-
-                            </div>
+        <form asp-action="AddEmployee">
+            <div class="row mt-4 m-auto">
+                <div class="col pb-4 mx-2 border rounded border-dark shadow-lg">
+                    <h4 class="bg-dark bg-opacity-10 w-75 m-auto border border-dark rounded shadow py-3 px-1 text-white text-opacity-75 my-3">
+                        Personal Details
+                    </h4>
+                    <div class="row mt-2">
+                        <div class="col-5">
+                            <label class="control-label fs-4 text-white text-opacity-75 fw-bold">Full Name</label>
                         </div>
-                    </form>
+                        <div class="col-7">
+                            <input asp-for="EmployeeName" class="form-control text-center" />
+                            <span asp-validation-for="EmployeeName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-5">
+                            <label class="control-label fs-4 text-white text-opacity-75 fw-bold">Address</label>
+
+                        </div>
+                        <div class="col-7">
+                            <input asp-for="EmployeeAddress" class="form-control text-center" />
+                            <span asp-validation-for="EmployeeAddress" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-5">
+                            <label class="control-label fs-4 text-white text-opacity-75 fw-bold">Mobile Number</label>
+                        </div>
+                        <div class="col-7">
+                            <input asp-for="EmployeePhone" class="form-control text-center" />
+                            <span asp-validation-for="EmployeePhone" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>                
+                <div class="col pb-4 mx-2 border rounded border-dark shadow-lg">
+                    <h4 class="bg-dark bg-opacity-10 w-75 m-auto border border-dark rounded shadow py-3 px-1 text-white text-opacity-75 my-3">
+                        Account Details
+                    </h4>
+                    <div class="row mt-2">
+                        <div class="col-5">
+                            <label class="control-label fs-4 text-white text-opacity-75 fw-bold">User Name</label>
+                        </div>
+                        <div class="col-7">
+                            <input asp-for="User.UserName" class="form-control text-center" />
+                            <span asp-validation-for="User.UserName" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-5">
+                            <label class="control-label fs-4 text-white text-opacity-75 fw-bold">Password</label>
+                        </div>
+                        <div class="col-7">
+                            <input type="password" asp-for="User.Password" class="form-control text-center" />
+                            <span asp-validation-for="User.Password" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-5">
+                            <label class="control-label fs-4 text-white text-opacity-75 fw-bold">Confirm</label>
+                        </div>
+                        <div class="col-7">
+                            <input type="password" name="passwordConfirm" class="form-control text-center" />
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-5">
+                            <label class="control-label fs-4 text-white text-opacity-75 fw-bold">Department</label>
+                        </div>
+                        <div class="col-7">
+                            @Html.DropDownListFor(m=>m.Department.Id,new SelectList(ViewData["departments"] as List<ModelLibrary.Department>,"Id","DepartmentName"), new {@class="form-control text-center"})
+                            <span asp-validation-for="Department.Id" class="text-danger"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+            <div class="card-body text-center form-group mt-3">
+                    <input type="submit" value="Create" class="fw-bold btn btn-lg btn-outline-light w-25" />
+                <a asp-action="EmployeeManagement" class="fw-bold btn btn-lg btn-outline-danger w-25">Cancel</a>
+            </div>
+        </form>
     </div>
-</section>
-
+</div>

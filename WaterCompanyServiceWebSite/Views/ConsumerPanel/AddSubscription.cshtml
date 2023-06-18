@@ -5,85 +5,95 @@
 }
 
 
-<section class="gradient-custom">
-    <div class="container py-2 h-100">
-        <div class="row d-flex justify-content-center align-items-center">
-            <div class="card bg-dark text-white" style="border-radius: 1rem;">
-                <div class="card-body p-5 text-center">
-                    <form method="post" action="AddSubscription">
-                        <div class="mb-md-4 mt-md-4 pb-3 text-center">
-
-                            <h2 class="fw-bold mb-2 text-uppercase">Add Subscription</h2>
-                            <p class="text-white-50 mb-5">Please enter subscription barcode</p>
-
-                            <div class="form-outline  m-auto mb-4 w-50">
-                                <label class="control-label">Subscription Barcode</label>
-                                <input asp-for="ConsumerBarCode" class="form-control text-center" />
-                                <span asp-validation-for="ConsumerBarCode" class="text-danger"></span>
-                            </div>
-
-
-
-                            <div class="btn-group-lg">
-                                @Html.ActionLink("Cancel","index","ConsumerPanel",null, new { @class = "btn btn-outline-danger btn-lg w-25" })
-                                <button class="btn btn-outline-success btn-lg w-25" type="submit">Search</button>
-                            </div>
-
-                            <div class="mb-3">
-                                <span class="text-danger fw-bold fs-4">@ViewData["message"]</span>
-                            </div>
-
-                            @if (Model != null && Model.Consumer == null)
-                            {
-                                <div id="details">
-                                    <h2>Details</h2>
-                                    <div class="table">
-                                        <div class="row">
-                                            <div class="col-5">
-                                                <label class="control-label text-white fs-5 fw-bold">Barcode</label>
-                                            </div>
-                                            <div class="col-6">
-                                                <input disabled="disabled" asp-for="ConsumerBarCode" class="form-control text-center" />
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-5">
-                                                <label class="control-label text-white fs-5 fw-bold">Subscription Number</label>
-                                            </div>
-                                            <div class="col-6">
-                                                <input disabled="disabled" asp-for="ConsumerSubscriptionNo" class="form-control text-center" />
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-5">
-                                                <label class="control-label text-white fs-5 fw-bold">Status</label>
-                                            </div>
-                                            <div class="col-6">
-                                                <input disabled="disabled" asp-for="SubscriptionStatus" class="form-control text-center" />
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-5">
-                                                <label class="control-label text-white fs-5 fw-bold">Type</label>
-                                            </div>
-                                            <div class="col-6">
-                                                <input disabled="disabled" asp-for="SubscriptionUsingType" class="form-control text-center" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="btn-group-lg mt-2">
-                                        @Html.ActionLink("Cancel","index","ConsumerPanel",null, new { @class = "btn btn-outline-danger btn-lg w-25 m-1" })
-                                        @Html.ActionLink("Submit Request","SubmitAttachRequest","ConsumerPanel",Model, new { @class = "btn btn-outline-success btn-lg w-25 m-1" })
-                                    </div>
-                                </div>
-                            }
-
-                        </div>
-                    </form>
-                </div>
-            </div>
+<div class="card bg-opacity-25 container py-2 m-auto shadow mainCard">
+    <div class="card-body text-center">
+        <div class="bg-white bg-opacity-50 rounded-pill p-1 fs-2">
+            <h2 class=" fw-bold">Attach Subscription</h2>
         </div>
+
+        @if (ViewData["message"] != null)
+        {
+            <div class="mb-3">
+                <span class="text-danger fw-bold fs-4">@ViewData["message"]</span>
+            </div>
+        }
+        <form method="post" action="AddSubscription">
+            <div class="mb-md-4 mt-md-4 pb-3 text-center">
+
+                <h4 class="bg-dark bg-opacity-10 w-75 m-auto border border-dark rounded shadow py-3 px-1 text-white text-opacity-75 my-3">
+                    Please enter subscription barcode
+                </h4>
+
+                <div class="row mt-2 w-75 m-auto">
+                    <div class="col-6">
+                        <label class="control-label fs-4 text-white text-opacity-75 fw-bold">Subscription Barcode</label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="ConsumerBarCode" class="form-control text-center" />
+                        <span asp-validation-for="ConsumerBarCode" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="btn-group-lg my-4">
+                    @Html.ActionLink("Cancel","index","ConsumerPanel",null, new { @class = "fw-bold btn btn-outline-danger btn-lg w-25 m-1" })
+                    <button class="btn btn-outline-light btn-lg w-25 fw-bold m-1" type="submit">Search</button>
+                </div>
+
+                @if (Model != null && Model.Consumer == null)
+                {
+                    <div id="details">
+                        <h4 class="bg-dark bg-opacity-10 w-75 m-auto border border-dark rounded shadow py-3 px-1 text-white text-opacity-75 my-3">
+                            Subscription Details
+                        </h4>
+                        <div class="table">
+                            <div class="row">
+                                <div class="col-5">
+                                    <label class="control-label fs-4 text-white text-opacity-75 fw-bold">Subscription Barcode</label>
+
+                                </div>
+                                <div class="col-6">
+                                    <input disabled="disabled" asp-for="ConsumerBarCode" class="form-control text-center" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5">
+                                    <label class="control-label fs-4 text-white text-opacity-75 fw-bold">Subscription Number</label>
+
+                                </div>
+                                <div class="col-6">
+                                    <input disabled="disabled" asp-for="ConsumerSubscriptionNo" class="form-control text-center" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5">
+                                    <label class="control-label fs-4 text-white text-opacity-75 fw-bold">Subscription Status</label>
+
+                                </div>
+                                <div class="col-6">
+                                    <input disabled="disabled" asp-for="SubscriptionStatus" class="form-control text-center" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-5">
+                                    <label class="control-label fs-4 text-white text-opacity-75 fw-bold">Subscription Type</label>
+
+                                </div>
+                                <div class="col-6">
+                                    <input disabled="disabled" asp-for="SubscriptionUsingType" class="form-control text-center" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="btn-group-lg mt-2">
+                            @Html.ActionLink("Cancel","index","ConsumerPanel",null, new { @class = "fw-bold btn btn-outline-danger btn-lg w-25 m-1" })
+                            @Html.ActionLink("Submit Request","SubmitAttachRequest","ConsumerPanel",Model, new { @class = "fw-bold btn btn-outline-light btn-lg w-25 m-1" })
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </form>
     </div>
-</section>
+</div>
+
 

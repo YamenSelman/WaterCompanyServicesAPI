@@ -11,6 +11,35 @@ namespace WaterCompanyServiceWebSite.Controllers
             List<Request> pendingRequests = DataAccess.GetPendingRequests();
             return View(pendingRequests);
         }
+        public IActionResult ChangePassword()
+        {
+            return View();
+        }
+
+
+        [HttpPost]        
+        public IActionResult ChangePassword(ChangePasswordVM vm)
+        {
+            if(vm.NewPassword == null || vm.OldPassword== null || vm.ConfirmPassword == null) {
+                ViewData["message"] = "Please insert all the fields";
+                return View();
+            }
+            if(vm.OldPassword != DataAccess.CurrentUser.Password)
+            {
+                ViewData["message"] = "Old password is incorrect";
+                return View();
+            }
+            if(vm.NewPassword != vm.ConfirmPassword)
+            {
+                ViewData["message"] = "New password mismatch";
+                return View();
+            }
+            DataAccess.CurrentUser.Password = vm.NewPassword;
+            DataAccess.UpdateUser(DataAccess.CurrentUser);
+            ViewData["message"] = "Password changed successfully";
+            List<Request> pendingRequests = DataAccess.GetPendingRequests();
+            return View("Index", pendingRequests);
+        }
 
         public IActionResult ViewRequest(int id)
         {

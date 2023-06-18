@@ -8,7 +8,10 @@
 <div class="card text-white container py-2 m-auto mainCard">
     <div class="card-body text-center">
         <div class="bg-white bg-opacity-50 rounded-pill p-1 fs-2">
-            <h2 class="fw-bold text-dark">Employee Panel</h2>
+            <span class="fw-bold text-dark w-50 m-auto fs-3">Employee Panel</span>
+            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Change Password">
+                @Html.ActionLink(" ", "ChangePassword",null,null,new {@class="me-4 icoRow text-dark fw-bold float-end bi bi-person-lock"})
+            </span>
         </div>
 
         @if (ViewData["message"] != null)
@@ -26,7 +29,7 @@
         @foreach (ModelLibrary.Request req in Model)
         {
 
-            <a href=" @Url.Action("ViewRequest", "employeepanel", new {id = req.Id })" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="@req.RequestType request">
+            <a href="@Url.Action("ViewRequest", "employeepanel", new {id = req.Id })" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="@req.RequestType request">
                 <div class="btn btn-lg btn-outline-dark shadow-lg w-75 m-auto my-2 p-2 reqRow">
                     <span class="float-start bg-light bg-opacity-75 text-dark shadow fs-6 rounded-pill p-1">@req.Id.ToString("D2")</span>
 

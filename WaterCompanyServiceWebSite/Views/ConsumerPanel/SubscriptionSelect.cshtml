@@ -10,13 +10,6 @@
             <h2 class="fw-bold text-dark">Please Choose the Subscription</h2>
         </div>
 
-        @if (ViewData["message"] != null)
-        {
-            <div class="mb-3">
-                <span class="text-danger fw-bold fs-4">@ViewData["message"]</span>
-            </div>
-        }
-
         <div class="pre-scrollable">
             @foreach (ModelLibrary.Subscription sub in Model)
             {                

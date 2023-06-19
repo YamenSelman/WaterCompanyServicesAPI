@@ -292,6 +292,16 @@ namespace WaterCompanyServiceWebSite.Controllers
             InvoicesVM model = new InvoicesVM();
             model.Subscription = DataAccess.GetSubscription(sid);
             model.Invoices = DataAccess.GetInvoices(model.Subscription.ConsumerBarCode);
+            if (model.Invoices != null)
+            {
+                ViewData["total"] = model.Invoices.Sum(i => i.InvoiceValue);
+                ViewData["unpaid"] = model.Invoices.Where(i => i.InvoiceStatus == false).Sum(i => i.InvoiceValue);
+            }
+            else
+            {
+                ViewData["total"] = "No Invoices";
+                ViewData["unpaid"] = "No Invoices";
+            }
             return View(model);
         }
 

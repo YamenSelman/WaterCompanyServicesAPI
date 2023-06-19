@@ -5,96 +5,93 @@
 }
 
 
-<div class="container py-2 h-100 m-auto">
-    <div class="row d-flex justify-content-center align-items-center">
-        <div class="card bg-dark text-white" style="border-radius: 1rem;">
-            <div class="card-body p-5 text-center">
-                <h1 class="text-start">Subscription Invoices</h1>
-                <div class="row">
-                    <div class="row text-center bg-light bg-opacity-10 rounded-3 m-auto p-3">
-                        <div>
-                            <h3 class="bg-white bg-opacity-25 rounded-3 p-2">Subscription</h3>
-                        </div>
-                        <div class="text-start row fs-3">
-                            <div class="col-6">
-                                @Html.LabelFor(modelItem => Model.Subscription.ConsumerBarCode)
-                            </div>
-                            <div class="col-6">
-                                @Html.EditorFor(modelItem => Model.Subscription.ConsumerBarCode,  new { htmlAttributes = new { @class = "form-control text-center", @readonly = "readonly" } })
-                            </div>
-                        </div>
-                        <div class="text-start row fs-3">
-                            <div class="col-6">
-                                @Html.LabelFor(modelItem => Model.Subscription.ConsumerSubscriptionNo)
-                            </div>
-                            <div class="col-6">
-                                @Html.EditorFor(modelItem => Model.Subscription.ConsumerSubscriptionNo,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
-                            </div>
-                        </div>
-                        <div class="text-start row fs-3">
-                            <div class="col-6">
-                                @Html.LabelFor(modelItem => Model.Subscription.SubscriptionUsingType)
-                            </div>
-                            <div class="col-6">
-                                @Html.EditorFor(modelItem => Model.Subscription.SubscriptionUsingType,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
-                            </div>
-                        </div>
+<div class="card text-white container py-2 m-auto mainCard">
+    <div class="card-body text-center">
+        <div class="bg-white bg-opacity-50 rounded-pill p-1 fs-2">
+            <span class="fw-bold text-dark w-50 m-auto fs-3">Subscription Invoices</span>
+            <span data-bs-toggle="tooltip" data-bs-placement="top" title="Change Password">
+                @Html.ActionLink(" ", "ChangePassword",null,null,new {@class="me-4 icoRow text-dark fw-bold float-end bi bi-person-lock"})
+            </span>
+        </div>
+
+        <div class="row">
+            <h5 class="w-75 m-auto bg-dark bg-opacity-10 border border-dark rounded shadow py-3 px-1 text-white text-opacity-75 my-3">
+                Subscription
+            </h5>
+            <div class="row text-center rounded-3 w-75 m-auto p-3">
+                <div class="text-start row fs-3">
+                    <div class="col-6">
+                        @Html.LabelFor(modelItem => Model.Subscription.ConsumerBarCode,new{@class="control-label fs-4 text-white text-opacity-75 fw-bold"})
                     </div>
-                    <div class="row text-center bg-light bg-opacity-10 rounded-3 m-auto p-3">
-                        <div>
-                            <h3 class="bg-white bg-opacity-25 rounded-3 p-2">Invoices</h3>
-                        </div>
-                        <table class="table table-hover table-dark">
-                            <thead>
-                                <tr class="fs-4">
-                                    <th class="text-center">
-                                        Invoice Year
-                                    </th>   
-                                    <th class="text-center">
-                                        Invoice Cycle
-                                    </th>
-                                    <th class="text-center">
-                                        Invoice Value
-                                    </th>
-                                    <th class="text-center">
-                                        Invoice Status
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var item in Model.Invoices)
-                                {
-                                    <tr class="fs-4">
-                                        <td class="text-center">
-                                            @Html.DisplayFor(modelItem => item.InvoiceYear)
-                                        </td>    
-                                        <td class="text-center">
-                                            @Html.DisplayFor(modelItem => item.InvoiceCycle)
-                                        </td>
-                                        <td class="text-center">
-                                            @Html.DisplayFor(modelItem => item.InvoiceValue)
-                                        </td>
-                                        <td class="text-center">
-                                            @if (item.InvoiceStatus)
-                                            {
-                                                <i class="bi bi-check-square text-success"></i>
-                                            }
-                                            else
-                                            {
-                                                <i class="bi bi-x-square text-danger"></i>
-                                            }
-                                        </td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                    <div class="col-6">
+                        @Html.EditorFor(modelItem => Model.Subscription.ConsumerBarCode,  new { htmlAttributes = new { @class = "form-control text-center", @readonly = "readonly" } })
                     </div>
-                    
-                    <div class="row text-center bg-light bg-opacity-10 rounded-3 m-auto p-3">                     
-                        <div class="text-start row fs-3 mt-3">
-                            @Html.ActionLink("Back", "InvoiceRequest",new {}, new { @class="btn btn-lg btn-outline-info w-25 m-auto"})
-                        </div>
+                </div>
+                <div class="text-start row fs-3">
+                    <div class="col-6">
+                        @Html.LabelFor(modelItem => Model.Subscription.ConsumerSubscriptionNo,new{@class="control-label fs-4 text-white text-opacity-75 fw-bold"})
                     </div>
+                    <div class="col-6">
+                        @Html.EditorFor(modelItem => Model.Subscription.ConsumerSubscriptionNo,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                    </div>
+                </div>
+                <div class="text-start row fs-3">
+                    <div class="col-6">
+                        @Html.LabelFor(modelItem => Model.Subscription.SubscriptionUsingType,new{@class="control-label fs-4 text-white text-opacity-75 fw-bold"})
+                    </div>
+                    <div class="col-6">
+                        @Html.EditorFor(modelItem => Model.Subscription.SubscriptionUsingType,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                    </div>
+                </div>
+                <div class="text-start row fs-3">
+                    <div class="col-6">
+                        <label class="control-label fs-4 text-white text-opacity-75 fw-bold">Total Amount</label>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-control text-center fw-bold">@ViewData["total"]</label>
+                    </div>
+                </div>
+                <div class="text-start row fs-3">
+                    <div class="col-6">
+                        <label class="control-label fs-4 text-white text-opacity-75 fw-bold">Unapid Amount</label>
+                    </div>
+                    <div class="col-6">
+                        <label class="form-control text-center fw-bold text-danger">@ViewData["unpaid"]</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row text-center rounded-3 m-auto px-3">
+                <h5 class="w-75 m-auto bg-dark bg-opacity-10 border border-dark rounded shadow py-3 px-1 text-white text-opacity-75 my-3">
+                    Invoices
+                </h5>
+                <div class="pre-scrollable">
+                    @foreach (var inv in Model.Invoices)
+                    {
+
+                        <div class="btn btn-lg btn-outline-dark shadow-lg w-75 m-auto my-2 p-2 reqRow">
+                            <span class="float-start fw-bold text-light fs-6 p-1">@inv.InvoiceYear / @inv.InvoiceCycle</span>
+                            <span class="fw-bold text-light fs-6 p-1">@inv.InvoiceValue</span>
+                            @if(inv.InvoiceStatus)
+                            {
+                                <span class="float-end ms-2 bg-light bg-opacity-75 text-dark shadow fs-6 rounded-pill p-1">
+                                    <i class="bi bi-check-square text-success"></i>
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="float-end ms-2 bg-light bg-opacity-75 text-dark shadow fs-6 rounded-pill p-1">
+                                    <i class="bi bi-x-square text-danger"></i>
+                                </span>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="row text-center rounded-3 m-auto p-3">
+                <div class="text-start row fs-3 mt-3">
+                    @Html.ActionLink("Back", "InvoiceRequest",new {}, new { @class="fw-bold btn btn-lg btn-outline-light w-25 m-auto"})
                 </div>
             </div>
         </div>

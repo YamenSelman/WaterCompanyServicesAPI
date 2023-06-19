@@ -9,12 +9,6 @@
         <div class="bg-white bg-opacity-50 rounded-pill p-1 fs-2">
             <h2 class="fw-bold text-dark">Add Employee</h2>
         </div>
-        @if (ViewData["message"] != null)
-        {
-            <div class="mb-3">
-                <span class="text-danger fw-bold fs-4">@ViewData["message"]</span>
-            </div>
-        }
 
         <form asp-action="AddEmployee">
             <div class="row mt-4 m-auto">

@@ -16,12 +16,6 @@
                 @Html.ActionLink(" ", "AddEmployee",null,null,new {@class="me-4 icoRow text-dark fw-bold float-end bi bi-person-add"})
             </span>
         </div>
-        @if (ViewData["message"] != null)
-        {
-            <div class="mb-3">
-                <span class="text-danger fw-bold fs-4">@ViewData["message"]</span>
-            </div>
-        }
 
         <h3 class="w-75 m-auto bg-dark bg-opacity-10 border border-dark rounded shadow py-3 px-1 text-white text-opacity-75 my-3">
             System Employees

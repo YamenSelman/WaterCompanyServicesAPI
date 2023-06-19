@@ -8,6 +8,7 @@
     <link runat="server" rel="icon" href="~/img/favicon.ico" type="image/ico" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <link rel="stylesheet" href="~/WaterCompanyServiceWebSite.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </head>
@@ -61,6 +62,34 @@
     </header>
     <div class="container p-0 mw-100 m-0" style="  object-fit: cover;">
         <main role="main" class="pb-3">
+            <div id="welcomeModal" class="modal fade">
+
+                <div class="modal-dialog modal-lg">
+
+                    <div class="modal-content">
+
+                        <div class="modal-body bg-danger bg-opacity-10 p-5">
+
+                            <p class="m-auto w-100 m-5 text-center fw-bold fs-4">@ViewData["message"]</p>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @if (ViewData["message"] != null)
+            {
+@*                <div class="alert alert-danger fs-4 w-75 text-center fw-bold m-auto mb-2" role="alert">
+                    @ViewData["message"]
+                </div>*@
+                <script>
+                    $(document).ready(function () { $('#welcomeModal').modal('show'); })
+                    
+
+                </script>
+            }
+            
+            
             @RenderBody()
         </main>
     </div>
@@ -74,5 +103,6 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
 </body>
 </html>

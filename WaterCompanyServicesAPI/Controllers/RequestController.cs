@@ -335,7 +335,7 @@ namespace WaterCompanyServicesAPI.Controllers
                                         sub.SubscriptionAddress = req.Details.NewSubAddress;
                                         sub.SubscriptionUsingType = req.Details.NewSubType;
                                         sub.Consumer = req.Consumer;
-
+                                        sub.RegisterDate = DateTime.Now;
                                         _context.Subscriptions.Add(sub);
 
                                         req.Result = new RequestResult();

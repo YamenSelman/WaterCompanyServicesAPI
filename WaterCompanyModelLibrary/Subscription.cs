@@ -31,6 +31,8 @@ namespace ModelLibrary
         [AllowNull]
         public Consumer? Consumer { get; set; }
 
+        public DateTime RegisterDate { get; set; }
+
         [AllowNull]
         public virtual ICollection<Request>? Requests { get; set;}
 

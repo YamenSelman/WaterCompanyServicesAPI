@@ -22,7 +22,7 @@
         @foreach (ModelLibrary.Request req in Model)
         {
 
-            <a href="@Url.Action("ViewRequest", "employeepanel", new {id = req.Id })" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="@req.RequestType request">
+            <a href="@Url.Action("ViewRequest", "employeepanel", new {rid = req.Id })" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="@req.RequestType request">
                 <div class="btn btn-lg btn-outline-dark shadow-lg w-75 m-auto my-2 p-2 reqRow">
                     <span class="float-start bg-light bg-opacity-75 text-dark shadow fs-6 rounded-pill p-1">@req.Id.ToString("D2")</span>
 

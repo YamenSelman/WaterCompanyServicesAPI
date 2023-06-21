@@ -205,7 +205,7 @@ namespace WaterCompanyServicesAPI.Controllers
             List<string> status = new List<string> { "completed", "rejected" };
             return await _context.Requests.Include(r=>r.Consumer).Include(r=>r.Subscription).Where(r => r.CurrentDepartment != null && r.CurrentDepartment.Id == did && !status.Contains(r.RequestStatus)).ToListAsync();
         }
-        
+
         [Route("/request/getByConsumer/{cid}")]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<RequestVM>>> GetByConsumer(int cid)

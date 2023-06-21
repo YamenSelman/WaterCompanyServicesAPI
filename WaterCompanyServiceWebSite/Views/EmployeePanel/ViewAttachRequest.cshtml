@@ -30,7 +30,10 @@
                             @Html.LabelFor(modelItem => Model.Request.RequestDate,new {@class = "text-uppercase fs-4 text-white text-opacity-75 fw-bold"})
                         </div>
                         <div class="col-6">
-                            @Html.EditorFor(modelItem => Model.Request.RequestDate,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                            @{
+                                string reqdate = Model.Request.RequestDate.ToString("dd/MM/yyyy");
+                            }
+                            <label class="form-control text-center">@reqdate</label>
                         </div>
                     </div>
                     <div class="text-start row fs-3">

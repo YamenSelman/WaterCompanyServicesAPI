@@ -18,6 +18,11 @@ namespace WaterCompanyServiceWebSite.Controllers
             return View();
         }
 
+        public IActionResult Logout()
+        {
+            DataAccess.CurrentUser = null;
+            return RedirectToAction("Index", "Home");
+        }
 
         [HttpPost]
         public IActionResult ChangePassword(ChangePasswordVM vm)
@@ -310,6 +315,7 @@ namespace WaterCompanyServiceWebSite.Controllers
             return View();
         }
 
+
         [HttpPost]
         public IActionResult TransferOwnership(TransferRequestVM vm)
         {
@@ -322,19 +328,19 @@ namespace WaterCompanyServiceWebSite.Controllers
             else
             {
                 vm.Subscription = sub;
-                if(vm.Subscription.Consumer == null)
+                if (vm.Subscription.Consumer == null)
                 {
                     ViewData["message"] = "This subscription is not attached .. add attach request";
                 }
             }
-            return View("TransferOwnership",vm);
+            return View("TransferOwnership", vm);
         }
 
         [HttpPost]
         public IActionResult SubmitTransferRequest(TransferRequestVM obj)
         {
             byte[] DocumentBA = null;
-            if (obj != null && obj.Document!= null && obj.Subscription != null)
+            if (obj != null && obj.Document != null && obj.Subscription != null)
             {
                 if (obj.Document.Length > 0)
                 {
@@ -365,7 +371,7 @@ namespace WaterCompanyServiceWebSite.Controllers
                                 ViewData["message"] = "Error submiting the request";
                                 return View("TransferOwnership", obj);
                             }
-                            
+
                         }
                         catch (Exception e)
                         {
@@ -381,6 +387,28 @@ namespace WaterCompanyServiceWebSite.Controllers
             {
                 ViewData["message"] = "Request form not valid";
                 return View("TransferOwnership", obj);
+            }
+        }
+
+        public IActionResult RequestsStatues()
+        {
+            List<RequestVM> requests = DataAccess.GetConsumerRequests();
+            return View("ConsumerRequests", requests);
+        }
+
+        public IActionResult ViewRequest(int rid)
+        {
+            RequestVM obj = DataAccess.GetConsumerRequests().Where(r => r.Request.Id == rid).FirstOrDefault();
+
+            if (obj != null)
+            {
+                return View("ViewRequest", obj);
+            }
+            else
+            {
+                ViewData["message"] = "Error loading request information";
+                List<RequestVM> requests = DataAccess.GetConsumerRequests();
+                return View("ConsumerRequests", requests);
             }
         }
     }

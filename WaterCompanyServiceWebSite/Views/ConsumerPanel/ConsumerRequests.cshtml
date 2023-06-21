@@ -1,0 +1,83 @@
+﻿@model IEnumerable<RequestVM>
+
+@{
+    ViewData["Title"] = "Consumer Requests";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="card text-white container py-2 m-auto mainCard">
+    <div class="card-body text-center">
+        <div class="bg-white bg-opacity-50 rounded-pill p-1 fs-2">
+            <span class="fw-bold text-dark w-50 m-auto fs-3">Consumer Requests</span>
+        </div>
+
+        <h5 class="w-75 m-auto bg-dark bg-opacity-10 border border-dark rounded shadow py-3 px-1 text-white text-opacity-75 my-3">
+            List of all consumer requests
+        </h5>
+
+        <div class="pre-scrollable">
+            @foreach (var req in Model)
+            {
+                <a href="@Url.Action("ViewRequest", "consumerpanel", new {rid = req.Request.Id})" class="text-decoration-none" data-bs-toggle="tooltip" data-bs-placement="top" title="@req.Request.RequestType request">
+                    <div class="btn btn-lg btn-outline-dark shadow-lg w-75 m-auto my-2 p-2 reqRow">
+                        <span class="float-start bg-light bg-opacity-75 text-dark shadow  rounded-pill p-1">@req.Request.Id.ToString("D2")</span>
+
+                        @switch (req.Request.RequestType)
+                        {
+                            case "new":
+                                <span class="float-start ms-2 bg-light bg-opacity-75 text-dark shadow  rounded-pill p-1">
+                                    <i class="bi bi-speedometer2"></i>
+                                </span>
+                                break;
+                            case "transfer":
+                                <span class="float-start ms-2 bg-light bg-opacity-75 text-dark shadow  rounded-pill p-1">
+                                    <i class="bi bi-arrow-left-right"></i>
+                                </span>
+                                break;
+                            case "clearance":
+                                <span class="float-start ms-2 bg-light bg-opacity-75 text-dark shadow  rounded-pill p-1">
+                                    <i class="bi bi-bookmark-check"></i>
+                                </span>
+                                break;
+                            case "attach":
+                                <span class="float-start ms-2 bg-light bg-opacity-75 text-dark shadow rounded-pill p-1">
+                                    <i class="bi bi-clipboard-plus"></i>
+                                </span>
+                                break;
+                            case "repair":
+                                <span class="float-start ms-2 bg-light bg-opacity-75 text-dark shadow rounded-pill p-1">
+                                    <i class="bi bi-tools"></i>
+                                </span>
+                                break;
+                        }
+
+                        <span class="float-start ms-5 bg-dark bg-opacity-50 text-light rounded p-1">
+                            @req.Request.RequestDate.ToString("dd/MM/yyyy")
+                        </span>
+
+                        @if (req.Request.Subscription != null)
+                        {
+                            <span class="float-start ms-5 bg-dark bg-opacity-50 text-light  rounded p-1">Barcode</span>
+                            <span class="float-start p-1 fw-bold">@req.Request.Subscription.ConsumerBarCode</span>
+                        }
+
+                        @if (req.Request.RequestStatus != null)
+                        {
+                            string color = "bg-light";
+                            switch (req.Request.RequestStatus.ToLower())
+                            {
+                                case "rejected":
+                                    color = "bg-danger";
+                                    break;
+                                    case "completed":
+                                    color = "bg-success";
+                                    break;
+                            }
+                            <span class="float-end bg-opacity-50 text-dark  rounded ms-3 p-1 fw-bold @color">@req.Request.RequestStatus</span>
+                        }
+                    </div>
+                </a>
+            }
+        </div>
+    </div>
+</div>

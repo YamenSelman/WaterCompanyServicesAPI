@@ -1,4 +1,4 @@
-﻿@model RequestProcessVM
+﻿@model RequestVM
 
 @{
     ViewData["Title"] = "Request Details";
@@ -30,9 +30,7 @@
                             @Html.LabelFor(modelItem => Model.Request.RequestDate,new {@class = "text-uppercase fs-4 text-white text-opacity-75 fw-bold"})
                         </div>
                         <div class="col-6">
-                            @{
-                                string reqdate = Model.Request.RequestDate.ToString("dd/MM/yyyy");
-                            }
+                            @{string reqdate = Model.Request.RequestDate.ToString("dd/MM/yyyy");}
                             <label class="form-control text-center">@reqdate</label>
                         </div>
                     </div>
@@ -42,35 +40,6 @@
                         </div>
                         <div class="col-6">
                             @Html.EditorFor(modelItem => Model.Request.RequestType,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
-                        </div>
-                    </div>
-                </div>
-                <div class="row text-center rounded-3 m-auto">
-                    <h5 class="bg-dark bg-opacity-10 m-auto border border-dark rounded shadow py-3 px-1 text-white text-opacity-75 my-3">
-                        Consumer
-                    </h5>
-                    <div class="text-start row fs-3">
-                        <div class="col-6">
-                            @Html.LabelFor(modelItem => Model.Request.Consumer.ConsumerName,new {@class = "text-uppercase fs-4 text-white text-opacity-75 fw-bold"})
-                        </div>
-                        <div class="col-6">
-                            @Html.EditorFor(modelItem => Model.Request.Consumer.ConsumerName,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="text-start row fs-3">
-                        <div class="col-6">
-                            @Html.LabelFor(modelItem => Model.Request.Consumer.ConsumerAddress,new {@class = "text-uppercase fs-4 text-white text-opacity-75 fw-bold"})
-                        </div>
-                        <div class="col-6">
-                            @Html.EditorFor(modelItem => Model.Request.Consumer.ConsumerAddress,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
-                        </div>
-                    </div>
-                    <div class="text-start row fs-3">
-                        <div class="col-6">
-                            @Html.LabelFor(modelItem => Model.Request.Consumer.ConsumerPhone,new {@class = "text-uppercase fs-4 text-white text-opacity-75 fw-bold"})
-                        </div>
-                        <div class="col-6">
-                            @Html.EditorFor(modelItem => Model.Request.Consumer.ConsumerPhone,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
                         </div>
                     </div>
                 </div>
@@ -103,45 +72,57 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row text-center rounded-3 m-auto">
                     <h5 class="bg-dark bg-opacity-10 m-auto border border-dark rounded shadow py-3 px-1 text-white text-opacity-75 my-3">
-                        Action
+                        Statues
                     </h5>
-                    @if (ViewData["repairemp"].ToString().ToLower().Equals("true"))
+                    <div class="text-start row fs-3">
+                        <div class="col-6">
+                            @Html.LabelFor(modelItem => Model.Request.RequestStatus,new {@class = "text-uppercase fs-4 text-white text-opacity-75 fw-bold"})
+                        </div>
+                        <div class="col-6 fs-5">
+                            @Html.EditorFor(modelItem => Model.Request.RequestStatus,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                        </div>
+                    </div>
+                    @if(Model.Request.RequestStatus.ToLower() == "onprogress")
                     {
                         <div class="text-start row fs-3">
                             <div class="col-6">
-                                <label class="control-label fs-4 text-white text-opacity-75 fw-bold">REPAIRMENT</label>
+                                @Html.LabelFor(modelItem => Model.Request.CurrentDepartment.DepartmentName,new {@class = "text-uppercase fs-4 text-white text-opacity-75 fw-bold"})
                             </div>
-                            <div class="col-6 fs-5">
-                                @Html.DropDownListFor(modelItem => Model.Log.Notes,  new List<SelectListItem>{new SelectListItem{ Value = "Body replacement",Text="Body replacement"},new SelectListItem{ Value = "Dash bord replacement",Text="Dash bord replacement"},new SelectListItem{Value = "Mechanical part replacement",Text="Mechanical part replacement"},new SelectListItem{Value = "Full Replacement",Text="Full Replacement"}},new { @class = "form-control text-center mt-2"})
+                            <div class="col-6">
+                                @Html.EditorFor(modelItem => Model.Request.CurrentDepartment.DepartmentName,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
                             </div>
                         </div>
                     }
                     else
                     {
+                        if (Model.Request.RequestStatus.ToLower() == "rejected")
+                        {
+                            <div class="text-start row fs-3">
+                                <div class="col-6">
+                                    <lable class="text-uppercase fs-4 text-white text-opacity-75 fw-bold">Rejected By</lable>
+                                </div>
+                                <div class="col-6">
+                                    @Html.EditorFor(modelItem => Model.RejectedBy.DepartmentName,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
+                                </div>
+                            </div>
+                        }
+
                         <div class="text-start row fs-3">
                             <div class="col-6">
-                                @Html.LabelFor(modelItem => Model.Log.Notes,new {@class = "text-uppercase fs-4 text-white text-opacity-75 fw-bold"})
+                                <lable class="text-uppercase fs-4 text-white text-opacity-75 fw-bold">Finish Date</lable>
                             </div>
-                            <div class="col-6 fs-5">
-                                @Html.TextAreaFor(modelItem => Model.Log.Notes,   new { @class = "form-control fs-5 w-100", rows = "3" } )
+                            <div class="col-6">
+                                @{string finishdate = Model.FinishDate?.ToString("dd/MM/yyyy");}
+
+                                <label class="form-control text-center ">@finishdate</label>
                             </div>
                         </div>
                     }
-                    <div class="text-start row fs-3">
-                        <div class="col-6">
-                            @Html.LabelFor(modelItem => Model.Log.Decision,new {@class = "text-uppercase fs-4 text-white text-opacity-75 fw-bold"})
-                        </div>
-                        <div class="col-6">
-                            @Html.DropDownListFor(modelItem => Model.Log.Decision, new List<SelectListItem>{new SelectListItem{ Value = "true",Text="Accept"},new SelectListItem{Value = "false",Text="Reject"}},new { @class = "form-control text-center mt-2"})
-                        </div>
-                    </div>
-                    <div class="text-start row fs-3 mt-3">
-                        @Html.ActionLink("Cancel", "Index",new {}, new { @class="btn btn-lg fw-bold btn-outline-danger w-25 m-auto"})
-
-                        <input type="submit" class="btn btn-lg btn-outline-light fw-bold w-25 m-auto" value="Process">
+                    
+                    <div class=" text-start row fs-3 mt-3">
+                        @Html.ActionLink("Back", "RequestsStatues",new {}, new { @class="fw-bold btn btn-lg btn-outline-light w-25 m-auto"})
                     </div>
                 </div>
             </div>
@@ -149,4 +130,3 @@
         </form>
     </div>
 </div>
-

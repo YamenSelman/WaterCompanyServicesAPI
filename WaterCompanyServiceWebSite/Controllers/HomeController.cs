@@ -110,7 +110,8 @@ namespace WaterCompanyServiceWebSite.Controllers
                     consumer.User.UserType = "consumer";
                     consumer.User.AccountActive = false;
                     DataAccess.AddConsumer(consumer);
-                    return View("RegisterSuccess");
+                    ViewData["message"] = "Thanks for your registeration, Your account will be reviewed and activated as soon as possible";
+                    return View("Index");
                 }
             }
         }

@@ -41,15 +41,15 @@ namespace WaterCompanyServiceWebSite.Controllers
             return View("Index", pendingRequests);
         }
 
-        public IActionResult ViewRequest(int id)
+        public IActionResult ViewRequest(int rid)
         {
             RequestProcessVM obj = new RequestProcessVM();
-            obj.Request = DataAccess.GetRequest(id);
+            obj.Request = DataAccess.GetRequest(rid);
             obj.Log = new RequestsLog();
 
             if (obj.Request != null)
             {
-                if(obj.Request.RequestType != "new")
+                if (obj.Request.RequestType != "new")
                 {
                     obj.Request.Subscription = DataAccess.GetSubscriptionByBarcode(obj.Request.Subscription.ConsumerBarCode);
                 }

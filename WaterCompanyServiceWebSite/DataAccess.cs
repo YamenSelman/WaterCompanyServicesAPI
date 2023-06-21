@@ -6,6 +6,7 @@ using System.Net.Mime;
 using System.Security.Cryptography;
 using System.Text;
 using ModelLibrary;
+using WaterCompanyServiceWebSite.Models;
 
 namespace WaterCompanyServiceWebSite
 {
@@ -623,6 +624,29 @@ namespace WaterCompanyServiceWebSite
                     if (response.Result.IsSuccessStatusCode)
                     {
                         result = response.Result.Content.ReadFromJsonAsync<List<RequestResult>>().Result;
+                    }
+                }
+                return result;
+            }
+        }
+
+        public static List<RequestVM> GetConsumerRequests()
+        {
+            List<RequestVM> result = new List<RequestVM>();
+            using (var httpClient = new HttpClient())
+            {
+                int cid = GetCurrentConsumer().Id;
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri($"{BaseURL}request/getbyconsumer/{cid}"),
+                };
+
+                using (var response = httpClient.SendAsync(request))
+                {
+                    if (response.Result.IsSuccessStatusCode)
+                    {
+                        result = response.Result.Content.ReadFromJsonAsync<List<RequestVM>>().Result;
                     }
                 }
                 return result;

@@ -24,6 +24,13 @@ namespace WaterCompanyServicesAPI.Controllers
             return true;
         }
 
+        public static string Reverse(string s)
+        {
+            char[] charArray = s.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
+        }
+
         [Route("seed/{c}")]
         [HttpGet]
         public bool Seed(int c)
@@ -91,7 +98,6 @@ namespace WaterCompanyServicesAPI.Controllers
                             _context.SaveChanges();
                         }
                         var consumers = _context.Consumers.ToList();
-                        List<string> subnos = new List<string>();
                         foreach (Consumer cons in consumers)
                         {
                             int ct = rnd.Next(1, 4);
@@ -100,12 +106,7 @@ namespace WaterCompanyServicesAPI.Controllers
                                 Subscription sub = new Subscription();
                                 sub.ConsumerBarCode = barcode.ToString("D6");
                                 barcode++;
-                                do
-                                {
-                                    sub.ConsumerSubscriptionNo = rnd.Next(1, 777777).ToString("D6");
-                                }
-                                while (subnos.Contains(sub.ConsumerSubscriptionNo));
-                                subnos.Add(sub.ConsumerSubscriptionNo);
+                                sub.ConsumerSubscriptionNo = Reverse(sub.ConsumerBarCode);
                                 sub.SubscriptionAddress = areas[rnd.Next(areas.Length)];
                                 sub.SubscriptionStatus = substate[rnd.Next(substate.Length)];
                                 sub.SubscriptionUsingType = subtype[rnd.Next(subtype.Length)];
@@ -120,12 +121,7 @@ namespace WaterCompanyServicesAPI.Controllers
                             Subscription sub = new Subscription();
                             sub.ConsumerBarCode = barcode.ToString("D6");
                             barcode++;
-                            do
-                            {
-                                sub.ConsumerSubscriptionNo = rnd.Next(1, 999999).ToString("D6");
-                            }
-                            while (subnos.Contains(sub.ConsumerSubscriptionNo));
-                            subnos.Add(sub.ConsumerSubscriptionNo);
+                            sub.ConsumerSubscriptionNo = Reverse(sub.ConsumerBarCode);
                             sub.SubscriptionAddress = areas[rnd.Next(areas.Length)];
                             sub.SubscriptionStatus = substate[rnd.Next(substate.Length)];
                             sub.SubscriptionUsingType = subtype[rnd.Next(subtype.Length)];
@@ -270,7 +266,6 @@ namespace WaterCompanyServicesAPI.Controllers
                         }
                         var consumers = _context.Consumers.ToList();
                         List<Subscription> newSubs = new List<Subscription>();
-                        List<string> subnos = new List<string>();
                         foreach (Consumer cons in newConsumers)
                         {
                             int ct = rnd.Next(1, 4);
@@ -279,12 +274,7 @@ namespace WaterCompanyServicesAPI.Controllers
                                 Subscription sub = new Subscription();
                                 sub.ConsumerBarCode = barcode.ToString("D6");
                                 barcode++;
-                                do
-                                {
-                                    sub.ConsumerSubscriptionNo = rnd.Next(1, 777777).ToString("D6");
-                                }
-                                while (subnos.Contains(sub.ConsumerSubscriptionNo));
-                                subnos.Add(sub.ConsumerSubscriptionNo);
+                                sub.ConsumerSubscriptionNo = Reverse(sub.ConsumerBarCode);
                                 sub.SubscriptionAddress = areas[rnd.Next(areas.Length)];
                                 sub.SubscriptionStatus = substate[rnd.Next(substate.Length)];
                                 sub.SubscriptionUsingType = subtype[rnd.Next(subtype.Length)];
@@ -301,12 +291,7 @@ namespace WaterCompanyServicesAPI.Controllers
                             Subscription sub = new Subscription();
                             sub.ConsumerBarCode = barcode.ToString("D6");
                             barcode++;
-                            do
-                            {
-                                sub.ConsumerSubscriptionNo = rnd.Next(1, 999999).ToString("D6");
-                            }
-                            while (subnos.Contains(sub.ConsumerSubscriptionNo));
-                            subnos.Add(sub.ConsumerSubscriptionNo);
+                            sub.ConsumerSubscriptionNo = Reverse(sub.ConsumerBarCode);
                             sub.SubscriptionAddress = areas[rnd.Next(areas.Length)];
                             sub.SubscriptionStatus = substate[rnd.Next(substate.Length)];
                             sub.SubscriptionUsingType = subtype[rnd.Next(subtype.Length)];

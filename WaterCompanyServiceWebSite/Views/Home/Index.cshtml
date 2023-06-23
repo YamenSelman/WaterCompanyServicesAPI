@@ -1,9 +1,16 @@
-﻿@model NewSubscriptionVM
+﻿@model SubscriptionForecast
 @{
     ViewData["Title"] = "Home Page";
+    var x = Model;
 }
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+
+    @if(ViewData["result"] != null)
+    {
+        <div class="w-75 p-5 m-auto text-shadow bg-danger bg-opacity-25 text-center fs-3 fw-bold text-dark text-opacity-75">@ViewData["result"]</div>
+    }
+
 </div>

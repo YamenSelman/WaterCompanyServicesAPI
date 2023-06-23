@@ -15,8 +15,9 @@ namespace WaterCompanyServiceWebSite
         
         private static string live = "http://WCSAPI23.somee.com/";
         private static string local = "https://localhost:7186/";
+        private static string newsrc = "http://wcsapi23-001-site1.btempurl.com/";
         public static User CurrentUser = null;
-        private static string BaseURL = live;
+        private static string BaseURL = newsrc;
         public static void log(string msg)
         {
             System.Diagnostics.Debug.WriteLine(msg);
@@ -312,8 +313,37 @@ namespace WaterCompanyServiceWebSite
                 System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
             }
             return result;
-        }        
-        
+        }
+
+        public static List<Subscription> GetSubscriptions()
+        {
+            List<Subscription> result = null;
+            try
+            {
+                using (var httpClient = new HttpClient())
+                {
+                    var request = new HttpRequestMessage
+                    {
+                        Method = HttpMethod.Get,
+                        RequestUri = new Uri($"{BaseURL}subscription"),
+                    };
+
+                    using (var response = httpClient.SendAsync(request))
+                    {
+                        if (response.Result.IsSuccessStatusCode)
+                        {
+                            result = response.Result.Content.ReadFromJsonAsync<List<Subscription>>().Result;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
+            }
+            return result;
+        }
+
         public static List<Invoice> GetUnpaidInvoices(string barcode)
         {
             List<Invoice> result = null;

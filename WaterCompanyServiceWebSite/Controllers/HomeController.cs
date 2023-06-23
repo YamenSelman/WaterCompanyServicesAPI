@@ -5,6 +5,8 @@ using ModelLibrary;
 using WaterCompanyServiceWebSite.Models;
 using System.Buffers.Text;
 using System.Reflection;
+using Microsoft.ML;
+using Microsoft.ML.Transforms.TimeSeries;
 
 namespace WaterCompanyServiceWebSite.Controllers
 {
@@ -19,7 +21,32 @@ namespace WaterCompanyServiceWebSite.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var context = new MLContext();
+
+            var res = DataAccess.GetSubscriptions().GroupBy(s => s.RegisterDate).Select(g => new SubscriptionData(g.Key, g.Count())).ToArray();
+
+            var data = context.Data.LoadFromEnumerable<SubscriptionData>(res);
+
+            var pipline = context.Forecasting.ForecastBySsa(
+                "Forecast",
+                nameof(SubscriptionData.requests),
+                windowSize: 5,
+                seriesLength: 10,
+                trainSize: 1000,
+                horizon: 365
+                );
+
+            var model = pipline.Fit(data);
+
+            var forecastingEngine = model.CreateTimeSeriesEngine<SubscriptionData, SubscriptionForecast>(context);
+
+            var forecasts = forecastingEngine.Predict();
+
+            int result = (int)forecasts.Forecast.Sum();
+
+            ViewData["result"] = result;
+
+            return View(forecasts);
         }
 
         public IActionResult Login()

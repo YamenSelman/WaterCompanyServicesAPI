@@ -30,7 +30,9 @@
                             @Html.LabelFor(modelItem => Model.Request.RequestDate,new {@class = "text-uppercase fs-4 text-white text-opacity-75 fw-bold"})
                         </div>
                         <div class="col-6">
-                            @{string reqdate = Model.Request.RequestDate.ToString("dd/MM/yyyy");}
+                            @{
+                                string reqdate = Model.Request.RequestDate.ToString("dd/MM/yyyy");
+                            }
                             <label class="form-control text-center">@reqdate</label>
                         </div>
                     </div>
@@ -84,7 +86,7 @@
                             @Html.EditorFor(modelItem => Model.Request.RequestStatus,  new { htmlAttributes = new { @class = "form-control text-center",  @readonly = "readonly" } })
                         </div>
                     </div>
-                    @if(Model.Request.RequestStatus.ToLower() == "onprogress")
+                    @if (Model.Request.RequestStatus.ToLower() == "onprogress")
                     {
                         <div class="text-start row fs-3">
                             <div class="col-6">
@@ -114,16 +116,30 @@
                                 <lable class="text-uppercase fs-4 text-white text-opacity-75 fw-bold">Finish Date</lable>
                             </div>
                             <div class="col-6">
-                                @{string finishdate = Model.FinishDate?.ToString("dd/MM/yyyy");}
+                                @{
+                                    string finishdate = Model.FinishDate?.ToString("dd/MM/yyyy");
+                                }
 
                                 <label class="form-control text-center ">@finishdate</label>
                             </div>
                         </div>
                     }
-                    
-                    <div class=" text-start row fs-3 mt-3">
-                        @Html.ActionLink("Back", "RequestsStatues",new {}, new { @class="fw-bold btn btn-lg btn-outline-light w-25 m-auto"})
+                </div>
+                @if (Model.Request.Result != null && Model.Request.Result.Document != null)
+                {
+                <div class="row text-center rounded-3 m-auto">
+                    <h5 class="bg-dark bg-opacity-10 m-auto border border-dark rounded shadow py-3 px-1 text-white text-opacity-75 my-3">
+                        Result
+                    </h5>
+                    <div class="w-100 zoomin text-center">
+                        <img src="data:image;base64,@System.Convert.ToBase64String(Model.Request.Result.Document)" class="m-auto" />
                     </div>
+                </div>
+
+                }
+
+                <div class=" text-start row fs-3 mt-3">
+                    @Html.ActionLink("Back", "RequestsStatues",new {}, new { @class="fw-bold btn btn-lg btn-outline-light w-25 m-auto"})
                 </div>
             </div>
 

@@ -682,5 +682,28 @@ namespace WaterCompanyServiceWebSite
                 return result;
             }
         }
+
+        public static RequestVM GetConsumerRequest(int rid)
+        {
+            RequestVM result = new RequestVM();
+            using (var httpClient = new HttpClient())
+            {
+                int cid = GetCurrentConsumer().Id;
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri($"{BaseURL}request/getconsumerrequest/{rid}"),
+                };
+
+                using (var response = httpClient.SendAsync(request))
+                {
+                    if (response.Result.IsSuccessStatusCode)
+                    {
+                        result = response.Result.Content.ReadFromJsonAsync<RequestVM>().Result;
+                    }
+                }
+                return result;
+            }
+        }
     }
 }

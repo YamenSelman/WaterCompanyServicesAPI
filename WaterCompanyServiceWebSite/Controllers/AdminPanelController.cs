@@ -98,7 +98,33 @@ namespace WaterCompanyServiceWebSite.Controllers
             employee.User.AccountActive = true;
             employee.User.UserType = "employee";
             DataAccess.AddEmployee(employee);
-            return RedirectToAction("UserManagement", "AdminPanel");
+            return RedirectToAction("EmployeeManagement", "AdminPanel");
+        }
+
+        public IActionResult DashBoard()
+        {
+            var context = new MLContext();
+
+            var res = DataAccess.GetSubscriptions().GroupBy(s => s.RegisterDate).Select(g => new SubscriptionData(g.Key, g.Count())).ToArray();
+
+            var data = context.Data.LoadFromEnumerable<SubscriptionData>(res);
+
+            var pipline = context.Forecasting.ForecastBySsa(
+                "Forecast",
+                nameof(SubscriptionData.requests),
+                windowSize: 5,
+                seriesLength: 10,
+                trainSize: 1000,
+                horizon: 365
+                );
+
+            var model = pipline.Fit(data);
+
+            var forecastingEngine = model.CreateTimeSeriesEngine<SubscriptionData, SubscriptionForecast>(context);
+
+            var forecasts = forecastingEngine.Predict();
+
+            return View(forecasts);
         }
 
     }

@@ -231,6 +231,30 @@ namespace WaterCompanyServicesAPI.Controllers
             return result;
         }
 
+        [Route("/request/getConsumerRequest/{rid}")]
+        [HttpGet]
+        public async Task<ActionResult<RequestVM>> GetConsumerRequest(int rid)
+        {
+            RequestVM result = null;
+            var request = await _context.Requests.Include(r => r.Subscription).Include(r=>r.Result).Include(r=>r.CurrentDepartment).Where(r => r.Id == rid).FirstOrDefaultAsync();
+            if(request != null)
+            {
+                result = new RequestVM();
+                result.request = request;
+                if (request.RequestStatus.ToLower() != "onprogress")
+                {
+                    var log = await _context.RequestsLogs.Include(l => l.Department).Where(l => l.Request.Id == request.Id).OrderBy(r => r.Id).LastAsync();
+                    result.FinishDate = log.DateTime;
+                    if (request.RequestStatus.ToLower().Equals("rejected"))
+                    {
+                        result.RejectedBy = log.Department;
+                        result.RejectNotes = log.Notes;
+                    }
+                }
+            }
+            return result;
+        }
+
         [Route("/request/accept/{rid}/{eid}/{notes?}")]
         [HttpGet]
         public async Task<ActionResult<bool>> AcceptRequest(int rid, int eid, string notes = "")
@@ -373,11 +397,11 @@ namespace WaterCompanyServicesAPI.Controllers
                                 {
                                     if (emp.Department.Id == 2)
                                     {
-                                        req.CurrentDepartment = _context.Departments.Where(d => d.Id == 3).FirstOrDefault();
-                                    }
-                                    else if (emp.Department.Id == 3)
-                                    {
                                         req.CurrentDepartment = _context.Departments.Where(d => d.Id == 5).FirstOrDefault();
+                                    }
+                                    else if (emp.Department.Id == 5)
+                                    {
+                                        req.CurrentDepartment = _context.Departments.Where(d => d.Id == 3).FirstOrDefault();
                                     }
                                     else
                                     {

@@ -398,7 +398,7 @@ namespace WaterCompanyServiceWebSite.Controllers
 
         public IActionResult ViewRequest(int rid)
         {
-            RequestVM obj = DataAccess.GetConsumerRequests().Where(r => r.Request.Id == rid).FirstOrDefault();
+            RequestVM obj = DataAccess.GetConsumerRequest(rid);
 
             if (obj != null)
             {

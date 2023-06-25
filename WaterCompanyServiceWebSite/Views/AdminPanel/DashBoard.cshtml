@@ -28,7 +28,7 @@
                             }
                             <div class="m-auto text-shadow bg-danger bg-opacity-25 text-center fs-4 fw-bold text-dark text-opacity-75">@yearForcast</div>
                         </div>
-                    </div>                    
+                    </div>
                     <div class="text-start row fs-3">
                         <div class="col-6">
                             <lable class="text-uppercase fs-4 text-white text-opacity-75 fw-bold">Next Month</lable>
@@ -39,7 +39,7 @@
                             }
                             <div class="m-auto text-shadow bg-danger bg-opacity-25 text-center fs-4 fw-bold text-dark text-opacity-75">@monthForcast</div>
                         </div>
-                    </div>                    
+                    </div>
                     <div class="text-start row fs-3">
                         <div class="col-6">
                             <lable class="text-uppercase fs-4 text-white text-opacity-75 fw-bold">Next Week</lable>
@@ -51,7 +51,33 @@
                             <div class="m-auto text-shadow bg-danger bg-opacity-25 text-center fs-4 fw-bold text-dark text-opacity-75">@weekForcast</div>
                         </div>
                     </div>
+                    <div>
+                        <canvas id="myChart"></canvas>
+                    </div>
+                    <script>
+                        const ctx = document.getElementById('myChart');
 
+                        new Chart(ctx, {
+                            type: 'line',
+                            data: {
+                                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                                datasets: [{
+                                    label: '# of Subscriptions',
+                                    data: [12, 19, 3, 5, 2, 3],
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
+                                }
+
+                            }
+                            }
+                        });
+                    </script>
                 </div>
             </div>
         }

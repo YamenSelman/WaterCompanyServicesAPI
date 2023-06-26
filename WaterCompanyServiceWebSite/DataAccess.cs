@@ -7,6 +7,8 @@ using System.Security.Cryptography;
 using System.Text;
 using ModelLibrary;
 using WaterCompanyServiceWebSite.Models;
+using Microsoft.ML;
+using Microsoft.ML.Transforms.TimeSeries;
 
 namespace WaterCompanyServiceWebSite
 {
@@ -141,6 +143,27 @@ namespace WaterCompanyServiceWebSite
                     if (response.Result.IsSuccessStatusCode)
                     {
                         result = response.Result.Content.ReadFromJsonAsync<List<User>>().Result;
+                    }
+                }
+                return result;
+            }
+        }
+        public static List<Request> GetAllRequests()
+        {
+            List<Request> result = new List<Request>();
+            using (var httpClient = new HttpClient())
+            {
+                var request = new HttpRequestMessage
+                {
+                    Method = HttpMethod.Get,
+                    RequestUri = new Uri($"{BaseURL}request"),
+                };
+
+                using (var response = httpClient.SendAsync(request))
+                {
+                    if (response.Result.IsSuccessStatusCode)
+                    {
+                        result = response.Result.Content.ReadFromJsonAsync<List<Request>>().Result;
                     }
                 }
                 return result;
@@ -704,6 +727,32 @@ namespace WaterCompanyServiceWebSite
                 }
                 return result;
             }
+        }
+
+        public static SubscriptionForecast SubscriptionForecast = null;
+
+        public static async void DoForecast()
+        {
+            var context = new MLContext();
+
+            var res = DataAccess.GetSubscriptions().GroupBy(s => s.RegisterDate).Select(g => new SubscriptionData(g.Key, g.Count())).ToArray();
+
+            var data = context.Data.LoadFromEnumerable<SubscriptionData>(res);
+
+            var pipline = context.Forecasting.ForecastBySsa(
+                "Forecast",
+                nameof(SubscriptionData.requests),
+                windowSize: 5,
+                seriesLength: 10,
+                trainSize: 1000,
+                horizon: 365
+                );
+
+            var model = pipline.Fit(data);
+
+            var forecastingEngine = model.CreateTimeSeriesEngine<SubscriptionData, SubscriptionForecast>(context);
+
+            SubscriptionForecast = forecastingEngine.Predict();
         }
     }
 }

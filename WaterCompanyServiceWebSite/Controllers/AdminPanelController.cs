@@ -103,6 +103,7 @@ namespace WaterCompanyServiceWebSite.Controllers
 
         public IActionResult DashBoard()
         {
+            /*
             var context = new MLContext();
 
             var res = DataAccess.GetSubscriptions().GroupBy(s => s.RegisterDate).Select(g => new SubscriptionData(g.Key, g.Count())).ToArray();
@@ -123,8 +124,24 @@ namespace WaterCompanyServiceWebSite.Controllers
             var forecastingEngine = model.CreateTimeSeriesEngine<SubscriptionData, SubscriptionForecast>(context);
 
             var forecasts = forecastingEngine.Predict();
+            */
+            if(DataAccess.SubscriptionForecast is null)
+            {
+                DataAccess.DoForecast();
+            }
 
-            return View(forecasts);
+            var requests = DataAccess.GetAllRequests();
+
+            DashboardVM vm = new DashboardVM();
+
+            vm.subscriptionForecast = DataAccess.SubscriptionForecast;
+            vm.rejectedPer = (float)requests.Where(r => r.RequestStatus.Equals("rejected")).Count() / (float)requests.Count;
+            vm.completedPer = (float)requests.Where(r => r.RequestStatus.Equals("completed")).Count() / (float)requests.Count;
+            vm.onprogressPer = (float)requests.Where(r => r.RequestStatus.Equals("onprogress")).Count() / (float)requests.Count;
+
+            vm.totalRequests = requests.Count;
+
+            return View(vm);
         }
 
     }

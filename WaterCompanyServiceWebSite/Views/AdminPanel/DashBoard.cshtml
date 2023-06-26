@@ -1,4 +1,4 @@
-﻿@model SubscriptionForecast
+﻿@model DashboardVM
 @{
     ViewData["Title"] = "Admin Dashboard";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -24,7 +24,7 @@
                         </div>
                         <div class="col-6">
                             @{
-                                int yearForcast = (int)Model.Forecast.Sum();
+                                int yearForcast = (int)Model.subscriptionForecast.Forecast.Sum();
                             }
                             <div class="m-auto text-shadow bg-danger bg-opacity-25 text-center fs-4 fw-bold text-dark text-opacity-75">@yearForcast</div>
                         </div>
@@ -35,7 +35,7 @@
                         </div>
                         <div class="col-6">
                             @{
-                                int monthForcast = (int)Model.Forecast.Take(30).Sum();
+                                int monthForcast = (int)Model.subscriptionForecast.Forecast.Take(30).Sum();
                             }
                             <div class="m-auto text-shadow bg-danger bg-opacity-25 text-center fs-4 fw-bold text-dark text-opacity-75">@monthForcast</div>
                         </div>
@@ -46,39 +46,94 @@
                         </div>
                         <div class="col-6">
                             @{
-                                int weekForcast = (int)Model.Forecast.Take(7).Sum();
+                                int weekForcast = (int)Model.subscriptionForecast.Forecast.Take(7).Sum();
                             }
                             <div class="m-auto text-shadow bg-danger bg-opacity-25 text-center fs-4 fw-bold text-dark text-opacity-75">@weekForcast</div>
                         </div>
                     </div>
-                    <div>
-                        <canvas id="myChart"></canvas>
-                    </div>
-                    <script>
-                        const ctx = document.getElementById('myChart');
 
-                        new Chart(ctx, {
-                            type: 'line',
-                            data: {
-                                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-                                datasets: [{
-                                    label: '# of Subscriptions',
-                                    data: [12, 19, 3, 5, 2, 3],
-                                    borderWidth: 1
-                                }]
-                            },
-                            options: {
-                                scales: {
-                                    y: {
-                                        beginAtZero: true
+                </div>
+                <div class="p-2 m-4  bg-light bg-opacity-50 border border-dark rounded">
+                    <canvas id="subChart"></canvas>
+                </div>
+                <script>
+                    const ctx = document.getElementById('subChart');
+
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
+                            datasets: [{
+                                label: 'Number of subscriptions',
+                                data: [@Model.subscriptionForecast.Forecast.Skip(0).Take(31).Sum(), @Model.subscriptionForecast.Forecast.Skip(31).Take(28).Sum(),
+                    @Model.subscriptionForecast.Forecast.Skip(59).Take(31).Sum(), @Model.subscriptionForecast.Forecast.Skip(90).Take(30).Sum(),
+                    @Model.subscriptionForecast.Forecast.Skip(120).Take(31).Sum(), @Model.subscriptionForecast.Forecast.Skip(151).Take(30).Sum(),
+                    @Model.subscriptionForecast.Forecast.Skip(181).Take(31).Sum(), @Model.subscriptionForecast.Forecast.Skip(212).Take(31).Sum(),
+                    @Model.subscriptionForecast.Forecast.Skip(243).Take(30).Sum(), @Model.subscriptionForecast.Forecast.Skip(273).Take(31).Sum(),
+                    @Model.subscriptionForecast.Forecast.Skip(304).Take(30).Sum(), @Model.subscriptionForecast.Forecast.Skip(334).Take(31).Sum()],
+                                borderWidth: 2
+                            }]
+                        },
+                        options: {
+                            borderColor: 'red',
+                            animation: true,
+                            fill: true,
+                            tension: 0.1
+                        }
+                    });
+                </script>
+
+                <div class="row text-center rounded-3 m-auto">
+                    <h5 class="bg-dark bg-opacity-10 m-auto border border-dark rounded shadow py-3 px-1 text-white text-opacity-75 my-3">
+                        Requests Statistics
+                    </h5>
+
+                </div>
+                <div class="w-75 p-5 m-auto bg-light bg-opacity-50 border border-dark rounded">
+                    <canvas id="reqChart"></canvas>
+                </div>
+                <script>
+                    const ctx2 = document.getElementById('reqChart');
+
+                    new Chart(ctx2, {
+                        type: 'pie',
+                        data: {
+                            labels: ['Completed', 'OnProgress', 'Rejected'],
+                            datasets: [{
+                                data: [@Model.completedRequests, @Model.onprogressRequests, @Model.rejectedRequests],
+                                backgroundColor: [
+                                    'rgb(0, 153, 0)',
+                                    'rgb(51, 51, 255)',
+                                    'rgb(204, 0, 0)'
+                                ],
+                                hoverOffset: 4,
+                                tooltip: {
+                                    callbacks: {
+                                        label: function (context) {
+                                            let label = context.label;
+                                            let value = context.formattedValue;
+
+                                            if (!label)
+                                                label = 'Unknown'
+
+                                            let sum = 0;
+                                            let dataArr = context.chart.data.datasets[0].data;
+                                            dataArr.map(data => {
+                                                sum += Number(data);
+                                            });
+
+                                            let percentage = (value * 100 / sum).toFixed(2) + '%';
+                                            return "\t" + percentage;
+                                        }
                                     }
                                 }
-
-                            }
-                            }
-                        });
-                    </script>
-                </div>
+                            }]
+                        },
+                        options: {
+                        }
+                        
+                    });
+                </script>
             </div>
         }
     </div>

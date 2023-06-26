@@ -21,6 +21,7 @@ namespace WaterCompanyServiceWebSite.Controllers
 
         public IActionResult Index()
         {
+            DataAccess.DoForecast();
             return View();
 
         }

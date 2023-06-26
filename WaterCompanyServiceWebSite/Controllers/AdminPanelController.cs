@@ -103,28 +103,6 @@ namespace WaterCompanyServiceWebSite.Controllers
 
         public IActionResult DashBoard()
         {
-            /*
-            var context = new MLContext();
-
-            var res = DataAccess.GetSubscriptions().GroupBy(s => s.RegisterDate).Select(g => new SubscriptionData(g.Key, g.Count())).ToArray();
-
-            var data = context.Data.LoadFromEnumerable<SubscriptionData>(res);
-
-            var pipline = context.Forecasting.ForecastBySsa(
-                "Forecast",
-                nameof(SubscriptionData.requests),
-                windowSize: 5,
-                seriesLength: 10,
-                trainSize: 1000,
-                horizon: 365
-                );
-
-            var model = pipline.Fit(data);
-
-            var forecastingEngine = model.CreateTimeSeriesEngine<SubscriptionData, SubscriptionForecast>(context);
-
-            var forecasts = forecastingEngine.Predict();
-            */
             if(DataAccess.SubscriptionForecast is null)
             {
                 DataAccess.DoForecast();
@@ -138,6 +116,10 @@ namespace WaterCompanyServiceWebSite.Controllers
             vm.rejectedPer = (float)requests.Where(r => r.RequestStatus.Equals("rejected")).Count() / (float)requests.Count;
             vm.completedPer = (float)requests.Where(r => r.RequestStatus.Equals("completed")).Count() / (float)requests.Count;
             vm.onprogressPer = (float)requests.Where(r => r.RequestStatus.Equals("onprogress")).Count() / (float)requests.Count;
+            vm.rejectedCount = requests.Where(r => r.RequestStatus.Equals("rejected")).Count();
+            vm.completedCount = requests.Where(r => r.RequestStatus.Equals("completed")).Count();
+            vm.onprogressCount = requests.Where(r => r.RequestStatus.Equals("onprogress")).Count();
+
 
             vm.totalRequests = requests.Count;
 

@@ -53,9 +53,11 @@
                     </div>
 
                 </div>
+
                 <div class="p-2 m-4  bg-light bg-opacity-50 border border-dark rounded">
                     <canvas id="subChart"></canvas>
                 </div>
+
                 <script>
                     const ctx = document.getElementById('subChart');
 
@@ -87,20 +89,32 @@
                     <h5 class="bg-dark bg-opacity-10 m-auto border border-dark rounded shadow py-3 px-1 text-white text-opacity-75 my-3">
                         Requests Statistics
                     </h5>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="p-2 m-4 m-auto bg-light bg-opacity-50 border border-dark rounded" style="height:40vh;">
+                            <canvas id="reqChart1"></canvas>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="p-2 m-4 m-auto bg-light bg-opacity-50 border border-dark rounded w-100" style="height:40vh;">
+                            <canvas id="reqChart2"></canvas>
+                        </div>
+
+                    </div>
 
                 </div>
-                <div class="w-75 p-5 m-auto bg-light bg-opacity-50 border border-dark rounded">
-                    <canvas id="reqChart"></canvas>
-                </div>
+
                 <script>
-                    const ctx2 = document.getElementById('reqChart');
+                    const ctx1 = document.getElementById('reqChart1');
 
-                    new Chart(ctx2, {
+                    new Chart(ctx1, {
                         type: 'pie',
                         data: {
                             labels: ['Completed', 'OnProgress', 'Rejected'],
                             datasets: [{
-                                data: [@Model.completedRequests, @Model.onprogressRequests, @Model.rejectedRequests],
+                                data: [@Model.completedPer, @Model.onprogressPer, @Model.rejectedPer],
                                 backgroundColor: [
                                     'rgb(0, 153, 0)',
                                     'rgb(51, 51, 255)',
@@ -116,14 +130,7 @@
                                             if (!label)
                                                 label = 'Unknown'
 
-                                            let sum = 0;
-                                            let dataArr = context.chart.data.datasets[0].data;
-                                            dataArr.map(data => {
-                                                sum += Number(data);
-                                            });
-
-                                            let percentage = (value * 100 / sum).toFixed(2) + '%';
-                                            return "\t" + percentage;
+                                            return "\t" + (value * 100).toFixed(2) + '%';
                                         }
                                     }
                                 }
@@ -131,7 +138,39 @@
                         },
                         options: {
                         }
-                        
+
+                    });
+
+                    const ctx2 = document.getElementById('reqChart2');
+
+                    new Chart(ctx2, {
+                        type: 'bar',
+
+                        data: {
+                            labels: ['Total', 'Completed', 'OnProgress', 'Rejected'],
+                            datasets: [{
+                                label: 'Number of requests',
+                                data: [@Model.totalRequests, @Model.completedCount, @Model.onprogressCount, @Model.rejectedCount],
+                                borderWidth: 2,
+                                backgroundColor: ["white", "green", "blue", "red"],
+                            }]
+                        },
+                        options: {
+                            animation: true,
+                            scales: {
+                                y: {
+                                    ticks: {
+                                        stepSize: 1,
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            }
+                        }
+
                     });
                 </script>
             </div>

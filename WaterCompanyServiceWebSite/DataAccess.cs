@@ -9,6 +9,7 @@ using ModelLibrary;
 using WaterCompanyServiceWebSite.Models;
 using Microsoft.ML;
 using Microsoft.ML.Transforms.TimeSeries;
+using Microsoft.Extensions.Hosting;
 
 namespace WaterCompanyServiceWebSite
 {
@@ -735,6 +736,8 @@ namespace WaterCompanyServiceWebSite
         {
             var context = new MLContext();
 
+            var subs = DataAccess.GetSubscriptions();
+
             var res = DataAccess.GetSubscriptions().GroupBy(s => s.RegisterDate).Select(g => new SubscriptionData(g.Key, g.Count())).ToArray();
 
             var data = context.Data.LoadFromEnumerable<SubscriptionData>(res);
@@ -754,5 +757,6 @@ namespace WaterCompanyServiceWebSite
 
             SubscriptionForecast = forecastingEngine.Predict();
         }
+
     }
 }
